@@ -1,28 +1,22 @@
 "use client";
-import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function Home() {
-  const [result, setResult] = useState<string | null>(null);
+    const router = useRouter();
 
-  const testDatabaseConnection = async () => {
-    try {
-      const response = await fetch("/api/test-db");
-      if (response.ok) {
-        setResult("Database operation successful");
-      } else {
-        setResult("Database operation failed");
-      }
-    } catch (error) {
-      console.error("Client-side request error:", error);
-      setResult("Database operation failed");
-    }
-  };
+    const handleClick = () => {
+        router.push("/db-test");
+    };
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Test Database Connection</h1>
-      <button onClick={testDatabaseConnection}>Test Connection</button>
-      {result && <p>{result}</p>}
-    </main>
-  );
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            <h1>Homepage</h1>
+            <button
+                type="button"
+                className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                onClick={handleClick}
+            >
+                Go to database test
+            </button>
+        </main>
+    );
 }
