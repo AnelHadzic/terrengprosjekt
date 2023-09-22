@@ -4,11 +4,8 @@ import BedriftOppsummering from "@/app/components/nybedrift/BedriftOppsummering"
 import BedriftStepper from "@/app/components/nybedrift/BedriftStepper";
 import React, { useState, createContext } from "react";
 
-// type Stepper = {
-//     stepper: Number,
-//     setStepper: Number
-// }
 export const BedriftContext = createContext<{
+  // Definerer typene til hver av disse
   stepper: number;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
   companyName: string;
@@ -20,7 +17,8 @@ export const BedriftContext = createContext<{
   comapnyAgreement: boolean;
   setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
-  stepper: 0, // Provide initial values here
+  // Setter forventet default value
+  stepper: 0,
   setStepper: () => {},
   companyName: "",
   setCompanyName: () => {},
@@ -32,7 +30,7 @@ export const BedriftContext = createContext<{
   setCompanyAgreement: () => {},
 });
 
-const page = () => {
+const Page = () => {
   // Stepper State
   const [stepper, setStepper] = useState<number>(1);
 
@@ -94,4 +92,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
