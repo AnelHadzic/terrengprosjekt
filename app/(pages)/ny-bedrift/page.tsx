@@ -1,5 +1,6 @@
 "use client";
 import BedriftInfo from "@/app/components/nybedrift/BedriftInfo";
+import BedriftOppsummering from "@/app/components/nybedrift/BedriftOppsummering";
 import BedriftStepper from "@/app/components/nybedrift/BedriftStepper";
 import React, { useState, useContext, createContext } from "react";
 
@@ -32,6 +33,8 @@ const page = () => {
           setStepper,
           companyName,
           setCompanyName,
+          contactPerson,
+          setContactPerson,
           privateAgreement,
           setPrivateAgreement,
           comapnyAgreement,
@@ -44,6 +47,7 @@ const page = () => {
           {stepper === 2 ? "2" : null}
           {stepper === 3 ? "3" : null}
           {stepper === 4 ? "4" : null}
+          {stepper === 5 ? <BedriftOppsummering /> : null}
           <div className="flex">
             {stepper > 1 ? (
               <button
