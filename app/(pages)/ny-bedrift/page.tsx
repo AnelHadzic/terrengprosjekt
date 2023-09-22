@@ -9,7 +9,17 @@ import React, { useState } from "react";
 
 const page = () => {
   const [stepper, setStepper] = useState<Number>(1);
-  const activeStepper = "blue-600";
+
+  // BEDRIFTS DETALJER SOM SKAL SENDES
+
+  // SIDE 1
+  const [companyName, setCompanyName] = useState<String>("");
+  const [contactPerson, setContactPerson] = useState<String>("");
+
+  // SIDE2
+  const [privateAgreement, setPrivateAgreement] = useState<Boolean>(false);
+  const [comapnyAgreement, setCompanyAgreement] = useState<Boolean>(false);
+
   return (
     <>
       <StepperComponent stepper={stepper} setStepper={setStepper} />
@@ -48,8 +58,8 @@ const StepperComponent = ({ stepper, setStepper }) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               strokeWidth="2"
               d="m7 9 4-4-4-4M1 9l4-4-4-4"
             />
@@ -78,9 +88,9 @@ const StepperComponent = ({ stepper, setStepper }) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m7 9 4-4-4-4M1 9l4-4-4-4"
             />
           </svg>
@@ -108,9 +118,9 @@ const StepperComponent = ({ stepper, setStepper }) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m7 9 4-4-4-4M1 9l4-4-4-4"
             />
           </svg>
@@ -138,9 +148,9 @@ const StepperComponent = ({ stepper, setStepper }) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m7 9 4-4-4-4M1 9l4-4-4-4"
             />
           </svg>
