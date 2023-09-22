@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BedriftContext } from "../../(pages)/ny-bedrift/page";
+import BedriftContext from "@/app/contexts/BedriftContext";
 
 const BedriftInfo = () => {
   const { companyName, contactPerson, setCompanyName, setContactPerson } =
