@@ -7,7 +7,7 @@ const page = () => {
   const activeStepper = "blue-600";
   return (
     <>
-      <Stepper setStepper={setStepper} />
+      <Stepper stepper={stepper} setStepper={setStepper} />
       {stepper === 1 ? <BedriftInfo /> : null}
       {stepper === 2 ? "2" : null}
       {stepper === 3 ? "3" : null}
@@ -22,7 +22,7 @@ const Stepper = ({ stepper, setStepper }) => {
       <ol className="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
         <li
           className={`flex items-center text-${
-            stepper === 1 ? "blue-600" : "blue-500"
+            stepper === 1 ? "blue-600 font-bold" : "gray-500"
           } cursor-pointer ...:`}
           onClick={() => setStepper(1)}
         >
@@ -47,7 +47,9 @@ const Stepper = ({ stepper, setStepper }) => {
           </svg>
         </li>
         <li
-          className="flex items-center cursor-pointer ..."
+          className={`flex items-center text-${
+            stepper === 2 ? "blue-600 font-bold" : "gray-500"
+          } cursor-pointer ...:`}
           onClick={() => setStepper(2)}
         >
           <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
@@ -71,7 +73,9 @@ const Stepper = ({ stepper, setStepper }) => {
           </svg>
         </li>
         <li
-          className="flex items-center cursor-pointer ..."
+          className={`flex items-center text-${
+            stepper === 3 ? "blue-600 font-bold" : "gray-500"
+          } cursor-pointer ...:`}
           onClick={() => setStepper(3)}
         >
           <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
