@@ -8,25 +8,46 @@ import React, { useState } from "react";
 // }
 
 const page = () => {
-  const [stepper, setStepper] = useState<Number>(1);
+  const [stepper, setStepper] = useState<number>(1);
 
   // BEDRIFTS DETALJER SOM SKAL SENDES
 
   // SIDE 1
-  const [companyName, setCompanyName] = useState<String>("");
-  const [contactPerson, setContactPerson] = useState<String>("");
+  const [companyName, setCompanyName] = useState<string>("");
+  const [contactPerson, setContactPerson] = useState<string>("");
 
   // SIDE2
-  const [privateAgreement, setPrivateAgreement] = useState<Boolean>(false);
-  const [comapnyAgreement, setCompanyAgreement] = useState<Boolean>(false);
+  const [privateAgreement, setPrivateAgreement] = useState<boolean>(false);
+  const [comapnyAgreement, setCompanyAgreement] = useState<boolean>(false);
 
+  // HANDLE SUBMIT TO USE API
   return (
     <>
-      <StepperComponent stepper={stepper} setStepper={setStepper} />
-      {stepper === 1 ? <BedriftInfo /> : null}
-      {stepper === 2 ? "2" : null}
-      {stepper === 3 ? "3" : null}
-      {stepper === 4 ? "4" : null}
+      <main className="flex min-h-screen flex-col items-center">
+        <StepperComponent stepper={stepper} setStepper={setStepper} />
+        {stepper === 1 ? <BedriftInfo /> : null}
+        {stepper === 2 ? "2" : null}
+        {stepper === 3 ? "3" : null}
+        {stepper === 4 ? "4" : null}
+        <div className="flex">
+          {stepper > 1 ? (
+            <button
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 mt-6 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              onClick={(prev) => setStepper((prev) => prev - 1)}
+            >
+              Tilbake
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className="text-white bg-blue-700 hover:bg-blue-800 mt-6 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            onClick={(prev) => setStepper((prev) => prev + 1)}
+          >
+            Neste
+          </button>
+        </div>
+      </main>
     </>
   );
 };
@@ -34,7 +55,7 @@ const page = () => {
 const StepperComponent = ({ stepper, setStepper }) => {
   return (
     <>
-      <ol className="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
+      <ol className="flex justify-center items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
         <li
           className={`flex items-center text-${
             stepper === 1 ? "blue-600 font-bold" : "gray-500"
