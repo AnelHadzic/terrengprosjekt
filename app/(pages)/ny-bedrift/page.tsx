@@ -57,14 +57,14 @@ const StepperComponent = ({ stepper, setStepper }) => {
     <>
       <ol className="flex justify-center items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
         <li
-          className={`flex items-center text-${
-            stepper === 1 ? "blue-600 font-bold" : "gray-500"
+          className={`flex items-center ${
+            stepper === 1 ? "text-blue-600 font-bold" : "text-gray-500"
           } cursor-pointer ...:`}
           onClick={() => setStepper(1)}
         >
           <span
-            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border border-${
-              stepper === 1 ? "blue-600" : "gray-500"
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border ${
+              stepper === 1 ? "border-blue-600" : "border-gray-500"
             } rounded-full shrink-0 dark:border-gray-400`}
           >
             1
@@ -87,14 +87,14 @@ const StepperComponent = ({ stepper, setStepper }) => {
           </svg>
         </li>
         <li
-          className={`flex items-center text-${
-            stepper === 2 ? "blue-600 font-bold" : "gray-500"
+          className={`flex items-center ${
+            stepper === 2 ? "text-blue-600 font-bold" : "text-gray-500"
           } cursor-pointer ...:`}
           onClick={() => setStepper(2)}
         >
           <span
-            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border border-${
-              stepper === 2 ? "blue-600" : "gray-500"
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border ${
+              stepper === 2 ? "border-blue-600" : "border-gray-500"
             } rounded-full shrink-0 dark:border-gray-400`}
           >
             2
@@ -117,14 +117,14 @@ const StepperComponent = ({ stepper, setStepper }) => {
           </svg>
         </li>
         <li
-          className={`flex items-center text-${
-            stepper === 3 ? "blue-600 font-bold" : "gray-500"
+          className={`flex items-center ${
+            stepper === 3 ? "text-blue-600 font-bold" : "text-gray-500"
           } cursor-pointer ...:`}
           onClick={() => setStepper(3)}
         >
           <span
-            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border border-${
-              stepper === 3 ? "blue-600" : "gray-500"
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border ${
+              stepper === 3 ? "border-blue-600" : "border-gray-500"
             } rounded-full shrink-0 dark:border-gray-400`}
           >
             3
@@ -147,14 +147,14 @@ const StepperComponent = ({ stepper, setStepper }) => {
           </svg>
         </li>
         <li
-          className={`flex items-center text-${
-            stepper === 4 ? "blue-600 font-bold" : "gray-500"
+          className={`flex items-center ${
+            stepper === 4 ? "text-blue-600 font-bold" : "text-gray-500"
           } cursor-pointer ...:`}
           onClick={() => setStepper(4)}
         >
           <span
-            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border border-${
-              stepper === 4 ? "blue-600" : "gray-500"
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border ${
+              stepper === 4 ? "border-blue-600" : "border-gray-500"
             } rounded-full shrink-0 dark:border-gray-400`}
           >
             4
@@ -177,14 +177,14 @@ const StepperComponent = ({ stepper, setStepper }) => {
           </svg>
         </li>
         <li
-          className={`flex items-center text-${
-            stepper === 5 ? "blue-600 font-bold" : "gray-500"
+          className={`flex items-center ${
+            stepper === 5 ? "text-blue-600 font-bold" : "text-gray-500"
           } cursor-pointer ...:`}
           onClick={() => setStepper(5)}
         >
           <span
-            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border border-${
-              stepper === 5 ? "blue-600" : "gray-500"
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border ${
+              stepper === 5 ? "border-blue-600" : "border-gray-500"
             } rounded-full shrink-0 dark:border-gray-400`}
           >
             5
