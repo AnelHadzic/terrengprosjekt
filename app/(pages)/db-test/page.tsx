@@ -46,6 +46,7 @@ export default function Home() {
             >
                 Create Marius - check db after
             </button>}
+            {creationResult && <p>{creationResult}</p>}
 
             <button
                 onClick={testDatabaseConnection}
