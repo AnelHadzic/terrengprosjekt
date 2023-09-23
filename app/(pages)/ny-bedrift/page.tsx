@@ -2,33 +2,8 @@
 import BedriftInfo from "@/app/components/nybedrift/BedriftInfo";
 import BedriftOppsummering from "@/app/components/nybedrift/BedriftOppsummering";
 import BedriftStepper from "@/app/components/nybedrift/BedriftStepper";
-import React, { useState, createContext } from "react";
-
-export const BedriftContext = createContext<{
-  // Definerer typene til hver av disse
-  stepper: number;
-  setStepper: React.Dispatch<React.SetStateAction<number>>;
-  companyName: string;
-  setCompanyName: React.Dispatch<React.SetStateAction<string>>;
-  contactPerson: string;
-  setContactPerson: React.Dispatch<React.SetStateAction<string>>;
-  privateAgreement: boolean;
-  setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>;
-  comapnyAgreement: boolean;
-  setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>;
-}>({
-  // Setter forventet default value
-  stepper: 0,
-  setStepper: () => {},
-  companyName: "",
-  setCompanyName: () => {},
-  contactPerson: "",
-  setContactPerson: () => {},
-  privateAgreement: false,
-  setPrivateAgreement: () => {},
-  comapnyAgreement: false,
-  setCompanyAgreement: () => {},
-});
+import React, { useState } from "react";
+import BedriftContext from "@/app/contexts/BedriftContext";
 
 const Page = () => {
   // Stepper State

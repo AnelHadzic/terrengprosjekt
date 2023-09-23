@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { BedriftContext } from "../../(pages)/ny-bedrift/page";
+import BedriftContext from "@/app/contexts/BedriftContext";
 
 const BedriftStepper = () => {
   const { stepper, setStepper } = useContext(BedriftContext);
