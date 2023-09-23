@@ -19,6 +19,8 @@ const Page = () => {
   // SIDE2
   const [privateAgreement, setPrivateAgreement] = useState<boolean>(false);
   const [companyAgreement, setCompanyAgreement] = useState<boolean>(false);
+  const [privateAgreementType, setPrivateAgreementType] = useState<string>("");
+  const [companyAgreementType, setCompanyAgreementType] = useState<string>("");
 
   // HANDLE SUBMIT TO USE API
   return (
@@ -33,8 +35,12 @@ const Page = () => {
           setContactPerson,
           privateAgreement,
           setPrivateAgreement,
+          privateAgreementType,
+          setPrivateAgreementType,
           companyAgreement,
           setCompanyAgreement,
+          companyAgreementType,
+          setCompanyAgreementType,
         }}
       >
         <main className="flex min-h-screen flex-col items-center">
