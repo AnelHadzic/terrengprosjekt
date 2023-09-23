@@ -10,8 +10,12 @@ export const BedriftContext = createContext<{
   setContactPerson: React.Dispatch<React.SetStateAction<string>>;
   privateAgreement: boolean;
   setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>;
+  privateAgreementType: string;
+  setPrivateAgreementType: React.Dispatch<React.SetStateAction<string>>;
   companyAgreement: boolean;
   setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>;
+  companyAgreementType: string;
+  setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>;
 }>({
   // Setter forventet default value
   stepper: 0,
@@ -22,8 +26,12 @@ export const BedriftContext = createContext<{
   setContactPerson: () => {},
   privateAgreement: false,
   setPrivateAgreement: () => {},
+  privateAgreementType: "",
+  setPrivateAgreementType: () => {},
   companyAgreement: false,
   setCompanyAgreement: () => {},
+  companyAgreementType: "",
+  setCompanyAgreementType: () => {},
 });
 
 export default BedriftContext;
