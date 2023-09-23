@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Perform database operation
     // Example: const result = await YourModel.find({});
     // Replace YourModel with your actual Mongoose model
+    //
 
     res.status(200).json({ message: 'Database operation successful' });
   } catch (error) {
