@@ -10,7 +10,7 @@ export const BedriftContext = createContext<{
   setContactPerson: React.Dispatch<React.SetStateAction<string>>;
   privateAgreement: boolean;
   setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>;
-  comapnyAgreement: boolean;
+  companyAgreement: boolean;
   setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   // Setter forventet default value
@@ -22,7 +22,7 @@ export const BedriftContext = createContext<{
   setContactPerson: () => {},
   privateAgreement: false,
   setPrivateAgreement: () => {},
-  comapnyAgreement: false,
+  companyAgreement: false,
   setCompanyAgreement: () => {},
 });
 
