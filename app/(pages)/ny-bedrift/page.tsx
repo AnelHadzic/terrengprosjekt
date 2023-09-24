@@ -5,8 +5,8 @@ import BedriftStepper from "@/app/components/nybedrift/BedriftStepper";
 import React, { useState } from "react";
 import BedriftContext from "@/app/contexts/BedriftContext";
 import Avtale from "@/app/components/nybedrift/Avtale";
-import DomeneComponent from "@/app/components/nybedrift/BedriftsAvtale";
 import BedriftsAvtale from "@/app/components/nybedrift/BedriftsAvtale";
+import PrivateAgreementDetails from "@/app/components/nybedrift/PrivateAgreementDetails";
 
 const Page = () => {
   // Stepper State
@@ -56,7 +56,7 @@ const Page = () => {
           <BedriftStepper />
           {stepper === 1 ? <BedriftInfo /> : null}
           {stepper === 2 ? <Avtale /> : null}
-          {stepper === 3 ? "3" : null}
+          {stepper === 3 ? <PrivateAgreementDetails /> : null}
           {stepper === 4 ? <BedriftsAvtale /> : null}
           {stepper === 5 ? <BedriftOppsummering /> : null}
           <div className="flex">
