@@ -1,27 +1,28 @@
-import React, { useContext } from "react";
 import BedriftContext from "@/app/contexts/BedriftContext";
+import React from "react";
+import { useContext } from "react";
 
-const DomeneComponent = ({ header }: { header: string }) => {
-    const { domains, setDomains } = useContext(BedriftContext);
+const PrivateListComponent = ({ header }: { header: string }) => {
+    const { privateWhitelist, setPrivateWhitelist } = useContext(BedriftContext);
 
     const addInput = (index: number, newValue: string) => {
-        const newDomains = [...domains];
-        newDomains[index] = newValue;
+        const newWhiteList = [...privateWhitelist];
+        newWhiteList[index] = newValue;
 
-        setDomains(newDomains);
+        setPrivateWhitelist(newWhiteList);
     };
 
     //  Legge til flere domener knapp.
-    const addDomain = () => {
-        setDomains([...domains, ""]);
+    const addEmail = () => {
+      setPrivateWhitelist([...privateWhitelist, ""]);
     };
 
     // Fjerne spesifikke domener, søppel knapp
-    const removeDomain = (domainIndex: number) => {
-        const filterDomains = domains.filter(
-            (_, index) => index !== domainIndex
+    const removeEmail = (whitelistIndex: number) => {
+        const filterWhitelist = privateWhitelist.filter(
+            (_, index) => index !== whitelistIndex
         );
-        setDomains(filterDomains);
+        setPrivateWhitelist(filterWhitelist);
     };
 
     return (
@@ -29,19 +30,20 @@ const DomeneComponent = ({ header }: { header: string }) => {
             <h1 className="text-2xl font-bold dark:text-white mb-6">
                 {header}
             </h1>
+
             <label
-                htmlFor="bedrifts_domener"
+                htmlFor="whitelist"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-                Domener
+                E-post liste (whitelist)
             </label>
-            {domains.map((domain, index) => (
+            {privateWhitelist.map((email, index) => (
                 <React.Fragment key={index}>
                     <div className="flex flex-row ...">
                         <input
                             type="text"
-                            placeholder="hiof.no"
-                            value={domain}
+                            placeholder="bruker@mail.com"
+                            value={email}
                             onChange={(e) => addInput(index, e.target.value)}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         />
@@ -49,7 +51,7 @@ const DomeneComponent = ({ header }: { header: string }) => {
                         {index > 0 ? (
                             <svg
                                 className="w-6 h-6 text-red-500 dark:text-white hover:text-red-800 cursor-pointer ..."
-                                onClick={() => removeDomain(index)}
+                                onClick={() => removeEmail(index)}
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -71,7 +73,7 @@ const DomeneComponent = ({ header }: { header: string }) => {
             <div className="flex flex-row-reverse ...">
                 <button
                     type="button"
-                    onClick={addDomain}
+                    onClick={addEmail}
                     className="py-2.5 flex px-6 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 >
                     <div className="mr-2">
@@ -91,11 +93,11 @@ const DomeneComponent = ({ header }: { header: string }) => {
                             ></path>
                         </svg>
                     </div>
-                    Legg til domene
+                    Legg til e-post
                 </button>
             </div>
         </div>
     );
 };
 
-export default DomeneComponent;
+export default PrivateListComponent;
