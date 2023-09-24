@@ -2,12 +2,18 @@ import React, { createContext } from "react";
 
 export const BedriftContext = createContext<{
   // Definerer typene til hver av disse
+
+  // Hoved page stepper
   stepper: number;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
+
+  // Bedrifts Info : 1
   companyName: string;
   setCompanyName: React.Dispatch<React.SetStateAction<string>>;
   contactPerson: string;
   setContactPerson: React.Dispatch<React.SetStateAction<string>>;
+
+  // Velg Avtale : 2
   privateAgreement: boolean;
   setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>;
   privateAgreementType: string;
@@ -16,6 +22,12 @@ export const BedriftContext = createContext<{
   setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>;
   companyAgreementType: string;
   setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>;
+
+  // Privat Avtale : 3
+
+  // Bedrifts Avtale : 4
+  domains: string[];
+  setDomains: React.Dispatch<React.SetStateAction<string[]>>;
 }>({
   // Setter forventet default value
   stepper: 0,
@@ -32,6 +44,8 @@ export const BedriftContext = createContext<{
   setCompanyAgreement: () => {},
   companyAgreementType: "",
   setCompanyAgreementType: () => {},
+  domains: [""],
+  setDomains: () => {},
 });
 
 export default BedriftContext;
