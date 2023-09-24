@@ -24,13 +24,16 @@ export const BedriftContext = createContext<{
   setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>;
 
   // Privat Avtale : 3
-  whitelist: string[]
-  setWhitelist: React.Dispatch<React.SetStateAction<string[]>>;
+  privateWhitelist: string[]
+  setPrivateWhitelist: React.Dispatch<React.SetStateAction<string[]>>;
 
 
   // Bedrifts Avtale : 4
   domains: string[];
   setDomains: React.Dispatch<React.SetStateAction<string[]>>;
+  companyWhitelist: string[]
+  setCompanyWhitelist: React.Dispatch<React.SetStateAction<string[]>>;
+
 }>({
   // Setter forventet default value
   stepper: 0,
@@ -49,8 +52,10 @@ export const BedriftContext = createContext<{
   setCompanyAgreementType: () => {},
   domains: [""],
   setDomains: () => {},
-  whitelist: [""],
-  setWhitelist: () => {},
+  privateWhitelist: [""],
+  setPrivateWhitelist: () => {},
+  companyWhitelist: [""],
+  setCompanyWhitelist: () => {},
 });
 
 export default BedriftContext;

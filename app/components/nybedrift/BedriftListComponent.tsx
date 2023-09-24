@@ -2,27 +2,27 @@ import BedriftContext from "@/app/contexts/BedriftContext";
 import React from "react";
 import { useContext } from "react";
 
-const ListAgreementDetails = ({ header }: { header: string }) => {
-    const { whitelist, setWhitelist } = useContext(BedriftContext);
+const BedriftListComponent = ({ header }: { header: string }) => {
+    const { companyWhitelist, setCompanyWhitelist } = useContext(BedriftContext);
 
     const addInput = (index: number, newValue: string) => {
-        const newWhiteList = [...whitelist];
+        const newWhiteList = [...companyWhitelist];
         newWhiteList[index] = newValue;
 
-        setWhitelist(newWhiteList);
+        setCompanyWhitelist(newWhiteList);
     };
 
-    //  Legge til flere domener knapp.
+    //  Legge til flere eposter knapp.
     const addEmail = () => {
-      setWhitelist([...whitelist, ""]);
+        setCompanyWhitelist([...companyWhitelist, ""]);
     };
 
-    // Fjerne spesifikke domener, søppel knapp
+    // Fjerne spesifikke eposter, søppel knapp
     const removeEmail = (whitelistIndex: number) => {
-        const filterWhitelist = whitelist.filter(
+        const filterWhitelist = companyWhitelist.filter(
             (_, index) => index !== whitelistIndex
         );
-        setWhitelist(filterWhitelist);
+        setCompanyWhitelist(filterWhitelist);
     };
 
     return (
@@ -37,7 +37,7 @@ const ListAgreementDetails = ({ header }: { header: string }) => {
             >
                 E-post liste (whitelist)
             </label>
-            {whitelist.map((email, index) => (
+            {companyWhitelist.map((email, index) => (
                 <React.Fragment key={index}>
                     <div className="flex flex-row ...">
                         <input
@@ -100,4 +100,4 @@ const ListAgreementDetails = ({ header }: { header: string }) => {
     );
 };
 
-export default ListAgreementDetails;
+export default BedriftListComponent;

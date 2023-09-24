@@ -25,11 +25,13 @@ const Page = () => {
   const [companyAgreementType, setCompanyAgreementType] = useState<string>("");
 
   // SIDE 3
-  const [whitelist, setWhitelist] = useState<string[]>([""]);
+  const [privateWhitelist, setPrivateWhitelist] = useState<string[]>([""]);
 
 
   // SIDE 4
   const [domains, setDomains] = useState<string[]>([""]);
+  const [companyWhitelist, setCompanyWhitelist] = useState<string[]>([""]);
+
 
   // HANDLE SUBMIT TO USE API
   return (
@@ -52,8 +54,10 @@ const Page = () => {
           setCompanyAgreementType,
           domains,
           setDomains,
-          whitelist,
-          setWhitelist,
+          privateWhitelist,
+          setPrivateWhitelist,
+          companyWhitelist,
+          setCompanyWhitelist,
         }}
       >
         <main className="flex min-h-screen flex-col items-center">

@@ -59,6 +59,7 @@ const Avtale = () => {
                 (privateAgreement ? false : true) ||
                 companyAgreementType === "Domain"
               }
+              checked={privateAgreementType === "Domain"}
               name="privat-radio"
               onChange={handlePrivateRadioChange}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -77,9 +78,11 @@ const Avtale = () => {
               value="List"
               name="privat-radio"
               disabled={privateAgreement ? false : true}
+              checked={privateAgreementType === "List"}
               onChange={handlePrivateRadioChange}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
+            
             <label
               htmlFor="privat-liste"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -117,6 +120,7 @@ const Avtale = () => {
                 (companyAgreement ? false : true) ||
                 privateAgreementType === "Domain"
               }
+              checked={companyAgreementType === "Domain"}
               onChange={handleCompanyRadioChange}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
@@ -135,6 +139,7 @@ const Avtale = () => {
               name="bedrift-radio"
               disabled={companyAgreement ? false : true}
               onChange={handleCompanyRadioChange}
+              checked={companyAgreementType === "List"}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
