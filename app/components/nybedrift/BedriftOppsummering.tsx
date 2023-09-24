@@ -73,7 +73,7 @@ const BedriftInfo = () => {
           <>
             <span>
               Domener: <span></span>
-              {domains.map((domain) => domain)}
+              {domains.map((domain) => domain + ", ")}
             </span>
           </>
         )}
