@@ -5,6 +5,7 @@ import BedriftStepper from "@/app/components/nybedrift/BedriftStepper";
 import React, { useState } from "react";
 import BedriftContext from "@/app/contexts/BedriftContext";
 import Avtale from "@/app/components/nybedrift/Avtale";
+import BedriftsAvtale from "@/app/components/nybedrift/BedriftsAvtale";
 import PrivateAgreementDetails from "@/app/components/nybedrift/PrivateAgreementDetails";
 
 const Page = () => {
@@ -22,6 +23,11 @@ const Page = () => {
   const [companyAgreement, setCompanyAgreement] = useState<boolean>(false);
   const [privateAgreementType, setPrivateAgreementType] = useState<string>("");
   const [companyAgreementType, setCompanyAgreementType] = useState<string>("");
+
+  // SIDE 3
+
+  // SIDE 4
+  const [domains, setDomains] = useState<string[]>([""]);
 
   // HANDLE SUBMIT TO USE API
   return (
@@ -42,6 +48,8 @@ const Page = () => {
           setCompanyAgreement,
           companyAgreementType,
           setCompanyAgreementType,
+          domains,
+          setDomains,
         }}
       >
         <main className="flex min-h-screen flex-col items-center">
@@ -49,7 +57,7 @@ const Page = () => {
           {stepper === 1 ? <BedriftInfo /> : null}
           {stepper === 2 ? <Avtale /> : null}
           {stepper === 3 ? <PrivateAgreementDetails /> : null}
-          {stepper === 4 ? "4" : null}
+          {stepper === 4 ? <BedriftsAvtale /> : null}
           {stepper === 5 ? <BedriftOppsummering /> : null}
           <div className="flex">
             {stepper > 1 ? (
