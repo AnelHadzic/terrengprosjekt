@@ -1,8 +1,8 @@
 import BedriftContext from "@/app/contexts/BedriftContext";
 import { useContext } from "react";
-import ListAgreementDetails from "./ListAgreementDetails";
+import ListAgreementDetails from "./ListComponent";
 
-const PrivateAgreementDetails = () => {
+const PrivatAvtale = () => {
     const { privateAgreementType } =
     useContext(BedriftContext);
 
@@ -13,4 +13,4 @@ const PrivateAgreementDetails = () => {
   );
 }
 
-export default PrivateAgreementDetails;
+export default PrivatAvtale;

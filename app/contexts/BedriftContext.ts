@@ -24,6 +24,9 @@ export const BedriftContext = createContext<{
   setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>;
 
   // Privat Avtale : 3
+  whitelist: string[]
+  setWhitelist: React.Dispatch<React.SetStateAction<string[]>>;
+
 
   // Bedrifts Avtale : 4
   domains: string[];
@@ -46,6 +49,8 @@ export const BedriftContext = createContext<{
   setCompanyAgreementType: () => {},
   domains: [""],
   setDomains: () => {},
+  whitelist: [""],
+  setWhitelist: () => {},
 });
 
 export default BedriftContext;
