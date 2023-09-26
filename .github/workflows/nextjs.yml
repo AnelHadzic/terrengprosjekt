@@ -12,7 +12,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      DBKEY: ${{ secrets.DBKEY }}
+      DBKEY: ${{ secrets.DB_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
