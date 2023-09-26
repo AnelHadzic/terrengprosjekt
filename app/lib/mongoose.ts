@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const DBKEY = process.env.DBKEY;
 
 if (!DBKEY) {
-  throw new Error('Please define the DB_KEY environment variable inside .env.local');
+  throw new Error('Please define the DBKEY environment variable inside .env');
 }
 
 const connectToDb = async (): Promise<mongoose.Connection> => {
