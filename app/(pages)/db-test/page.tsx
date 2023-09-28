@@ -26,13 +26,13 @@ export default function Home() {
         }
     };
 
-    const createTestUser = async () => {
+    const initiateDatabaseBootstrap = async () => {
         try {
-            const response = await fetch("/api/create-test-user");
+            const response = await fetch("/api/bootstrap-db");
             if (response.ok) {
-                setCreationResult("User creation was successful");
+                setCreationResult("db bootstrap was successful");
             } else {
-                setCreationResult("User creation failed");
+                setCreationResult("db boostrap failed.");
             }
         } catch (error) {
             console.error("Client-side request error:", error);
@@ -46,11 +46,11 @@ export default function Home() {
             {result && <p>{result}</p>}
             {result && (
                 <button
-                    onClick={createTestUser}
+                    onClick={initiateDatabaseBootstrap}
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
-                    Create default users - check db after
+                    Run database bootstrap (check db after)
                 </button>
             )}
             {creationResult && <p>{creationResult}</p>}
