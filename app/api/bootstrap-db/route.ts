@@ -12,7 +12,6 @@ export async function GET() {
             { data: "Database operation successful" },
             { status: 200 }
         );
-        
     } catch (error) {
         console.error("Database operation error:", error);
         return NextResponse.json(
