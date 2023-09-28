@@ -1,4 +1,4 @@
-import connectToDb from "@/app/lib/mongoose";
+import connectToDb from "@/app/lib/db/mongoose";
 import { NextResponse } from "next/server";
 
 export async function GET() {

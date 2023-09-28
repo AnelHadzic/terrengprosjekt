@@ -1,5 +1,5 @@
-import bootstrapDb from "@/app/lib/bootstrap-db";
-import connectToDb from "@/app/lib/mongoose";
+import bootstrapDb from "@/app/lib/db/bootstrap-db";
+import connectToDb from "@/app/lib/db/mongoose";
 import { NextResponse } from "next/server";
 
 export async function GET() {
