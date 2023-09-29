@@ -9,8 +9,8 @@ const createAdminUsers = async () => {
   const users = await User.find();
   if (users.length === 0) {
     const init = systemUsers();
-    init.forEach((x) => {
-      createUser(x);
+    init.forEach(async (x) => {
+      await createUser(x);
     });
   }
 };
