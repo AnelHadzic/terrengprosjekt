@@ -12,7 +12,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      DBKEY: ${{ secrets.DB_KEY }}
+      DBKEY: ${{ secrets.DBKEY }}
+      NEXTAUTH_SECRET: ${{secrets.NEXTAUTH_SECRET}}
+      EMAIL_SERVER_HOST: ${{secrets.EMAIL_SERVER_HOST}}
+      EMAIL_SERVER_PORT: ${{secrets.EMAIL_SERVER_PORT}}
+      EMAIL_SERVER_USER: ${{secrets.EMAIL_SERVER_USER}}
+      EMAIL_SERVER_PASSWORD: ${{secrets.EMAIL_SERVER_PASSWORD}}
+      EMAIL_FROM: ${{secrets.EMAIL_FROM}}
+      
     steps:
       - name: Checkout
         uses: actions/checkout@v2
