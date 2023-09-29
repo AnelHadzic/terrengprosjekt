@@ -1,4 +1,4 @@
-import { IAgreement } from './../interface/IAgreement';
+import { IAgreement } from '../interface/IAgreement';
 import mongoose, { Schema } from "mongoose";
 import { ICompany } from "../interface/ICompany";
 
@@ -20,7 +20,7 @@ const companySchema = new Schema({
     created: { type: Date, default: Date.now },
 });
 
-export const Company = mongoose.model<ICompany>("Company", companySchema);
+export const Company = mongoose.models.Company || mongoose.model<ICompany>("Company", companySchema);
 
 export async function findCompany(companyName: string | null) {
     const session = await Company.findOne({ companyName: { $eq: companyName } });
@@ -30,6 +30,15 @@ export async function findCompany(companyName: string | null) {
     }
 
     return null;
+}
+
+export async function findAllCompanies() {
+    try {
+        return await Company.find();
+    }
+    catch(error) {
+        return null;
+    }
 }
 
 export async function createCompany(company: ICompany) {
