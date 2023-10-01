@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { findCompany } from "@/app/lib/model/company";
 
-export async function GET(context: { params: any }) {
+export async function GET(request: Request, context: { params: any }) {
     await connectToDb();
     const companyId = context.params.id;
 
