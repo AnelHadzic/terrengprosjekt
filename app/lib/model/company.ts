@@ -22,8 +22,8 @@ const companySchema = new Schema({
 
 export const Company = mongoose.models.Company || mongoose.model<ICompany>("Company", companySchema);
 
-export async function findCompany(companyName: string | null) {
-    const session = await Company.findOne({ companyName: { $eq: companyName } });
+export async function findCompany(companyId: string | null) {
+    const session = await Company.findOne({ _id: { $eq: companyId } });
 
     if (session) {
         return session;
@@ -39,6 +39,18 @@ export async function findAllCompanies() {
     catch(error) {
         return null;
     }
+}
+
+export async function findCompaniesByName(companyName: string) {
+    const regex = RegExp(companyName, "i");
+    const session = await Company.find({ companyName: regex });
+    
+
+    if (session) {
+        return session;
+    }
+
+    return null;
 }
 
 export async function createCompany(company: ICompany) {
