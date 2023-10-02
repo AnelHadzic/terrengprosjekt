@@ -75,3 +75,18 @@ export async function editCompany(companyId: string, updatedData: Partial<ICompa
         throw new Error(`Error editing company: ${error}`);
     }
 }
+
+export async function deleteCompany(companyId: string) {
+    try {
+      const deletedCompany = await Company.findByIdAndRemove(companyId);
+  
+      if (!deletedCompany) {
+        throw new Error('Company not found');
+      }
+  
+      return deletedCompany;
+    } catch (error) {
+      throw new Error(`Error deleting company: ${error}`);
+    }
+  }
+
