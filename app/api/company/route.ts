@@ -1,4 +1,6 @@
+import { createCompany } from "./../../lib/model/company";
 import connectToDb from "@/app/lib/db/mongoose";
+import { ICompany } from "@/app/lib/interface/ICompany";
 import { findAllCompanies, findCompaniesByName } from "@/app/lib/model/company";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,20 +21,25 @@ export async function GET({ nextUrl }: NextRequest) {
     return NextResponse.json({ data: companies }, { status: 200 });
 }
 
-interface RequestBody {
-    email: string;
-    password: string;
-}
-
 export async function POST(request: Request) {
+    await connectToDb();
     const body = await request.json();
 
-    const requestBody: RequestBody = body as RequestBody; // Assert the body type
+    const company: ICompany = body as ICompany;
 
-    const bodystring = JSON.stringify(requestBody);
-    console.log(`Posted data stringified is: ${bodystring}`);
-    console.log(`Posted data regular is: ${body}`);
-    console.log(`email: ${requestBody.email}`)
+    try {
+        await createCompany(company);
+        return NextResponse.json({ data: company }, { status: 201 });
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to create company in db. Error: " + error },
+            { status: 400 }
+        );
+    }
 
-    return NextResponse.json({ data: requestBody }, { status: 200 });
+    // Useful for troubleshooting
+    // const bodystring = JSON.stringify(company);
+    // console.log(`Posted data stringified is: ${bodystring}`);
+    // console.log(`Posted data regular is: ${body}`);
+    // console.log(`Company name: ${company.companyName}`)
 }
