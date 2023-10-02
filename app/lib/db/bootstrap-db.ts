@@ -1,8 +1,8 @@
 
 import { systemUsers } from "./bootstrap-users";
 import { User, createUser } from "../model/user";
-import { Company, createCompany } from "../model/company";
 import { systemCompanies } from "./bootstrap-company";
+import { Company, createCompany } from "../model/company";
 
 const createAdminUsers = async () => {
   

@@ -19,7 +19,7 @@ const schema = new Schema({
     },
 });
 
-export const User = mongoose.model("User", schema);
+export const User = mongoose.models.User || mongoose.model("User", schema);                
 
 export async function findUser(email: string | null) {
     const session = await User.findOne({ email: { $eq: email } });
