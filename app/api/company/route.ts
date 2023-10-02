@@ -43,3 +43,5 @@ export async function POST(request: Request) {
     // console.log(`Posted data regular is: ${body}`);
     // console.log(`Company name: ${company.companyName}`)
 }
+
+
