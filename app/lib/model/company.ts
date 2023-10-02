@@ -57,3 +57,21 @@ export async function createCompany(company: ICompany) {
     const newEntry = new Company(company);
     await newEntry.save();
 }
+
+export async function editCompany(companyId: string, updatedData: Partial<ICompany>) {
+    try {
+        const existingCompany = await Company.findById(companyId);
+
+        if (!existingCompany) {
+            throw new Error("Company not found");
+        }
+
+        Object.assign(existingCompany, updatedData);
+
+        await existingCompany.save();
+
+        return existingCompany;
+    } catch (error) {
+        throw new Error(`Error editing company: ${error}`);
+    }
+}

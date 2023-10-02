@@ -1,7 +1,7 @@
 import connectToDb from "@/app/lib/db/mongoose";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import mongoose from "mongoose";
-import { findCompany } from "@/app/lib/model/company";
+import { editCompany, findCompany } from "@/app/lib/model/company";
 
 export async function GET(request: Request, context: { params: any }) {
     await connectToDb();
@@ -24,4 +24,21 @@ export async function GET(request: Request, context: { params: any }) {
     }
 
     return NextResponse.json({ data: company }, { status: 200 });
+}
+
+export async function PATCH(request: Request, context: { params: any }) {
+    await connectToDb();
+    const body = await request.json();
+
+    const companyId = context.params.id;
+
+    try {
+        await editCompany(companyId, body);
+        return NextResponse.json({ data: body }, { status: 201 });
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to edit company in db. Error: " + error },
+            { status: 400 }
+        );
+    }
 }
