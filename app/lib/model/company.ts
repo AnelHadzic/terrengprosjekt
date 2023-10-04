@@ -17,6 +17,7 @@ const companySchema = new Schema({
     contactEmail: String,
     privateAgreement: agreementSchema,
     companyAgreement: agreementSchema,
+    internalComment: String,
     created: { type: Date, default: Date.now },
 });
 
