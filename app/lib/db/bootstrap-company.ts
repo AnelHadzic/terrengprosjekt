@@ -14,6 +14,7 @@ export const systemCompanies = () => {
                 emails: ["mariusca@hiof.no", "anelh@hiof.no"],
                 parkingSpots: ["P1", "P3"],
             },
+            internalComment: "Studenter har private avtaler. Ansatte har bedriftsavtale."
         },
         {
             companyName: "Fredrikstad Kommune",
@@ -26,6 +27,7 @@ export const systemCompanies = () => {
                 emails: ["lars@fredrikstadkommune.no", "petter@fredrikstadkommune.no"],
                 parkingSpots: ["P1", "P3"],
             },
+            internalComment: "Ikke alle skal ha mulighet til å leie fra oss, dermed kun whitelist."
         },
     ] as ICompany[];
 

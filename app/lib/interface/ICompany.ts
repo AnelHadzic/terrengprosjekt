@@ -5,5 +5,6 @@ export interface ICompany {
     contactEmail?: string;
     privateAgreement?: IAgreement;
     companyAgreement?: IAgreement;
+    internalComment?: string;
     created?: Date;
 }
