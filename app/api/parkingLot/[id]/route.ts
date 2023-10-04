@@ -1,3 +1,1 @@
-export const GET = async (req: Request) => {
-  console.log("GET");
-};
+// Here will be added editing and deleting API's
