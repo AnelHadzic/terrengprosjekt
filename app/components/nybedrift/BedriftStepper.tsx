@@ -50,7 +50,7 @@ const BedriftStepper = () => {
           >
             2
           </span>
-          Velg <span className="hidden sm:inline-flex sm:ml-2">Avtale</span>
+          Bedrifts <span className="hidden sm:inline-flex sm:ml-2">Avtale</span>
           <svg
             className="w-3 h-3 ml-2 sm:ml-4"
             aria-hidden="true"
@@ -109,36 +109,6 @@ const BedriftStepper = () => {
             } rounded-full shrink-0 dark:border-gray-400`}
           >
             4
-          </span>
-          Bedrifts <span className="hidden sm:inline-flex sm:ml-2">Avtale</span>
-          <svg
-            className="w-3 h-3 ml-2 sm:ml-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 12 10"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m7 9 4-4-4-4M1 9l4-4-4-4"
-            />
-          </svg>
-        </li>
-        <li
-          className={`flex items-center ${
-            stepper === 5 ? "text-blue-600 font-bold" : "text-gray-500"
-          } cursor-pointer ...:`}
-          onClick={() => setStepper(5)}
-        >
-          <span
-            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border ${
-              stepper === 5 ? "border-blue-600" : "border-gray-500"
-            } rounded-full shrink-0 dark:border-gray-400`}
-          >
-            5
           </span>
           Bekreftelse
         </li>

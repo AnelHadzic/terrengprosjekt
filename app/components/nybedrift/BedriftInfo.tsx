@@ -16,7 +16,7 @@ const BedriftInfo = () => {
           htmlFor="default-input"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          Bedrift
+          Bedriftens navn
         </label>
         <input
           value={companyName}
@@ -31,7 +31,7 @@ const BedriftInfo = () => {
           htmlFor="default-input"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          Kontaktperson
+          Kontaktperson (e-post)
         </label>
         <input
           onChange={(e) => setContactPerson(e.target.value)}
