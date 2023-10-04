@@ -6,14 +6,13 @@ const parkingLotSchema = new Schema({
     type: String,
     unique: true,
   },
-  parkingCapacity: String,
+  parkingCapacity: Number,
   created: { type: Date, default: Date.now },
 });
 
-export const ParkingLot = mongoose.model<IParkingLot>(
-  "ParkingLot",
-  parkingLotSchema
-);
+export const ParkingLot =
+  mongoose.models.ParkingLot ||
+  mongoose.model<IParkingLot>("ParkingLot", parkingLotSchema);
 
 export async function findParkingLot(parkingName: string | null) {
   const session = await ParkingLot.findOne({

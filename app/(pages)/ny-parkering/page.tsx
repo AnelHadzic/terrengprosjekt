@@ -1,11 +1,41 @@
+"use client";
 import ParkeringsListe from "@/app/components/parkering/ParkeringsListe";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 const Page = () => {
+  const [parking, setParking] = useState<string>("");
+  const [capacity, setCapacity] = useState<number>();
+  const [error, setError] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    const payload = {
+      parkingName: parking,
+      parkingCapacity: capacity,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/parkingLot",
+        payload
+      );
+      console.log(response.data);
+
+      setStatus("Parkering er nå lagt inn");
+    } catch (error) {
+      setError("Noe gikk galt");
+    }
+  };
+
   return (
     <>
       <main className="flex min-h-screen flex-col items-center">
-        <form>
+        {status ?? status}
+        {error ?? error}
+        <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -18,6 +48,7 @@ const Page = () => {
               id="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="P1"
+              onChange={(e) => setParking(e.target.value)}
               required
             />
           </div>
@@ -32,6 +63,7 @@ const Page = () => {
               type="number"
               id="number"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(e) => setCapacity(parseInt(e.target.value))}
               required
             />
           </div>
@@ -42,7 +74,6 @@ const Page = () => {
             Add
           </button>
         </form>
-
         <ParkeringsListe />
       </main>
     </>
