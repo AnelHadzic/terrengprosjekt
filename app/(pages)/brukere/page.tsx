@@ -1,7 +1,12 @@
+import Sidebar from "@/app/components/shared/Sidebar";
 import React from "react";
 
 const Page = () => {
-  return <div>Brukere</div>;
+  return (
+    <>
+      <Sidebar />
+    </>
+  );
 };
 
 export default Page;

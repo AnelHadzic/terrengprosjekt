@@ -1,5 +1,6 @@
 "use client";
 import ParkeringsListe from "@/app/components/parkering/ParkeringsListe";
+import Sidebar from "@/app/components/shared/Sidebar";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -32,6 +33,7 @@ const Page = () => {
 
   return (
     <>
+      <Sidebar />
       <div className="mb-6"></div>
       <main className="flex min-h-screen flex-col items-center">
         {status ?? status}
@@ -76,8 +78,6 @@ const Page = () => {
             Add
           </button>
         </form>
-        <div className="mb-6"></div>
-        <ParkeringsListe />
       </main>
     </>
   );
