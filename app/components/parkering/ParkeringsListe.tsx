@@ -1,14 +1,27 @@
 "use client";
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useContext } from "react";
 import axios from "axios";
-
-type ParkingLot = {
-  parkingName: string;
-  parkingCapacity: number;
-};
+import ParkingContext from "@/app/contexts/ParkingContext";
 
 const ParkeringsListe = () => {
-  const [parkingList, setParkingList] = useState<ParkingLot[]>([]);
+  const {
+    parkingList,
+    setParkingList,
+    search,
+    setSearch,
+    setCurrentCoordinates,
+    setPickedParking,
+  } = useContext(ParkingContext);
+
+  // Dersom man velger noe fra tabellen, vil den hente disse dataene, så sette statene slik at vi kan bruke de i App.tsx og Main.tsx
+  const pickedParking = (e: {
+    currentTarget: { getAttribute: (arg0: string) => any };
+  }) => {
+    const parkeringPlass = e.currentTarget.getAttribute("data-center");
+    const [latitude, longitude] = parkeringPlass.split(",").map(parseFloat);
+    setPickedParking([latitude, longitude]);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,11 +34,27 @@ const ParkeringsListe = () => {
     };
 
     fetchData();
-  }, []);
+  });
+
+  // Filtrerer databasen basert på hva search staten er.
+  // Setter data i lowercase, og dataen inkluderer hva lowercase søkeordet er.
+  const filteredList = parkingList.filter((parkering) =>
+    search
+      ? parkering.parkingName.toLowerCase().includes(search.toLowerCase())
+      : true
+  );
 
   return (
     <>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <input
+        type="text"
+        placeholder="Søk parkeringsplass"
+        value={search || ""}
+        onChange={(e) => setSearch(e.target.value)}
+        className="border rounded-md p-2 w-400 focus:outline-none focus:border-blue-400 focus:ring focus:ring-blue-200"
+      />
+      <div className="mb-6"></div>
+      <div className="max-h-[300px] overflow-y-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -48,12 +77,20 @@ const ParkeringsListe = () => {
                   </a>
                 </div>
               </th>
+              <th scope="col" className="px-6 py-3">
+                Edit
+              </th>
             </tr>
           </thead>
           <tbody>
-            {parkingList.map((item, index) => (
+            {filteredList.map((item, index) => (
               <Fragment key={index}>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr
+                  className="border-b dark:border-neutral-500 hover:bg-gray-200 cursor-pointer"
+                  onClick={pickedParking}
+                  data-center={[item.parkingCoordinates[0]]}
+                  data-name={item.parkingName}
+                >
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -61,6 +98,9 @@ const ParkeringsListe = () => {
                     {item.parkingName}
                   </th>
                   <td className="px-6 py-4">{item.parkingCapacity}</td>
+                  <td className="px-6 py-4">
+                    <a href="#">Se</a>
+                  </td>
                 </tr>
               </Fragment>
             ))}
