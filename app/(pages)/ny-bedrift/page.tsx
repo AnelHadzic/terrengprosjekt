@@ -43,16 +43,16 @@ const Page = () => {
       contactEmail: contactPerson,
       privateAgreement: (privateAgreement
         ? {
-            domains: privateAgreementType === "Domain" ? domains : null,
-            emails: privateAgreementType === "Whitelist" ? privateWhitelist : null,
+            domains: privateAgreementType === "Domain" ? domains : undefined,
+            emails: privateAgreementType === "Whitelist" ? privateWhitelist : undefined,
           }
-        : {}),
+        : undefined),
       companyAgreement: (companyAgreement
         ? {
-            domains: companyAgreementType === "Domain" ? domains : null,
-            emails: companyAgreementType === "Whitelist" ? companyWhitelist : null,
+            domains: companyAgreementType === "Domain" ? domains : undefined,
+            emails: companyAgreementType === "Whitelist" ? companyWhitelist : undefined,
           }
-        : {}),
+        : undefined),
       internalComment: "string",
     };
     console.log(JSON.stringify(payload))
