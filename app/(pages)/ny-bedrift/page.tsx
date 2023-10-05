@@ -4,13 +4,13 @@ import BedriftOppsummering from "@/app/components/nybedrift/BedriftOppsummering"
 import BedriftStepper from "@/app/components/nybedrift/BedriftStepper";
 import React, { useState } from "react";
 import BedriftContext from "@/app/contexts/BedriftContext";
-import Avtale from "@/app/components/nybedrift/Avtale";
 import BedriftsAvtale from "@/app/components/nybedrift/BedriftsAvtale";
 import PrivatAvtale from "@/app/components/nybedrift/PrivatAvtale";
 import axios from "axios";
-import { stringify } from "querystring";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   // Stepper State
   const [stepper, setStepper] = useState<number>(1);
 
@@ -62,9 +62,8 @@ const Page = () => {
         "http://localhost:3000/api/company",
         payload
       );
-      console.log(response.data);
-
       setStatus("Bedrift er nå lagt inn");
+      router.push("/bedrifter")
     } catch (error) {
       setError("Noe gikk galt");
     }
