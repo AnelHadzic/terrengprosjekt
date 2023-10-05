@@ -52,7 +52,7 @@ const PrivatInfo = () => {
           Avtaletype: <span>{privateAgreementType}</span>
         </span>
         <div className="mb-6"></div>
-        {privateAgreementType === "List" && (
+        {privateAgreementType === "Whitelist" && (
           <>
             <span>
               E-poster: <span></span>
@@ -85,7 +85,7 @@ const BedriftInfo = () => {
           Avtaletype: <span>{companyAgreementType}</span>
         </span>
         <div className="mb-6"></div>
-        {companyAgreementType === "List" && (
+        {companyAgreementType === "Whitelist" && (
           <>
             <span>
               E-poster: <span></span>
