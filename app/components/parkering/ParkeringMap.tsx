@@ -13,12 +13,13 @@ import {
 import "leaflet/dist/leaflet.css";
 import icon from "@/app/assets/marker";
 import ParkingContext from "@/app/contexts/ParkingContext";
+import { LatLngExpression } from "leaflet";
 
 const orangeOptions = { color: "orange" };
 
 // MapContainer er ellers immutable, så vi kan ikke bare endre center= attributt når staten til currentCoordinates endres. Så derfor må jeg lage en annen Compontent som kjører og er mutable hver gang staten endres.
 // Dette skjer under her. Henter inn coordinates i form av prop. Coords er altså currentCoordinates staten. Bruker useMap hook fra leaflet for å kunne gjøre endringer. Dermed bruker jeg setView metoden for å legge inn nye koordinater og zoomer til den.
-function SetViewOnChange({ coords }: { coords: [number, number] | null }) {
+function SetViewOnChange({ coords }: { coords: LatLngExpression }) {
   const { pickedParking } = useContext(ParkingContext);
   const map = useMap();
 
@@ -59,13 +60,15 @@ const ParkeringMap = () => {
               click: () => handlePolygonClick(polygons.parkingName),
             }}
           >
-            <Polygon positions={polygons.parkingCoordinates} />
+            <Polygon
+              positions={polygons.parkingCoordinates as LatLngExpression[]}
+            />
             <Popup>
               {polygons.parkingName} - Plasser: {polygons.parkingCapacity}
             </Popup>
           </FeatureGroup>
         ))}
-        <SetViewOnChange coords={pickedParking} />
+        <SetViewOnChange coords={pickedParking as LatLngExpression} />
       </MapContainer>
       <div className="mb-3"></div>
       <button
