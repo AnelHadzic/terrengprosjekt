@@ -5,7 +5,14 @@ import { useRouter } from "next/navigation";
 import ParkeringsListe from "@/app/components/parkering/ParkeringsListe";
 import ParkingContext from "@/app/contexts/ParkingContext";
 import { ParkingLot } from "@/app/contexts/ParkingContext";
-import ParkeringMap from "@/app/components/parkering/ParkeringMap";
+import dynamic from "next/dynamic";
+
+const MapComp = dynamic(
+  () => import("@/app/components/parkering/ParkeringMap"),
+  {
+    ssr: false,
+  }
+);
 
 const Page = () => {
   const [parkingList, setParkingList] = useState<ParkingLot[]>([]);
@@ -47,7 +54,7 @@ const Page = () => {
               <Tabell />
             </div>
             <div>
-              <Map />
+              <MapComp />
             </div>
           </div>
           <div className="mt-6"></div>
