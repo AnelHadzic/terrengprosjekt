@@ -54,7 +54,7 @@ const Page = () => {
               <Tabell />
             </div>
             <div>
-              <MapComp />
+              <Map />
             </div>
           </div>
           <div className="mt-6"></div>
@@ -99,7 +99,7 @@ const Map = () => {
             <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
               Interaktiv kart
             </h5>
-            <ParkeringMap />
+            <MapComp />
           </div>
         </div>
       </div>
