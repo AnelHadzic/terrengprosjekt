@@ -25,6 +25,7 @@ export const Company = mongoose.models.Company || mongoose.model<ICompany>("Comp
 
 export async function findCompany(companyId: string | null) {
     const session = await Company.findOne({ _id: { $eq: companyId } });
+    console.log(session)
 
     if (session) {
         return session;
