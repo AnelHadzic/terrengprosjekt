@@ -7,6 +7,7 @@ const parkingLotSchema = new Schema({
     unique: true,
   },
   parkingCapacity: Number,
+  parkingCoordinates: [[Number]],
   created: { type: Date, default: Date.now },
 });
 
