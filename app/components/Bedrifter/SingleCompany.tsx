@@ -251,10 +251,13 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                               companyAgreement: {
                                 ...editedCompany.companyAgreement,
                                 domains:
-                                  editedCompany.companyAgreement.domains.map(
-                                    (domain, i) =>
-                                      index === i ? e.target.value : domain,
-                                  ),
+                                  editedCompany.companyAgreement &&
+                                  editedCompany.companyAgreement.domains
+                                    ? editedCompany.companyAgreement.domains.map(
+                                        (domain, i) =>
+                                          index === i ? e.target.value : domain,
+                                      )
+                                    : undefined,
                               },
                             })
                           }
@@ -280,10 +283,14 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                             ...editedCompany,
                             companyAgreement: {
                               ...editedCompany.companyAgreement,
-                              emails: editedCompany.companyAgreement.emails.map(
-                                (email, i) =>
-                                  index === i ? e.target.value : email,
-                              ),
+                              emails:
+                                editedCompany.companyAgreement &&
+                                editedCompany.companyAgreement.emails
+                                  ? editedCompany.companyAgreement.emails.map(
+                                      (email, i) =>
+                                        index === i ? e.target.value : email,
+                                    )
+                                  : undefined,
                             },
                           })
                         }
@@ -310,15 +317,23 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                                 companyAgreement: {
                                   ...editedCompany.companyAgreement,
                                   parkingSpots:
-                                    editedCompany.companyAgreement.parkingSpots.map(
-                                      (spot, i) =>
-                                        index === i
-                                          ? {
-                                              ...spot,
-                                              parkingName: e.target.value,
-                                            }
-                                          : spot,
-                                    ),
+                                    editedCompany.companyAgreement &&
+                                    editedCompany.companyAgreement.parkingSpots
+                                      ? (editedCompany.companyAgreement.parkingSpots.map(
+                                          (spot, i) =>
+                                            index === i
+                                              ? {
+                                                  ...spot,
+                                                  parkingName: e.target.value,
+                                                }
+                                              : spot,
+                                        ) as [
+                                          {
+                                            parkingName: String
+                                            parkingLimit: Number
+                                          },
+                                        ])
+                                      : undefined,
                                 },
                               })
                             }
@@ -333,15 +348,23 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                                 companyAgreement: {
                                   ...editedCompany.companyAgreement,
                                   parkingSpots:
-                                    editedCompany.companyAgreement.parkingSpots.map(
-                                      (spot, i) =>
-                                        index === i
-                                          ? {
-                                              ...spot,
-                                              parkingLimit: e.target.value,
-                                            }
-                                          : spot,
-                                    ),
+                                    editedCompany.companyAgreement &&
+                                    editedCompany.companyAgreement.parkingSpots
+                                      ? (editedCompany.companyAgreement.parkingSpots.map(
+                                          (spot, i) =>
+                                            index === i
+                                              ? {
+                                                  ...spot,
+                                                  parkingLimit: e.target.value,
+                                                }
+                                              : spot,
+                                        ) as [
+                                          {
+                                            parkingName: String
+                                            parkingLimit: Number
+                                          },
+                                        ])
+                                      : undefined,
                                 },
                               })
                             }
@@ -377,10 +400,13 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                               privateAgreement: {
                                 ...editedCompany.privateAgreement,
                                 domains:
-                                  editedCompany.privateAgreement.domains.map(
-                                    (domain, i) =>
-                                      index === i ? e.target.value : domain,
-                                  ),
+                                  editedCompany.privateAgreement &&
+                                  editedCompany.privateAgreement.domains
+                                    ? editedCompany.privateAgreement.domains.map(
+                                        (domain, i) =>
+                                          index === i ? e.target.value : domain,
+                                      )
+                                    : undefined,
                               },
                             })
                           }
@@ -405,10 +431,14 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                             ...editedCompany,
                             privateAgreement: {
                               ...editedCompany.privateAgreement,
-                              emails: editedCompany.privateAgreement.emails.map(
-                                (email, i) =>
-                                  index === i ? e.target.value : email,
-                              ),
+                              emails:
+                                editedCompany.privateAgreement &&
+                                editedCompany.privateAgreement.emails
+                                  ? editedCompany.privateAgreement.emails.map(
+                                      (email, i) =>
+                                        index === i ? e.target.value : email,
+                                    )
+                                  : undefined,
                             },
                           })
                         }
@@ -435,15 +465,23 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                                 privateAgreement: {
                                   ...editedCompany.privateAgreement,
                                   parkingSpots:
-                                    editedCompany.privateAgreement.parkingSpots.map(
-                                      (spot, i) =>
-                                        index === i
-                                          ? {
-                                              ...spot,
-                                              parkingName: e.target.value,
-                                            }
-                                          : spot,
-                                    ),
+                                    editedCompany.privateAgreement &&
+                                    editedCompany.privateAgreement.parkingSpots
+                                      ? (editedCompany.privateAgreement.parkingSpots.map(
+                                          (spot, i) =>
+                                            index === i
+                                              ? {
+                                                  ...spot,
+                                                  parkingName: e.target.value,
+                                                }
+                                              : spot,
+                                        ) as [
+                                          {
+                                            parkingName: String
+                                            parkingLimit: Number
+                                          },
+                                        ])
+                                      : undefined,
                                 },
                               })
                             }
@@ -458,15 +496,23 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                                 privateAgreement: {
                                   ...editedCompany.privateAgreement,
                                   parkingSpots:
-                                    editedCompany.privateAgreement.parkingSpots.map(
-                                      (spot, i) =>
-                                        index === i
-                                          ? {
-                                              ...spot,
-                                              parkingLimit: e.target.value,
-                                            }
-                                          : spot,
-                                    ),
+                                    editedCompany.privateAgreement &&
+                                    editedCompany.privateAgreement.parkingSpots
+                                      ? (editedCompany.privateAgreement.parkingSpots.map(
+                                          (spot, i) =>
+                                            index === i
+                                              ? {
+                                                  ...spot,
+                                                  parkingLimit: e.target.value,
+                                                }
+                                              : spot,
+                                        ) as [
+                                          {
+                                            parkingName: String
+                                            parkingLimit: Number
+                                          },
+                                        ])
+                                      : undefined,
                                 },
                               })
                             }
