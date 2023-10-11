@@ -34,7 +34,6 @@ const Page = () => {
   // Dette forsikrer at jeg ikke må loke rundt med nesting av props gjennom flere lag av komponenter, som kan være tidskrevende.
   return (
     <>
-      <Sidebar />
       <ParkingContext.Provider
         value={{
           parkingList,
