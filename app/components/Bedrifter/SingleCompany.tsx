@@ -20,13 +20,24 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
     fetchData();
   }, [companyId]);
 
+  const handleEditClick = (company: ICompany | undefined) => {};
+
   return (
     <div className="w-full p-6 mt-6 pb-12 flex">
       {/* Details */}
-      <div className="w-1/3 pl-14 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <h1 className="text-xl mb-6 font-bold leading-none text-gray-900 dark:text-white">
-          {company?.companyName}
-        </h1>
+      <div className="w-2/5 pl-14 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex mb-6 items-center justify-between">
+          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+            {company?.companyName}
+          </h1>
+          <button
+            onClick={() => handleEditClick(company)}
+            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
+          >
+            Endre
+          </button>
+        </div>
+
         <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
           Kontaktperson
         </h2>
@@ -37,7 +48,8 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
             <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
               Bedriftsavtale
             </h2>
-            {company.companyAgreement.domains ? (
+            {Array.isArray(company.companyAgreement.domains) &&
+            company.companyAgreement.domains.length > 0 ? (
               <div className="mb-6">
                 <p>Domener:</p>
                 {company.companyAgreement.domains.map((item, index) => (
@@ -46,7 +58,9 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                   </Fragment>
                 ))}
               </div>
-            ) : company.companyAgreement.emails ? (
+            ) : null}
+            {Array.isArray(company.companyAgreement.emails) &&
+            company.companyAgreement.emails.length > 0 ? (
               <div className="mb-6">
                 <p>e-poster:</p>
                 {company.companyAgreement.emails.map((item, index) => (
@@ -65,7 +79,8 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
             <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
               Privat avtale
             </h2>
-            {company.privateAgreement.domains ? (
+            {Array.isArray(company.privateAgreement.domains) &&
+            company.privateAgreement.domains.length > 0 ? (
               <div className="mb-6">
                 <p>Domener:</p>
                 {company.privateAgreement.domains.map((item, index) => (
@@ -74,7 +89,9 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                   </Fragment>
                 ))}
               </div>
-            ) : company.privateAgreement.emails ? (
+            ) : null}
+            {Array.isArray(company.privateAgreement.emails) &&
+            company.privateAgreement.emails.length > 0 ? (
               <div className="mb-6">
                 <p>e-poster:</p>
                 {company.privateAgreement.emails.map((item, index) => (
@@ -102,7 +119,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
       </div>
 
       {/* History */}
-      <div className="w-2/3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-3/5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

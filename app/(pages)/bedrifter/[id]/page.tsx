@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-10">
       <SingleCompany companyId={params.id} />
       <button
         type="button"
