@@ -5,8 +5,11 @@ import { ICompany } from "../interface/ICompany";
 const agreementSchema = new Schema<IAgreement>({
     domains: [String],
     emails: [String],
-    parkingSpots: [String],
-    numberOfParkingSpots: Number,
+    parkingSpots: 
+    [{
+        parkingName: String,
+        parkingLimit: Number
+    }]
 });
 
 const companySchema = new Schema({
