@@ -2,12 +2,10 @@ import React, { useContext } from "react";
 import BedriftContext from "@/app/contexts/BedriftContext";
 import DomeneComponent from "./DomeneComponent";
 import BedriftListComponent from "./BedriftListComponent";
+import ComapnyParking from "../parkering/ComapnyParking";
 
 const BedriftsAvtale = () => {
-  const {
-    companyAgreement,
-    companyAgreementType,
-  } = useContext(BedriftContext);
+  const { companyAgreement, companyAgreementType } = useContext(BedriftContext);
 
   return (
     <>
@@ -28,8 +26,8 @@ const BedriftsAvtale = () => {
               htmlFor="checkbox"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Skal privatavtalen bruke en whitelist av e-poster eller en liste med godkjente
-              domener?
+              Skal privatavtalen bruke en whitelist av e-poster eller en liste
+              med godkjente domener?
             </label>
             <AgreementType />
           </div>
@@ -49,6 +47,8 @@ const BedriftsAvtale = () => {
           <div className="mb-6"></div>
         </>
       ) : null}
+
+      <ComapnyParking />
     </>
   );
 };
@@ -60,10 +60,8 @@ const AgreementType = () => {
     setCompanyAgreementType(event.target.value);
   };
 
-  const {
-    companyAgreementType,
-    setCompanyAgreementType,
-  } = useContext(BedriftContext);
+  const { companyAgreementType, setCompanyAgreementType } =
+    useContext(BedriftContext);
   return (
     <>
       <div className="flex items-center mb-4">
@@ -111,10 +109,7 @@ const Avtale = () => {
     setCompanyAgreement(event.target.value === "True");
   };
 
-  const {
-    companyAgreement,
-    setCompanyAgreement,
-  } = useContext(BedriftContext);
+  const { companyAgreement, setCompanyAgreement } = useContext(BedriftContext);
   return (
     <>
       <div className="flex items-center mb-4">
