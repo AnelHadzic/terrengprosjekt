@@ -45,10 +45,9 @@ const BedriftsAvtale = () => {
 
           {/* Render parkeringsplasser og antallparkeringer komponentene. Ikke ferdig enda*/}
           <div className="mb-6"></div>
+          <ComapnyParking />
         </>
       ) : null}
-
-      <ComapnyParking />
     </>
   )
 }
