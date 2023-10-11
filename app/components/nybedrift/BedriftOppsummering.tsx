@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import BedriftContext from "@/app/contexts/BedriftContext";
+import React, { useContext } from "react"
+import BedriftContext from "@/app/contexts/BedriftContext"
 
 const BedriftOppsummering = () => {
-  const { companyAgreement, privateAgreement } = useContext(BedriftContext);
+  const { companyAgreement, privateAgreement } = useContext(BedriftContext)
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -14,11 +14,11 @@ const BedriftOppsummering = () => {
         {companyAgreement ? <BedriftInfo /> : null}
       </div>
     </>
-  );
-};
+  )
+}
 
 const GeneralInfo = () => {
-  const { companyName, contactPerson } = useContext(BedriftContext);
+  const { companyName, contactPerson } = useContext(BedriftContext)
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -37,11 +37,12 @@ const GeneralInfo = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 const PrivatInfo = () => {
-  const { privateAgreementType, privateWhitelist, domains } = useContext(BedriftContext);
+  const { privateAgreementType, privateWhitelist, domains, privateParkings } =
+    useContext(BedriftContext)
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -62,19 +63,33 @@ const PrivatInfo = () => {
         )}
         {privateAgreementType === "Domain" && (
           <>
-          <span>
-            Domener: <span></span>
-            {domains.map((domain) => domain + ", ")}
-          </span>
-        </>
+            <span>
+              Domener: <span></span>
+              {domains.map((domain) => domain + ", ")}
+            </span>
+          </>
+        )}
+        <div className="mb-6"></div>
+        {privateParkings && (
+          <>
+            <span>
+              Parkeringsplasser valgt: <span></span>
+              {privateParkings.map((item) => (
+                <p key={item.parkingName}>
+                  {item.parkingName}({item.parkingLimit})
+                </p>
+              ))}
+            </span>
+          </>
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
 const BedriftInfo = () => {
-  const { companyAgreementType, companyWhitelist, domains } = useContext(BedriftContext);
+  const { companyAgreementType, companyWhitelist, domains, companyParkings } =
+    useContext(BedriftContext)
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -101,8 +116,21 @@ const BedriftInfo = () => {
             </span>
           </>
         )}
+        <div className="mb-6"></div>
+        {companyParkings && (
+          <>
+            <span>
+              Parkeringsplasser valgt: <span></span>
+              {companyParkings.map((item) => (
+                <p key={item.parkingName}>
+                  {item.parkingName}({item.parkingLimit})
+                </p>
+              ))}
+            </span>
+          </>
+        )}
       </div>
     </>
-  );
-};
-export default BedriftOppsummering;
+  )
+}
+export default BedriftOppsummering
