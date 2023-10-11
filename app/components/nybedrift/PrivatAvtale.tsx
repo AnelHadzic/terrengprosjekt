@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-import BedriftContext from "@/app/contexts/BedriftContext";
-import DomeneComponent from "./DomeneComponent";
-import BedriftListComponent from "./BedriftListComponent";
-import PrivateListComponent from "./PrivateListComponent";
-import ComapnyParking from "../parkering/ComapnyParking";
+import React, { useContext } from "react"
+import BedriftContext from "@/app/contexts/BedriftContext"
+import DomeneComponent from "./DomeneComponent"
+import BedriftListComponent from "./BedriftListComponent"
+import PrivateListComponent from "./PrivateListComponent"
+import PrivateParking from "../parkering/PrivateParking"
 
 const PrivatAvtale = () => {
-  const { privateAgreement, privateAgreementType } = useContext(BedriftContext);
+  const { privateAgreement, privateAgreementType } = useContext(BedriftContext)
 
   return (
     <>
@@ -48,20 +48,20 @@ const PrivatAvtale = () => {
           <div className="mb-6"></div>
         </>
       ) : null}
-      <ComapnyParking />
+      <PrivateParking />
     </>
-  );
-};
+  )
+}
 
 const AgreementType = () => {
   const handleAgreementTypeRadioChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setPrivateAgreementType(event.target.value);
-  };
+    setPrivateAgreementType(event.target.value)
+  }
 
   const { privateAgreementType, setPrivateAgreementType } =
-    useContext(BedriftContext);
+    useContext(BedriftContext)
   return (
     <>
       <div className="flex items-center mb-4">
@@ -99,17 +99,17 @@ const AgreementType = () => {
         </label>
       </div>
     </>
-  );
-};
+  )
+}
 
 const Avtale = () => {
   const handleCompanyRadioChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setPrivateAgreement(event.target.value === "True");
-  };
+    setPrivateAgreement(event.target.value === "True")
+  }
 
-  const { privateAgreement, setPrivateAgreement } = useContext(BedriftContext);
+  const { privateAgreement, setPrivateAgreement } = useContext(BedriftContext)
   return (
     <>
       <div className="flex items-center mb-4">
@@ -147,7 +147,7 @@ const Avtale = () => {
         </label>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PrivatAvtale;
+export default PrivatAvtale
