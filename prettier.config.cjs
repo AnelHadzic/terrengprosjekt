@@ -1,12 +1,6 @@
 /** @type {import("prettier").Config} */
 module.exports = {
     printWidth: 80,
-    plugins: [
-      require.resolve("@ianvs/prettier-plugin-sort-imports"),
-      require.resolve("prettier-plugin-packagejson"),
-      require.resolve("prettier-plugin-jsdoc"),
-      require.resolve("prettier-plugin-tailwindcss"),
-    ],
     arrowParens: "always",
     endOfLine: "lf",
     semi: false,

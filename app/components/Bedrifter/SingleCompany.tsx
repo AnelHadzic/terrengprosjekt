@@ -1,33 +1,33 @@
-import axios from "axios";
-import { ICompany } from "@/app/lib/interface/ICompany";
-import { Fragment, useEffect, useState } from "react";
+import axios from "axios"
+import { ICompany } from "@/app/lib/interface/ICompany"
+import { Fragment, useEffect, useState } from "react"
 
 export default function SingleCompany({ companyId }: { companyId: string }) {
-  const [company, setCompany] = useState<ICompany>();
+  const [company, setCompany] = useState<ICompany>()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_URL = `http://localhost:3000/api/company/${companyId}`;
-        const response = await axios.get(API_URL);
-        console.log(response.data.data);
+        const API_URL = `http://localhost:3000/api/company/${companyId}`
+        const response = await axios.get(API_URL)
+        console.log(response.data.data)
 
-        setCompany(response.data.data);
+        setCompany(response.data.data)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
+    }
 
-    fetchData();
-  }, [companyId]);
+    fetchData()
+  }, [companyId])
 
-  const handleEditClick = (company: ICompany | undefined) => {};
+  const handleEditClick = (company: ICompany | undefined) => {}
 
   return (
     <div className="w-full p-6 mt-6 pb-12 flex">
       {/* Details */}
       <div className="w-2/5 pl-14 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex mb-6 items-center justify-between">
-          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+          <h1 className="text-3xl font-bold leading-none text-gray-900 dark:text-white">
             {company?.companyName}
           </h1>
           <button
@@ -38,20 +38,22 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
           </button>
         </div>
 
-        <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold leading-none text-gray-900 dark:text-white">
           Kontaktperson
         </h2>
         <p className="mb-6">{company?.contactEmail}</p>
 
         {company?.companyAgreement ? (
           <>
-            <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+            <h2 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
               Bedriftsavtale
             </h2>
             {Array.isArray(company.companyAgreement.domains) &&
             company.companyAgreement.domains.length > 0 ? (
               <div className="mb-6">
-                <p>Domener:</p>
+                <h3 className="text-l mb-2 font-bold leading-none text-gray-900 dark:text-white">
+                  Domener:
+                </h3>
                 {company.companyAgreement.domains.map((item, index) => (
                   <Fragment key={index}>
                     <p>{item}</p>
@@ -62,7 +64,9 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
             {Array.isArray(company.companyAgreement.emails) &&
             company.companyAgreement.emails.length > 0 ? (
               <div className="mb-6">
-                <p>e-poster:</p>
+                <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+                  e-poster:
+                </h3>
                 {company.companyAgreement.emails.map((item, index) => (
                   <Fragment key={index}>
                     <p>{item}</p>
@@ -71,18 +75,33 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
               </div>
             ) : null}
             <div className="mb-6"></div>
+            {Array.isArray(company.companyAgreement.parkingSpots) &&
+            company.companyAgreement.parkingSpots.length > 0 ? (
+              <div className="mb-6">
+                <p>Parkeringsplass: antall plasser</p>
+                {company.companyAgreement.parkingSpots.map((item, index) => (
+                  <Fragment key={index}>
+                    <p>
+                      {item.parkingName}: {String(item.parkingLimit)}
+                    </p>
+                  </Fragment>
+                ))}
+              </div>
+            ) : null}
           </>
         ) : null}
 
         {company?.privateAgreement ? (
           <>
-            <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+            <h2 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
               Privat avtale
             </h2>
             {Array.isArray(company.privateAgreement.domains) &&
             company.privateAgreement.domains.length > 0 ? (
               <div className="mb-6">
-                <p>Domener:</p>
+                <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+                  Domener:
+                </h3>
                 {company.privateAgreement.domains.map((item, index) => (
                   <Fragment key={index}>
                     <p>{item}</p>
@@ -93,10 +112,28 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
             {Array.isArray(company.privateAgreement.emails) &&
             company.privateAgreement.emails.length > 0 ? (
               <div className="mb-6">
-                <p>e-poster:</p>
+                <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+                  e-poster:
+                </h3>
                 {company.privateAgreement.emails.map((item, index) => (
                   <Fragment key={index}>
                     <p>{item}</p>
+                  </Fragment>
+                ))}
+              </div>
+            ) : null}
+            <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+              Parkeringsplasser:
+            </h3>
+            {Array.isArray(company.privateAgreement.parkingSpots) &&
+            company.privateAgreement.parkingSpots.length > 0 ? (
+              <div className="mb-6">
+                <p>Parkeringsplass: antall plasser</p>
+                {company.privateAgreement.parkingSpots.map((item, index) => (
+                  <Fragment key={index}>
+                    <p>
+                      {item.parkingName}: {String(item.parkingLimit)}
+                    </p>
                   </Fragment>
                 ))}
               </div>
@@ -172,5 +209,5 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
         </table>
       </div>
     </div>
-  );
+  )
 }

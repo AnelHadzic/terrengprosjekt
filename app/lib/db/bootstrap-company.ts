@@ -9,14 +9,23 @@ export const systemCompanies = () => {
         domains: ["hiof.no"],
         parkingSpots: [
           {
-            parkingName: "String",
-            parkingLimit: 123,
+            parkingName: "P4",
+            parkingLimit: 85,
+          },
+          {
+            parkingName: "P1",
+            parkingLimit: 60,
           },
         ],
       },
       companyAgreement: {
         emails: ["mariusca@hiof.no", "anelh@hiof.no"],
-        parkingSpots: ["P1", "P3"],
+        parkingSpots: [
+            {
+              parkingName: "P4",
+              parkingLimit: 20,
+            },
+          ],
       },
       internalComment:
         "Studenter har private avtaler. Ansatte har bedriftsavtale.",
@@ -28,8 +37,8 @@ export const systemCompanies = () => {
         emails: ["bob@fredrikstadkommune.no", "ole@fredrikstadkommune.no"],
         parkingSpots: [
           {
-            parkingName: "String",
-            parkingLimit: 123,
+            parkingName: "P5",
+            parkingLimit: 20,
           },
         ],
       },
@@ -37,13 +46,13 @@ export const systemCompanies = () => {
         emails: ["lars@fredrikstadkommune.no", "petter@fredrikstadkommune.no"],
         parkingSpots: [
           {
-            parkingName: "String",
-            parkingLimit: 123,
+            parkingName: "P4",
+            parkingLimit: 30,
           },
         ],
       },
       internalComment:
-        "Ikke alle skal ha mulighet til å leie fra oss, dermed kun whitelist.",
+        "Ikke alle skal ha mulighet til å leie, dermed kun whitelist.",
     },
   ] as ICompany[];
 
