@@ -52,7 +52,6 @@ const Page = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="mb-6"></div>
       <main className="flex min-h-screen flex-col items-center">
         {status && <div>{status}</div>}

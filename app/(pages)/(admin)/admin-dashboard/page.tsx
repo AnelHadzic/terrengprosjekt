@@ -8,7 +8,6 @@ import React from "react";
 const Page = () => {
   return (
     <>
-      <Sidebar />
       <main className="flex min-h-screen flex-col items-center">
         <div className="mb-6"></div>
         <div className="flex flex-row space-x-4 ...">
