@@ -1,39 +1,61 @@
-import React, { createContext } from "react";
+import React, { createContext } from "react"
 
 export const BedriftContext = createContext<{
   // Definerer typene til hver av disse
 
   // Hoved page stepper
-  stepper: number;
-  setStepper: React.Dispatch<React.SetStateAction<number>>;
+  stepper: number
+  setStepper: React.Dispatch<React.SetStateAction<number>>
 
   // Bedrifts Info : 1
-  companyName: string;
-  setCompanyName: React.Dispatch<React.SetStateAction<string>>;
-  contactPerson: string;
-  setContactPerson: React.Dispatch<React.SetStateAction<string>>;
+  companyName: string
+  setCompanyName: React.Dispatch<React.SetStateAction<string>>
+  contactPerson: string
+  setContactPerson: React.Dispatch<React.SetStateAction<string>>
 
   // Velg Avtale : 2
-  privateAgreement: boolean;
-  setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>;
-  privateAgreementType: string;
-  setPrivateAgreementType: React.Dispatch<React.SetStateAction<string>>;
-  companyAgreement: boolean;
-  setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>;
-  companyAgreementType: string;
-  setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>;
+  privateAgreement: boolean
+  setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>
+  privateAgreementType: string
+  setPrivateAgreementType: React.Dispatch<React.SetStateAction<string>>
+  companyAgreement: boolean
+  setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>
+  companyAgreementType: string
+  setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>
 
   // Privat Avtale : 3
   privateWhitelist: string[]
-  setPrivateWhitelist: React.Dispatch<React.SetStateAction<string[]>>;
-
+  setPrivateWhitelist: React.Dispatch<React.SetStateAction<string[]>>
+  privateParkings: {
+    parkingName: string
+    parkingLimit: number
+  }[]
+  setPrivateParkings: React.Dispatch<
+    React.SetStateAction<
+      {
+        parkingName: string
+        parkingLimit: number
+      }[]
+    >
+  >
 
   // Bedrifts Avtale : 4
-  domains: string[];
-  setDomains: React.Dispatch<React.SetStateAction<string[]>>;
+  domains: string[]
+  setDomains: React.Dispatch<React.SetStateAction<string[]>>
   companyWhitelist: string[]
-  setCompanyWhitelist: React.Dispatch<React.SetStateAction<string[]>>;
-
+  setCompanyWhitelist: React.Dispatch<React.SetStateAction<string[]>>
+  companyParkings: {
+    parkingName: string
+    parkingLimit: number
+  }[]
+  setCompanyParkings: React.Dispatch<
+    React.SetStateAction<
+      {
+        parkingName: string
+        parkingLimit: number
+      }[]
+    >
+  >
 }>({
   // Setter forventet default value
   stepper: 0,
@@ -56,6 +78,10 @@ export const BedriftContext = createContext<{
   setPrivateWhitelist: () => {},
   companyWhitelist: [""],
   setCompanyWhitelist: () => {},
-});
+  privateParkings: [],
+  setPrivateParkings: () => {},
+  companyParkings: [],
+  setCompanyParkings: () => {},
+})
 
-export default BedriftContext;
+export default BedriftContext

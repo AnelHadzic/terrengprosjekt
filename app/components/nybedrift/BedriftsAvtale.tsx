@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import BedriftContext from "@/app/contexts/BedriftContext";
-import DomeneComponent from "./DomeneComponent";
-import BedriftListComponent from "./BedriftListComponent";
-import ComapnyParking from "../parkering/ComapnyParking";
+import React, { useContext } from "react"
+import BedriftContext from "@/app/contexts/BedriftContext"
+import DomeneComponent from "./DomeneComponent"
+import BedriftListComponent from "./BedriftListComponent"
+import ComapnyParking from "../parkering/CompanyParking"
 
 const BedriftsAvtale = () => {
-  const { companyAgreement, companyAgreementType } = useContext(BedriftContext);
+  const { companyAgreement, companyAgreementType } = useContext(BedriftContext)
 
   return (
     <>
@@ -50,18 +50,18 @@ const BedriftsAvtale = () => {
 
       <ComapnyParking />
     </>
-  );
-};
+  )
+}
 
 const AgreementType = () => {
   const handleAgreementTypeRadioChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setCompanyAgreementType(event.target.value);
-  };
+    setCompanyAgreementType(event.target.value)
+  }
 
   const { companyAgreementType, setCompanyAgreementType } =
-    useContext(BedriftContext);
+    useContext(BedriftContext)
   return (
     <>
       <div className="flex items-center mb-4">
@@ -99,17 +99,17 @@ const AgreementType = () => {
         </label>
       </div>
     </>
-  );
-};
+  )
+}
 
 const Avtale = () => {
   const handleCompanyRadioChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setCompanyAgreement(event.target.value === "True");
-  };
+    setCompanyAgreement(event.target.value === "True")
+  }
 
-  const { companyAgreement, setCompanyAgreement } = useContext(BedriftContext);
+  const { companyAgreement, setCompanyAgreement } = useContext(BedriftContext)
   return (
     <>
       <div className="flex items-center mb-4">
@@ -147,7 +147,7 @@ const Avtale = () => {
         </label>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default BedriftsAvtale;
+export default BedriftsAvtale

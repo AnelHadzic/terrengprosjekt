@@ -1,60 +1,60 @@
-import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
+import BedriftContext from "@/app/contexts/BedriftContext"
+import axios from "axios"
+import React, { Fragment, useContext, useEffect, useState } from "react"
 
 export type ParkingLot = {
-  parkingName: string;
-  parkingCapacity: number;
-};
+  parkingName: string
+  parkingCapacity: number
+}
 
 const ComapnyParking = () => {
-  const [parkingList, setParkingList] = useState<ParkingLot[]>([]);
-  const [pickedParkings, setPickedParkings] = useState<
-    Array<{ parkingName: string; antallPlasser: number }>
-  >([]);
-  const [search, setSearch] = useState<string | null>("");
+  const { companyParkings, setCompanyParkings } = useContext(BedriftContext)
+
+  const [parkingList, setParkingList] = useState<ParkingLot[]>([])
+  const [search, setSearch] = useState<string | null>("")
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_URL = "http://localhost:3000/api/parkingLot";
-        const response = await axios.get(API_URL);
-        setParkingList(response.data.data);
+        const API_URL = "http://localhost:3000/api/parkingLot"
+        const response = await axios.get(API_URL)
+        setParkingList(response.data.data)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
+    }
 
-    fetchData();
-  }, [parkingList]);
+    fetchData()
+  }, [parkingList])
 
   // Filtrerer databasen basert på hva search staten er.
   // Setter data i lowercase, og dataen inkluderer hva lowercase søkeordet er.
   const filteredList = parkingList.filter((parkering) =>
     search
       ? parkering.parkingName.toLowerCase().includes(search.toLowerCase())
-      : true
-  );
+      : true,
+  )
 
   const handleCheckboxChange = (parking: ParkingLot, checked: boolean) => {
     if (checked) {
-      setPickedParkings((prev) => [
+      setCompanyParkings((prev) => [
         ...prev,
-        { parkingName: parking.parkingName, antallPlasser: 0 },
-      ]);
+        { parkingName: parking.parkingName, parkingLimit: 0 },
+      ])
     } else {
-      setPickedParkings((prev) =>
-        prev.filter((p) => p.parkingName !== parking.parkingName)
-      );
+      setCompanyParkings((prev) =>
+        prev.filter((p) => p.parkingName !== parking.parkingName),
+      )
     }
-  };
+  }
 
   const handleNumberChange = (parkingName: string, value: number) => {
-    setPickedParkings((prev) =>
+    setCompanyParkings((prev) =>
       prev.map((p) =>
-        p.parkingName === parkingName ? { ...p, antallPlasser: value } : p
-      )
-    );
-  };
+        p.parkingName === parkingName ? { ...p, parkingLimit: value } : p,
+      ),
+    )
+  }
 
   return (
     <>
@@ -105,9 +105,9 @@ const ComapnyParking = () => {
               </thead>
               <tbody>
                 {filteredList.map((item, index) => {
-                  const isChecked = pickedParkings.some(
-                    (p) => p.parkingName === item.parkingName
-                  );
+                  const isChecked = companyParkings.some(
+                    (p) => p.parkingName === item.parkingName,
+                  )
 
                   return (
                     <Fragment key={index}>
@@ -135,36 +135,36 @@ const ComapnyParking = () => {
                             placeholder="Antall"
                             disabled={!isChecked}
                             value={
-                              pickedParkings.find(
-                                (p) => p.parkingName === item.parkingName
-                              )?.antallPlasser || ""
+                              companyParkings.find(
+                                (p) => p.parkingName === item.parkingName,
+                              )?.parkingLimit || ""
                             }
                             onChange={(e) =>
                               handleNumberChange(
                                 item.parkingName,
-                                parseInt(e.target.value)
+                                parseInt(e.target.value),
                               )
                             }
                           />
                         </td>
                       </tr>
                     </Fragment>
-                  );
+                  )
                 })}
               </tbody>
             </table>
             <div className="mb-6"></div>
             <span>Valgte parkeringsplasser: </span>
-            {pickedParkings.map((item) => (
+            {companyParkings.map((item) => (
               <span key={item.parkingName}>
-                {item.parkingName}: {item.antallPlasser},{" "}
+                {item.parkingName}: {item.parkingLimit},{" "}
               </span>
             ))}
           </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ComapnyParking;
+export default ComapnyParking
