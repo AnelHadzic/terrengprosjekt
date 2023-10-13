@@ -17,7 +17,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
 
   useEffect(() => {
     fetchCompanyData()
-  })
+  }, [fetchCompanyData])
 
   return (
     <div className="w-full p-6 mt-6 pb-12 flex">

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { ICompany } from "@/app/lib/interface/ICompany"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 
 // Custom hook to manage company data and editing state
@@ -17,7 +17,7 @@ export function useCompany(companyId: string) {
     internalComment: "",
   })
 
-  const fetchCompanyData = async () => {
+  const fetchCompanyData = useCallback(async () => {
     try {
       const API_URL = `http://localhost:3000/api/company/${companyId}`
       const response = await axios.get(API_URL)
@@ -25,7 +25,7 @@ export function useCompany(companyId: string) {
     } catch (err) {
       console.log(err)
     }
-  }
+  }, [companyId])
 
   const handleEditClick = () => {
     if (company) {
@@ -46,6 +46,7 @@ export function useCompany(companyId: string) {
   }
 
   const handleDeleteClick = async () => {
+    console.log("test")
     try {
       const API_URL = `http://localhost:3000/api/company/${companyId}`
       await axios.delete(API_URL)

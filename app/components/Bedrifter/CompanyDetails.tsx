@@ -10,6 +10,14 @@ type CompanyDetailsProps = {
 export default function CompanyDetails(props: CompanyDetailsProps) {
   const { company, handleEditClick, handleDeleteClick } = props
 
+  function handleEdit() {
+    handleEditClick?.() 
+  }
+
+  function handleDelete() {
+    handleDeleteClick?.() 
+  }
+
   return (
     <>
       <div className="flex mb-6 items-center justify-between">
@@ -17,7 +25,7 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
           {company?.companyName}
         </h1>
         <button
-          onClick={() => handleEditClick}
+          onClick={() => handleEdit()}
           className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
         >
           Endre
@@ -141,7 +149,7 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
       <p className="mb-6">{company?.internalComment}</p>
 
       <button
-        onClick={() => handleDeleteClick}
+        onClick={() => handleDelete()}
         className="text-sm font-medium bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-red-300 hover:underline dark:bg-red-500 dark:hover:bg-red-600 dark:text-white"
       >
         Slett bedrift
