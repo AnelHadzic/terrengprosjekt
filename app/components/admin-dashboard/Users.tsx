@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import { Icon } from "@iconify/react";
+"use client"
+import React from "react"
+import { Icon } from "@iconify/react"
 
-const Users = () => {
+const Users = ({ stats }: { stats: number }) => {
   return (
     <>
       <a
@@ -16,12 +16,12 @@ const Users = () => {
           <Icon icon="mi:user" color="#009acd" width="100" />
 
           <p className="font-bold text-2xl text-gray-700 dark:text-gray-400 ml-7">
-            203
+            {stats}
           </p>
         </div>
       </a>
     </>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users

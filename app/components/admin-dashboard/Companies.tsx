@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import { Icon } from "@iconify/react";
+"use client"
+import React from "react"
+import { Icon } from "@iconify/react"
 
-const Companies = () => {
+const Companies = ({ stats }: { stats: number }) => {
   return (
     <>
       <a
@@ -15,12 +15,12 @@ const Companies = () => {
         <div className="flex items-center ...">
           <Icon icon="ic:baseline-business-center" color="orange" width="100" />
           <p className="font-bold text-2xl text-gray-700 dark:text-gray-400 ml-7">
-            10
+            {stats}
           </p>
         </div>
       </a>
     </>
-  );
-};
+  )
+}
 
-export default Companies;
+export default Companies

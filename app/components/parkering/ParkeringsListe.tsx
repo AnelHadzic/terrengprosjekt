@@ -54,6 +54,8 @@ const ParkeringsListe = () => {
         className="border rounded-md p-2 w-400 focus:outline-none focus:border-blue-400 focus:ring focus:ring-blue-200"
       />
       <div className="mb-6"></div>
+      <p>Parkeringsplasser funnet: {filteredList.length}</p>
+      <div className="mb-3"></div>
       <div className="max-h-[300px] overflow-y-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
