@@ -245,7 +245,7 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
                       <div key={index} className="mb-4 flex">
                         <input
                           type="text"
-                          value={String(item.parkingName)}
+                          value={item.parkingName}
                           onChange={(e) => {
                             const updatedParkingSpots = {
                               ...editedCompany.privateAgreement!.parkingSpots!,
@@ -265,7 +265,7 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
                         />
                         <input
                           type="text"
-                          value={String(item.parkingLimit)}
+                          value={item.parkingLimit}
                           onChange={(e) => {
                             const updatedParkingSpots = {
                               ...editedCompany.privateAgreement!.parkingSpots!,
