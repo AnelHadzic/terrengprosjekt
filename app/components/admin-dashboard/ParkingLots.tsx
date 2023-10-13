@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import { Icon } from "@iconify/react";
+"use client"
+import React from "react"
+import { Icon } from "@iconify/react"
 
-const ParkingLots = () => {
+const ParkingLots = ({ stats }: { stats: number }) => {
   return (
     <>
       <a
@@ -15,12 +15,12 @@ const ParkingLots = () => {
         <div className="flex items-center ...">
           <Icon icon="lucide:parking-circle" color="mediumpurple" width="100" />
           <p className="font-bold text-2xl text-gray-700 dark:text-gray-400 ml-7">
-            23
+            {stats}
           </p>
         </div>
       </a>
     </>
-  );
-};
+  )
+}
 
-export default ParkingLots;
+export default ParkingLots
