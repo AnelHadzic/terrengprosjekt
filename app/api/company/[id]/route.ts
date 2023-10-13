@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { deleteCompany, editCompany, findCompany } from "@/app/lib/model/company";
 
-export async function GET(request: Request, context: { params: any }) {
+export async function GET(request: Request, context: { params: {id: string} }) {
     await connectToDb();
     const companyId = context.params.id;
 
@@ -28,7 +28,7 @@ export async function GET(request: Request, context: { params: any }) {
     return NextResponse.json({ data: company }, { status: 200 });
 }
 
-export async function PATCH(request: Request, context: { params: any }) {
+export async function PATCH(request: Request, context: { params: {id: string} }) {
     await connectToDb();
     const body = await request.json();
 
@@ -54,7 +54,7 @@ export async function PATCH(request: Request, context: { params: any }) {
     }
 }
 
-export async function DELETE(request: Request, context: { params: any }) {
+export async function DELETE(request: Request, context: { params: {id: string} }) {
     await connectToDb();
 
     const companyId = context.params.id;
@@ -73,7 +73,7 @@ export async function DELETE(request: Request, context: { params: any }) {
         return NextResponse.json({ data: deletedCompany }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
-            { error: "Failed to edit company in db. Error: " + error },
+            { error: "Failed to delete company in db. Error: " + error },
             { status: 400 }
         );
     }
