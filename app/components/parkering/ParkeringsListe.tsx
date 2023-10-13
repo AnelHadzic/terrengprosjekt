@@ -1,7 +1,7 @@
-"use client";
-import React, { useEffect, Fragment, useContext } from "react";
-import axios from "axios";
-import ParkingContext from "@/app/contexts/ParkingContext";
+"use client"
+import React, { useEffect, Fragment, useContext } from "react"
+import axios from "axios"
+import ParkingContext from "@/app/contexts/ParkingContext"
 
 const ParkeringsListe = () => {
   const {
@@ -11,38 +11,38 @@ const ParkeringsListe = () => {
     setSearch,
     setCurrentCoordinates,
     setPickedParking,
-  } = useContext(ParkingContext);
+  } = useContext(ParkingContext)
 
   // Dersom man velger noe fra tabellen, vil den hente disse dataene, så sette statene slik at vi kan bruke de i App.tsx og Main.tsx
   const pickedParking = (e: {
-    currentTarget: { getAttribute: (arg0: string) => any };
+    currentTarget: { getAttribute: (arg0: string) => any }
   }) => {
-    const parkeringPlass = e.currentTarget.getAttribute("data-center");
-    const [latitude, longitude] = parkeringPlass.split(",").map(parseFloat);
-    setPickedParking([latitude, longitude]);
-  };
+    const parkeringPlass = e.currentTarget.getAttribute("data-center")
+    const [latitude, longitude] = parkeringPlass.split(",").map(parseFloat)
+    setPickedParking([latitude, longitude])
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_URL = "http://localhost:3000/api/parkingLot";
-        const response = await axios.get(API_URL);
-        setParkingList(response.data.data);
+        const API_URL = "http://localhost:3000/api/parkingLot"
+        const response = await axios.get(API_URL)
+        setParkingList(response.data.data)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
+    }
 
-    fetchData();
-  });
+    fetchData()
+  }, [])
 
   // Filtrerer databasen basert på hva search staten er.
   // Setter data i lowercase, og dataen inkluderer hva lowercase søkeordet er.
   const filteredList = parkingList.filter((parkering) =>
     search
       ? parkering.parkingName.toLowerCase().includes(search.toLowerCase())
-      : true
-  );
+      : true,
+  )
 
   return (
     <>
@@ -108,7 +108,7 @@ const ParkeringsListe = () => {
         </table>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ParkeringsListe;
+export default ParkeringsListe
