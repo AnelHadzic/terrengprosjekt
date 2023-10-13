@@ -1,75 +1,23 @@
-import axios from "axios"
-import { ICompany } from "@/app/lib/interface/ICompany"
 import { Fragment, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useCompany } from "@/app/hooks/useCompany"
 
 export default function SingleCompany({ companyId }: { companyId: string }) {
-  const [company, setCompany] = useState<ICompany>()
-  const [isEditing, setIsEditing] = useState(false)
-
-  const [editedCompany, setEditedCompany] = useState<ICompany>({
-    companyName: "",
-    contactEmail: "",
-    companyAgreement: {},
-    privateAgreement: {},
-    internalComment: "",
-  })
-  const router = useRouter()
+  const {
+    company,
+    isEditing,
+    editedCompany,
+    handleEditClick,
+    handleCancelEditClick,
+    fetchCompanyData,
+    handleDeleteClick,
+    handleSaveClick,
+    handleCompanyUpdate,
+  } = useCompany(companyId)
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const API_URL = `http://localhost:3000/api/company/${companyId}`
-        const response = await axios.get(API_URL)
-        console.log(response.data.data)
-
-        setCompany(response.data.data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    fetchData()
-  }, [companyId])
-
-  const handleEditClick = (company: ICompany | undefined) => {
-    if (company) {
-      setEditedCompany(company)
-    }
-    setIsEditing(!isEditing)
-  }
-
-  const handleDeleteClick = async () => {
-    try {
-      const API_URL = `http://localhost:3000/api/company/${companyId}`
-      await axios.delete(API_URL)
-      router.push("/bedrifter")
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const handleSaveClick = async () => {
-    try {
-      const API_URL = `http://localhost:3000/api/company/${companyId}`
-      await axios.patch(API_URL, editedCompany)
-      setIsEditing(false)
-      setCompany(editedCompany)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const handleCancelEditClick = () => {
-    // Reset editedCompany to the original company data
-    setEditedCompany({
-      companyName: "",
-      contactEmail: "",
-      companyAgreement: {},
-      privateAgreement: {},
-    })
-    setIsEditing(false)
-  }
+    fetchCompanyData()
+  })
 
   return (
     <div className="w-full p-6 mt-6 pb-12 flex">
@@ -82,7 +30,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 {company?.companyName}
               </h1>
               <button
-                onClick={() => handleEditClick(company)}
+                onClick={() => handleEditClick()}
                 className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
               >
                 Endre
@@ -228,10 +176,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 type="text"
                 value={editedCompany.companyName}
                 onChange={(e) =>
-                  setEditedCompany({
-                    ...editedCompany,
-                    companyName: e.target.value,
-                  })
+                  handleCompanyUpdate({ companyName: e.target.value })
                 }
                 className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
               />
@@ -242,10 +187,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 type="text"
                 value={editedCompany.contactEmail}
                 onChange={(e) =>
-                  setEditedCompany({
-                    ...editedCompany,
-                    contactEmail: e.target.value,
-                  })
+                  handleCompanyUpdate({ contactEmail: e.target.value })
                 }
                 className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
               />
@@ -261,61 +203,53 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                         Domener:
                       </h3>
                     )}
-                  {editedCompany.companyAgreement.domains &&
+                  {Array.isArray(editedCompany.companyAgreement.domains) &&
                     editedCompany.companyAgreement.domains.map(
                       (item, index) => (
                         <input
                           type="text"
                           value={item}
-                          onChange={(e) =>
-                            setEditedCompany({
-                              ...editedCompany,
+                          onChange={(e) => {
+                            const updatedDomains = [
+                              ...editedCompany.companyAgreement!.domains!,
+                            ]
+                            updatedDomains[index] = e.target.value
+                            handleCompanyUpdate({
                               companyAgreement: {
                                 ...editedCompany.companyAgreement,
-                                domains:
-                                  editedCompany.companyAgreement &&
-                                  editedCompany.companyAgreement.domains
-                                    ? editedCompany.companyAgreement.domains.map(
-                                        (domain, i) =>
-                                          index === i ? e.target.value : domain,
-                                      )
-                                    : undefined,
+                                domains: updatedDomains,
                               },
                             })
-                          }
+                          }}
                           key={index}
                           className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-4"
                         />
                       ),
                     )}
+
                   {editedCompany.companyAgreement.emails &&
                     editedCompany.companyAgreement.emails.length > 0 && (
                       <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
                         E-poster:
                       </h3>
                     )}
-                  {editedCompany.companyAgreement.emails &&
-                    editedCompany.companyAgreement.emails.length > 0 &&
+                  {Array.isArray(editedCompany.companyAgreement.emails) &&
                     editedCompany.companyAgreement.emails.map((item, index) => (
                       <input
                         type="text"
                         value={item}
-                        onChange={(e) =>
-                          setEditedCompany({
-                            ...editedCompany,
+                        onChange={(e) => {
+                          const updatedEmails = [
+                            ...editedCompany.companyAgreement!.emails!,
+                          ]
+                          updatedEmails[index] = e.target.value
+                          handleCompanyUpdate({
                             companyAgreement: {
                               ...editedCompany.companyAgreement,
-                              emails:
-                                editedCompany.companyAgreement &&
-                                editedCompany.companyAgreement.emails
-                                  ? editedCompany.companyAgreement.emails.map(
-                                      (email, i) =>
-                                        index === i ? e.target.value : email,
-                                    )
-                                  : undefined,
+                              emails: updatedEmails,
                             },
                           })
-                        }
+                        }}
                         key={index}
                         className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-4"
                       />
@@ -325,76 +259,61 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                       Parkeringsplasser:
                     </h3>
                   )}
-                  {editedCompany.companyAgreement.parkingSpots &&
-                    editedCompany.companyAgreement.parkingSpots.length > 0 &&
-                    editedCompany.companyAgreement.parkingSpots.map(
-                      (item, index) => (
-                        <div key={index} className="mb-4 flex">
-                          <input
-                            type="text"
-                            value={String(item.parkingName)}
-                            onChange={(e) =>
-                              setEditedCompany({
-                                ...editedCompany,
-                                companyAgreement: {
-                                  ...editedCompany.companyAgreement,
-                                  parkingSpots:
-                                    editedCompany.companyAgreement &&
-                                    editedCompany.companyAgreement.parkingSpots
-                                      ? (editedCompany.companyAgreement.parkingSpots.map(
-                                          (spot, i) =>
-                                            index === i
-                                              ? {
-                                                  ...spot,
-                                                  parkingName: e.target.value,
-                                                }
-                                              : spot,
-                                        ) as [
-                                          {
-                                            parkingName: String
-                                            parkingLimit: Number
-                                          },
-                                        ])
-                                      : undefined,
-                                },
-                              })
-                            }
-                            className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
-                          />
-                          <input
-                            type="text"
-                            value={String(item.parkingLimit)}
-                            onChange={(e) =>
-                              setEditedCompany({
-                                ...editedCompany,
-                                companyAgreement: {
-                                  ...editedCompany.companyAgreement,
-                                  parkingSpots:
-                                    editedCompany.companyAgreement &&
-                                    editedCompany.companyAgreement.parkingSpots
-                                      ? (editedCompany.companyAgreement.parkingSpots.map(
-                                          (spot, i) =>
-                                            index === i
-                                              ? {
-                                                  ...spot,
-                                                  parkingLimit: e.target.value,
-                                                }
-                                              : spot,
-                                        ) as [
-                                          {
-                                            parkingName: String
-                                            parkingLimit: Number
-                                          },
-                                        ])
-                                      : undefined,
-                                },
-                              })
-                            }
-                            className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
-                          />
-                        </div>
-                      ),
-                    )}
+                  {editedCompany.companyAgreement && (
+                    <>
+                      {Array.isArray(
+                        editedCompany.companyAgreement.parkingSpots,
+                      ) &&
+                        editedCompany.companyAgreement.parkingSpots.map(
+                          (item, index) => (
+                            <div key={index} className="mb-4 flex">
+                              <input
+                                type="text"
+                                value={String(item.parkingName)}
+                                onChange={(e) => {
+                                  const updatedParkingSpots = {
+                                    ...editedCompany.companyAgreement!
+                                      .parkingSpots!,
+                                  }
+                                  updatedParkingSpots[index] = {
+                                    ...item,
+                                    parkingName: e.target.value,
+                                  }
+                                  handleCompanyUpdate({
+                                    companyAgreement: {
+                                      ...editedCompany.companyAgreement,
+                                      parkingSpots: updatedParkingSpots,
+                                    },
+                                  })
+                                }}
+                                className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
+                              />
+                              <input
+                                type="text"
+                                value={String(item.parkingLimit)}
+                                onChange={(e) => {
+                                  const updatedParkingSpots = {
+                                    ...editedCompany.companyAgreement!
+                                      .parkingSpots!,
+                                  }
+                                  updatedParkingSpots[index] = {
+                                    ...item,
+                                    parkingLimit: Number(e.target.value),
+                                  }
+                                  handleCompanyUpdate({
+                                    companyAgreement: {
+                                      ...editedCompany.companyAgreement,
+                                      parkingSpots: updatedParkingSpots,
+                                    },
+                                  })
+                                }}
+                                className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
+                              />
+                            </div>
+                          ),
+                        )}
+                    </>
+                  )}
                 </>
               )}
 
@@ -415,27 +334,24 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                         <input
                           type="text"
                           value={item}
-                          onChange={(e) =>
-                            setEditedCompany({
-                              ...editedCompany,
+                          onChange={(e) => {
+                            const updatedDomains = [
+                              ...editedCompany.privateAgreement!.domains!,
+                            ]
+                            updatedDomains[index] = e.target.value
+                            handleCompanyUpdate({
                               privateAgreement: {
                                 ...editedCompany.privateAgreement,
-                                domains:
-                                  editedCompany.privateAgreement &&
-                                  editedCompany.privateAgreement.domains
-                                    ? editedCompany.privateAgreement.domains.map(
-                                        (domain, i) =>
-                                          index === i ? e.target.value : domain,
-                                      )
-                                    : undefined,
+                                domains: updatedDomains,
                               },
                             })
-                          }
+                          }}
                           key={index}
                           className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-4"
                         />
                       ),
                     )}
+
                   {editedCompany.privateAgreement.emails &&
                     editedCompany.privateAgreement.emails.length > 0 && (
                       <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
@@ -447,101 +363,85 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                       <input
                         type="text"
                         value={item}
-                        onChange={(e) =>
-                          setEditedCompany({
-                            ...editedCompany,
+                        onChange={(e) => {
+                          const updatedEmails = [
+                            ...editedCompany.privateAgreement!.emails!,
+                          ]
+                          updatedEmails[index] = e.target.value
+                          handleCompanyUpdate({
                             privateAgreement: {
                               ...editedCompany.privateAgreement,
-                              emails:
-                                editedCompany.privateAgreement &&
-                                editedCompany.privateAgreement.emails
-                                  ? editedCompany.privateAgreement.emails.map(
-                                      (email, i) =>
-                                        index === i ? e.target.value : email,
-                                    )
-                                  : undefined,
+                              emails: updatedEmails,
                             },
                           })
-                        }
+                        }}
                         key={index}
                         className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-4"
                       />
                     ))}
+
                   {editedCompany.privateAgreement.parkingSpots &&
                     editedCompany.privateAgreement.parkingSpots.length > 0 && (
                       <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
                         Parkeringsplasser:
                       </h3>
                     )}
-                  {editedCompany.privateAgreement.parkingSpots &&
-                    editedCompany.privateAgreement.parkingSpots.map(
-                      (item, index) => (
-                        <div key={index} className="mb-4 flex">
-                          <input
-                            type="text"
-                            value={String(item.parkingName)}
-                            onChange={(e) =>
-                              setEditedCompany({
-                                ...editedCompany,
-                                privateAgreement: {
-                                  ...editedCompany.privateAgreement,
-                                  parkingSpots:
-                                    editedCompany.privateAgreement &&
-                                    editedCompany.privateAgreement.parkingSpots
-                                      ? (editedCompany.privateAgreement.parkingSpots.map(
-                                          (spot, i) =>
-                                            index === i
-                                              ? {
-                                                  ...spot,
-                                                  parkingName: e.target.value,
-                                                }
-                                              : spot,
-                                        ) as [
-                                          {
-                                            parkingName: String
-                                            parkingLimit: Number
-                                          },
-                                        ])
-                                      : undefined,
-                                },
-                              })
-                            }
-                            className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
-                          />
-                          <input
-                            type="text"
-                            value={String(item.parkingLimit)}
-                            onChange={(e) =>
-                              setEditedCompany({
-                                ...editedCompany,
-                                privateAgreement: {
-                                  ...editedCompany.privateAgreement,
-                                  parkingSpots:
-                                    editedCompany.privateAgreement &&
-                                    editedCompany.privateAgreement.parkingSpots
-                                      ? (editedCompany.privateAgreement.parkingSpots.map(
-                                          (spot, i) =>
-                                            index === i
-                                              ? {
-                                                  ...spot,
-                                                  parkingLimit: e.target.value,
-                                                }
-                                              : spot,
-                                        ) as [
-                                          {
-                                            parkingName: String
-                                            parkingLimit: Number
-                                          },
-                                        ])
-                                      : undefined,
-                                },
-                              })
-                            }
-                            className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
-                          />
-                        </div>
-                      ),
-                    )}
+                  {editedCompany.privateAgreement && (
+                    <>
+                      {Array.isArray(
+                        editedCompany.privateAgreement.parkingSpots,
+                      ) &&
+                        editedCompany.privateAgreement.parkingSpots.map(
+                          (item, index) => (
+                            <div key={index} className="mb-4 flex">
+                              <input
+                                type="text"
+                                value={String(item.parkingName)}
+                                onChange={(e) => {
+                                  const updatedParkingSpots = {
+                                    ...editedCompany.privateAgreement!
+                                      .parkingSpots!,
+                                  }
+                                  updatedParkingSpots[index] = {
+                                    ...item,
+                                    parkingName: e.target.value,
+                                  }
+                                  handleCompanyUpdate({
+                                    privateAgreement: {
+                                      ...editedCompany.privateAgreement,
+                                      parkingSpots: updatedParkingSpots,
+                                    },
+                                  })
+                                }}
+                                className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
+                              />
+                              <input
+                                type="text"
+                                value={String(item.parkingLimit)}
+                                onChange={(e) => {
+                                  const updatedParkingSpots = {
+                                    ...editedCompany.privateAgreement!
+                                      .parkingSpots!,
+                                  }
+                                  updatedParkingSpots[index] = {
+                                    ...item,
+                                    parkingLimit: Number(e.target.value),
+                                  }
+                                  handleCompanyUpdate({
+                                    privateAgreement: {
+                                      ...editedCompany.privateAgreement,
+                                      parkingSpots: updatedParkingSpots,
+                                    },
+                                  })
+                                }}
+                                className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
+                              />
+                            </div>
+                          ),
+                        )}
+                    </>
+                  )}
+
                   <h2 className="text-xl mb-2 mt-4 font-bold leading-none text-gray-900 dark:text-white">
                     Intern kommentar:
                   </h2>
@@ -549,10 +449,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                     value={editedCompany.internalComment}
                     rows={4}
                     onChange={(e) =>
-                      setEditedCompany({
-                        ...editedCompany,
-                        internalComment: e.target.value,
-                      })
+                      handleCompanyUpdate({ internalComment: e.target.value })
                     }
                     className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
                   />
