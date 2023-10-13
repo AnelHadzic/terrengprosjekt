@@ -11,6 +11,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
     contactEmail: "",
     companyAgreement: {},
     privateAgreement: {},
+    internalComment: "",
   })
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
         {!isEditing ? (
           <>
             <div className="flex mb-6 items-center justify-between">
-              <h1 className="text-3xl font-bold leading-none text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold leading-none text-gray-900 dark:text-white">
                 {company?.companyName}
               </h1>
               <button
@@ -76,13 +77,13 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 Endre
               </button>
             </div>
-            <h2 className="text-2xl font-bold leading-none text-gray-900 dark:text-white">
+            <h2 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
               Kontaktperson
             </h2>
             <p className="mb-6">{company?.contactEmail}</p>
             {company?.companyAgreement ? (
               <>
-                <h2 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
+                <h2 className="text-xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
                   Bedriftsavtale
                 </h2>
                 {Array.isArray(company.companyAgreement.domains) &&
@@ -131,7 +132,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
             ) : null}
             {company?.privateAgreement ? (
               <>
-                <h2 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
+                <h2 className="text-xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
                   Privat avtale
                 </h2>
                 {Array.isArray(company.privateAgreement.domains) &&
@@ -191,14 +192,18 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 Se alle
               </a>
             </div>
-            <p className="mb-6">85</p>{" "}
+            <p className="mb-6">85</p>
+            <h2 className="text-xl mb-1 font-bold leading-none text-gray-900 dark:text-white">
+              Intern kommentar
+            </h2>
+            <p className="mb-6">{company?.internalComment}</p>
           </>
         ) : (
           // isEdit mode
           <>
             <form>
               {/* Input fields for editing */}
-              <h2 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
+              <h2 className="text-xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
                 Bedriftens navn:
               </h2>
               <input
@@ -212,7 +217,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 }
                 className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
               />
-              <h2 className="text-2xl mb-2 mt-4 font-bold leading-none text-gray-900 dark:text-white">
+              <h2 className="text-xl mb-2 mt-4 font-bold leading-none text-gray-900 dark:text-white">
                 Kontaktperson:
               </h2>
               <input
@@ -227,10 +232,9 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
               />
 
-              {/* Input fields for editing companyAgreement */}
               {editedCompany.companyAgreement && (
                 <>
-                  <h2 className="text-2xl mb-2 mt-4 font-bold leading-none text-gray-900 dark:text-white">
+                  <h2 className="text-xl mb-2 mt-4 font-bold leading-none text-gray-900 dark:text-white">
                     Bedriftsavtale
                   </h2>
                   {editedCompany.companyAgreement.domains &&
@@ -376,10 +380,9 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                 </>
               )}
 
-              {/* Input fields for editing privateAgreement */}
               {editedCompany.privateAgreement && (
                 <>
-                  <h2 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
+                  <h2 className="text-xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
                     Privat avtale
                   </h2>
                   {editedCompany.privateAgreement.domains &&
@@ -521,6 +524,20 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
                         </div>
                       ),
                     )}
+                  <h2 className="text-xl mb-2 mt-4 font-bold leading-none text-gray-900 dark:text-white">
+                    Intern kommentar:
+                  </h2>
+                  <textarea
+                    value={editedCompany.internalComment}
+                    rows={4}
+                    onChange={(e) =>
+                      setEditedCompany({
+                        ...editedCompany,
+                        internalComment: e.target.value,
+                      })
+                    }
+                    className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
+                  />
                 </>
               )}
 
