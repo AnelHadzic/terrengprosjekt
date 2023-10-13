@@ -3,7 +3,7 @@ export interface IAgreement {
     emails?: string[];
     parkingSpots?: 
     [{
-        parkingName: String,
-        parkingLimit: Number
+        parkingName: string,
+        parkingLimit: number
     }]
 }

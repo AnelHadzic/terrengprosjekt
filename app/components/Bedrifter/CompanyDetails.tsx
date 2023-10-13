@@ -2,7 +2,7 @@ import { ICompany } from "@/app/lib/interface/ICompany"
 import { Fragment } from "react"
 
 type CompanyDetailsProps = {
-  company: ICompany | undefined // Define the type of 'company' based on your data structure
+  company: ICompany | undefined
   handleEditClick?: () => void
   handleDeleteClick?: () => void
 }
