@@ -1,6 +1,7 @@
 import axios from "axios"
 import { ICompany } from "@/app/lib/interface/ICompany"
 import { Fragment, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function SingleCompany({ companyId }: { companyId: string }) {
   const [company, setCompany] = useState<ICompany>()
@@ -13,6 +14,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
     privateAgreement: {},
     internalComment: "",
   })
+  const router = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,9 +39,18 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
     setIsEditing(!isEditing)
   }
 
+  const handleDeleteClick = async () => {
+    try {
+      const API_URL = `http://localhost:3000/api/company/${companyId}`
+      await axios.delete(API_URL)
+      router.push("/bedrifter")
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const handleSaveClick = async () => {
     try {
-      // Send a PUT request with editedCompany to update the data
       const API_URL = `http://localhost:3000/api/company/${companyId}`
       await axios.patch(API_URL, editedCompany)
       setIsEditing(false)
@@ -197,6 +208,13 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
               Intern kommentar
             </h2>
             <p className="mb-6">{company?.internalComment}</p>
+
+            <button
+              onClick={() => handleDeleteClick()}
+              className="text-sm font-medium bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-red-300 hover:underline dark:bg-red-500 dark:hover:bg-red-600 dark:text-white"
+            >
+              Slett bedrift
+            </button>
           </>
         ) : (
           // isEdit mode
@@ -548,6 +566,7 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
               >
                 Lagre
               </button>
+
               <button
                 type="button"
                 onClick={handleCancelEditClick}
