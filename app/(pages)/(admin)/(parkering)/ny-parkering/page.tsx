@@ -1,54 +1,54 @@
-"use client";
-import Sidebar from "@/app/components/shared/Sidebar";
-import axios from "axios";
-import React, { useState } from "react";
+"use client"
+import Sidebar from "@/app/components/shared/Sidebar"
+import axios from "axios"
+import React, { useState } from "react"
 
 const Page = () => {
-  const [parking, setParking] = useState<string>("");
-  const [capacity, setCapacity] = useState<number>();
+  const [parking, setParking] = useState<string>("")
+  const [capacity, setCapacity] = useState<number>()
 
   // POLYGONER
-  const [polygons, setPolygons] = useState<string[]>(["", "", "", ""]);
+  const [polygons, setPolygons] = useState<string[]>(["", "", "", ""])
 
   // ERROR OG STATUS
-  const [error, setError] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
+  const [error, setError] = useState<string>("")
+  const [status, setStatus] = useState<string>("")
 
   const handlePolygonChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
-    const newPolygons = [...polygons];
-    newPolygons[index] = e.target.value;
-    setPolygons(newPolygons);
-  };
+    const newPolygons = [...polygons]
+    newPolygons[index] = e.target.value
+    setPolygons(newPolygons)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const parsedPolygons = polygons.map((coordinate) => {
-      const [lat, lon] = coordinate.split(",").map(Number);
-      return [lat, lon];
-    });
+      const [lat, lon] = coordinate.split(",").map(Number)
+      return [lat, lon]
+    })
 
     const payload = {
       parkingName: parking,
       parkingCapacity: capacity,
       parkingCoordinates: parsedPolygons,
-    };
+    }
 
     try {
       const response = await axios.post(
         "http://localhost:3000/api/parkingLot",
-        payload
-      );
-      console.log(response.data);
+        payload,
+      )
+      console.log(response.data)
 
-      setStatus("Parkering er nå lagt inn");
+      setStatus("Parkering er nå lagt inn")
     } catch (error) {
-      setError("Noe gikk galt");
+      setError("Noe gikk galt")
     }
-  };
+  }
 
   return (
     <>
@@ -95,7 +95,7 @@ const Page = () => {
             >
               Koordinater polygon 1
             </label>
-            <p>Eksempel: 59.21241695508506, 10.920665509799544</p>
+            <p>Eksempel: 59.21382377058328, 10.923819589171227</p>
             <input
               type="text"
               id="koordinater1"
@@ -110,7 +110,7 @@ const Page = () => {
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Koordinater polygon 2
-              <p>Eksempel: 59.211818145031586, 10.920678227484611</p>
+              <p>Eksempel: 59.21377027228968, 10.925277369770821</p>
             </label>
             <input
               type="text"
@@ -126,7 +126,7 @@ const Page = () => {
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Koordinater polygon 3
-              <p>Eksempel: 59.211852077068144, 10.922339157147697</p>
+              <p>Eksempel: 59.2136275382605, 10.925310897383508</p>
             </label>
             <input
               type="text"
@@ -142,7 +142,7 @@ const Page = () => {
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Koordinater polygon 4
-              <p>Eksempel: 59.213619210517265, 10.924095429685895</p>
+              <p>Eksempel: 59.21369210542608, 10.923799472603616</p>
             </label>
             <input
               type="text"
@@ -162,7 +162,7 @@ const Page = () => {
         </form>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
