@@ -1,8 +1,5 @@
 "use client"
 import Activities from "@/app/components/admin-dashboard/Activities"
-import Companies from "@/app/components/admin-dashboard/Companies"
-import ParkingLots from "@/app/components/admin-dashboard/ParkingLots"
-import Users from "@/app/components/admin-dashboard/Users"
 import React, { useState, useEffect } from "react"
 import { getStatistics } from "./getStatistics"
 import { Icon } from "@iconify/react"
