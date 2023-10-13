@@ -5,5 +5,8 @@ export interface IUser{
     phone?: string,
     created?: Date,
     token?: string,
-    role?: Number
+    role?: number,
+    companyId?: string,
+    carRegNumbers?: string[],
+    primaryCarRegNumber?: string
   }

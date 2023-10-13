@@ -55,9 +55,9 @@ export default function UserList() {
                 >
                   {item.email}
                 </th>
-                <td className="px-6 py-4">Temp bedriftnavn</td>
+                <td className="px-6 py-4">{item.companyId === "0" ? "Standard Bedrift" : "GET COMPANY NAME"}</td>
                 <td className="px-6 py-4">{item.phone}</td>
-                <td className="px-6 py-4">Temp bilregnr</td>
+                <td className="px-6 py-4">{item.primaryCarRegNumber}</td>
                 <td className="px-6 py-4">Temp aktiv status</td>
               </tr>
             </Fragment>

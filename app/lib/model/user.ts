@@ -17,6 +17,9 @@ const schema = new Schema({
     enum: Roles,
     default: Role.Unknown,
   },
+  companyId: String,
+  carRegNumbers: [String],
+  primaryCarRegNumber: String
 })
 
 export const User = mongoose.models.User || mongoose.model("User", schema)
