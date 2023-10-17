@@ -30,7 +30,6 @@ export const Company =
 
 export async function findCompany(companyId: string | null) {
   const session = await Company.findOne({ _id: { $eq: companyId } })
-  console.log(session)
 
   if (session) {
     return session
