@@ -45,9 +45,7 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
         <input
           type="text"
           value={editedCompany.contactEmail}
-          onChange={(e) =>
-            handleUpdate({ contactEmail: e.target.value })
-          }
+          onChange={(e) => handleUpdate({ contactEmail: e.target.value })}
           className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
         />
 
@@ -118,21 +116,31 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
             )}
             {editedCompany.companyAgreement && (
               <>
+                {console.log(
+                  `${editedCompany.companyAgreement?.parkingSpots?.length}`,
+                )}
                 {Array.isArray(editedCompany.companyAgreement.parkingSpots) &&
                   editedCompany.companyAgreement.parkingSpots.map(
                     (item, index) => (
-                      <div key={index} className="mb-4 flex">
+                      <div key={item.parkingName} className="mb-4 flex">
                         <input
                           type="text"
                           value={item.parkingName}
                           onChange={(e) => {
-                            const updatedParkingSpots = {
-                              ...editedCompany.companyAgreement!.parkingSpots!,
-                            }
-                            updatedParkingSpots[index] = {
-                              ...item,
-                              parkingName: e.target.value,
-                            }
+                            console.log(e.target.value)
+                            const updatedParkingSpots =
+                              editedCompany.companyAgreement!.parkingSpots!.map(
+                                (spot, spotIndex) => {
+                                  if (spotIndex === index) {
+                                    return {
+                                      ...spot,
+                                      parkingName: e.target.value,
+                                    }
+                                  }
+                                  return spot
+                                },
+                              )
+
                             handleUpdate({
                               companyAgreement: {
                                 ...editedCompany.companyAgreement,
@@ -144,15 +152,24 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
                         />
                         <input
                           type="text"
-                          value={item.parkingLimit}
+                          value={item.parkingLimit.toString()}
                           onChange={(e) => {
-                            const updatedParkingSpots = {
-                              ...editedCompany.companyAgreement!.parkingSpots!,
-                            }
-                            updatedParkingSpots[index] = {
-                              ...item,
-                              parkingLimit: Number(e.target.value),
-                            }
+                            const updatedParkingSpots =
+                              editedCompany.companyAgreement!.parkingSpots!.map(
+                                (spot, spotIndex) => {
+                                  if (spotIndex === index) {
+                                    return {
+                                      ...spot,
+                                      parkingLimit: parseInt(
+                                        e.target.value,
+                                        10,
+                                      ),
+                                    }
+                                  }
+                                  return spot
+                                },
+                              )
+
                             handleUpdate({
                               companyAgreement: {
                                 ...editedCompany.companyAgreement,
@@ -247,13 +264,19 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
                           type="text"
                           value={item.parkingName}
                           onChange={(e) => {
-                            const updatedParkingSpots = {
-                              ...editedCompany.privateAgreement!.parkingSpots!,
-                            }
-                            updatedParkingSpots[index] = {
-                              ...item,
-                              parkingName: e.target.value,
-                            }
+                            const updatedParkingSpots =
+                              editedCompany.privateAgreement!.parkingSpots!.map(
+                                (spot, spotIndex) => {
+                                  if (spotIndex === index) {
+                                    return {
+                                      ...spot,
+                                      parkingName: e.target.value,
+                                    }
+                                  }
+                                  return spot
+                                },
+                              )
+
                             handleUpdate({
                               privateAgreement: {
                                 ...editedCompany.privateAgreement,
@@ -264,16 +287,22 @@ export default function EditCompanyDetails(props: CompanyDetailsProps) {
                           className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none mb-2"
                         />
                         <input
-                          type="text"
-                          value={item.parkingLimit}
+                          type="text" // Use a text input for parkingLimit
+                          value={item.parkingLimit.toString()} // Convert to string if it's a number
                           onChange={(e) => {
-                            const updatedParkingSpots = {
-                              ...editedCompany.privateAgreement!.parkingSpots!,
-                            }
-                            updatedParkingSpots[index] = {
-                              ...item,
-                              parkingLimit: Number(e.target.value),
-                            }
+                            const updatedParkingSpots =
+                              editedCompany.privateAgreement!.parkingSpots!.map(
+                                (spot, spotIndex) => {
+                                  if (spotIndex === index) {
+                                    return {
+                                      ...spot,
+                                      parkingLimit: Number(e.target.value),
+                                    }
+                                  }
+                                  return spot
+                                },
+                              )
+
                             handleUpdate({
                               privateAgreement: {
                                 ...editedCompany.privateAgreement,
