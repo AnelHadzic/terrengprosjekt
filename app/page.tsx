@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { useSession, signOut } from "next-auth/react";
-import { Icon } from "@iconify/react";
+import { useSession, signOut } from "next-auth/react"
+import { Icon } from "@iconify/react"
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession()
   return (
     <>
-      <div className="min-h-screen flex flex-col ... items-center justify-center">
+      <div className="min-h-screen bg-white flex flex-col ... items-center justify-center">
         {status === "loading" && (
           <>
             <div role="status">
@@ -35,11 +35,36 @@ export default function Home() {
           <>
             <p>Du er logget inn som {session?.user?.email}</p>
             <button onClick={() => signOut()}>Logg ut</button>
-            <Icon icon="el:car" color="#4ecb71" width="300px" />
-            <p className="font-bold">DIN PARKERING ER AKTIV</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="200"
+              height="200"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="#4ecb71"
+                d="m5 11l1.5-4.5h11L19 11m-1.5 5a1.5 1.5 0 0 1-1.5-1.5a1.5 1.5 0 0 1 1.5-1.5a1.5 1.5 0 0 1 1.5 1.5a1.5 1.5 0 0 1-1.5 1.5m-11 0A1.5 1.5 0 0 1 5 14.5A1.5 1.5 0 0 1 6.5 13A1.5 1.5 0 0 1 8 14.5A1.5 1.5 0 0 1 6.5 16M18.92 6c-.2-.58-.76-1-1.42-1h-11c-.66 0-1.22.42-1.42 1L3 12v8a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h12v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-8l-2.08-6Z"
+              />
+            </svg>
+
+            <p className="font-bold">DIN PARKERING ER AKTIV TIL</p>
+            <button
+              type="button"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            >
+              KL 17.00
+            </button>
+            <p>PARKERINGSPLASS P1</p>
+            <div className="mb-6"></div>
+            <button
+              type="button"
+              className="text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
+            >
+              Stopp Parkering
+            </button>
           </>
         )}
       </div>
     </>
-  );
+  )
 }
