@@ -1,7 +1,7 @@
-import type { NextAuthOptions } from "next-auth";
-import EmailProvider from "next-auth/providers/email";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "@/app/lib/db/clientPromise";
+import type { NextAuthOptions } from "next-auth"
+import EmailProvider from "next-auth/providers/email"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "@/app/lib/db/clientPromise"
 
 export const options: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -22,7 +22,9 @@ export const options: NextAuthOptions = {
       from: process.env.EMAIL_FROM,
     }),
   ],
+
   pages: {
     signIn: "/login",
+    verifyRequest: "/emailSent",
   },
-};
+}
