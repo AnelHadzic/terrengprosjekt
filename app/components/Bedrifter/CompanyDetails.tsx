@@ -70,7 +70,9 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
           {Array.isArray(company.companyAgreement.parkingSpots) &&
           company.companyAgreement.parkingSpots.length > 0 ? (
             <div className="mb-6">
-              <p>Parkeringsplass: antall plasser</p>
+              <h3 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+                Parkeringsplasser:
+              </h3>
               {company.companyAgreement.parkingSpots.map((item, index) => (
                 <Fragment key={index}>
                   <p>
@@ -119,7 +121,6 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
           {Array.isArray(company.privateAgreement.parkingSpots) &&
           company.privateAgreement.parkingSpots.length > 0 ? (
             <div className="mb-6">
-              <p>Parkeringsplass: antall plasser</p>
               {company.privateAgreement.parkingSpots.map((item, index) => (
                 <Fragment key={index}>
                   <p>
@@ -142,7 +143,7 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
           Se alle
         </a>
       </div>
-      <p className="mb-6">85</p>
+      <p className="mb-6">85 (ikke implementert enda)</p>
       <h2 className="text-xl mb-1 font-bold leading-none text-gray-900 dark:text-white">
         Intern kommentar
       </h2>

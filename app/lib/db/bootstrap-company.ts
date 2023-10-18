@@ -54,6 +54,30 @@ export const systemCompanies = () => {
       internalComment:
         "Ikke alle skal ha mulighet til å leie, dermed kun whitelist.",
     },
+    {
+      companyName: "Bemanning AS",
+      contactEmail: "boss@bemanning.no",
+      privateAgreement: {
+        emails: ["extBob@bemanning.no", "extknut@bemanning.no"],
+        parkingSpots: [
+          {
+            parkingName: "P8",
+            parkingLimit: 20,
+          },
+        ],
+      },
+      companyAgreement: {
+        domains: ["bemanning.no"],
+        parkingSpots: [
+          {
+            parkingName: "P12",
+            parkingLimit: 30,
+          },
+        ],
+      },
+      internalComment:
+        "Bedriften har innleide/eksterne som må lage privatavtale.",
+    }
   ] as ICompany[];
 
   return companies;
