@@ -2,7 +2,7 @@ import type { NextAuthOptions } from "next-auth"
 import EmailProvider from "next-auth/providers/email"
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import clientPromise from "@/app/lib/db/clientPromise"
-import { isExistingUser } from "./isAuthorized"
+import { isCompanyUser, isExistingUser } from "./isAuthorized"
 
 export const options: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -24,28 +24,27 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, email }) {
-      const userEmail = user.email;
-      
+    async signIn({ user }) {
+      const userEmail = user.email
+
       // Hvis bruker eksisterer fra før...
-      const userExists = await isExistingUser(userEmail);
-      
-      // Hvis bruker er privat kunde
-      const userWithPrivate = undefined
-      // Hvis bruker er domene kunde
-      const userWithDomain = undefined
-      
+      const userExists = await isExistingUser(userEmail)
+
+      // Hvis det er en company user
+      const emailExists = await isCompanyUser(userEmail)
+
       if (userExists === true) {
         return true
+      } else if (emailExists === true) {
+        return true
       } else {
-        return "/uautorisert"; 
+        return "/uautorisert"
       }
     },
   },
-  
 
   pages: {
     signIn: "/login",
-    verifyRequest: "/emailSent",
+    verifyRequest: "/emailSendt",
   },
 }
