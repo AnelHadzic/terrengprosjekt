@@ -1,4 +1,4 @@
-import { createCompany } from "./../../lib/model/company";
+import { createCompany, findCompaniesDomainByCompanyAgreement, findCompaniesDomainByPrivateAgreement, findCompaniesListByCompanyAgreement, findCompaniesListByPrivateAgreement } from "./../../lib/model/company";
 import connectToDb from "@/app/lib/db/mongoose";
 import { ICompany } from "@/app/lib/interface/ICompany";
 import { findAllCompanies, findCompaniesByName } from "@/app/lib/model/company";
@@ -7,9 +7,34 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET({ nextUrl }: NextRequest) {
     await connectToDb();
     const companyName = nextUrl?.searchParams?.get("companyName");
-    const companies = companyName
-        ? await findCompaniesByName(companyName)
-        : await findAllCompanies();
+    const email = nextUrl?.searchParams?.get("email");
+    let companies;
+
+    // Hvis companyName parameter blir brukt, så bruk findCompaniesByName funksjon
+    if (companyName) {
+        companies = await findCompaniesByName(companyName)
+
+        // Hvis email blir brukt som parameter, så bruk disse 4 funksjonene under.
+    } else if (email) {
+        const companiesListByPrivateAgreement = await findCompaniesListByPrivateAgreement(email);
+        const companiesListByCompanyAgreement = await findCompaniesListByCompanyAgreement(email);
+        const companiesDomainByPrivateAgreement = await findCompaniesDomainByPrivateAgreement(email);
+        const companiesDomainByCompanyAgreement = await findCompaniesDomainByCompanyAgreement(email);
+        
+        // Combine results if necessary
+        companies = {
+            companiesListByPrivateAgreement,
+            companiesListByCompanyAgreement,
+            companiesDomainByPrivateAgreement,
+            companiesDomainByCompanyAgreement
+        };
+
+        // Returner data hvis noen ble funnet.
+        return NextResponse.json({ data: companies }, { status: 200 });
+        // Hvis companyName søk ikke finner noe, så søk alle bedrifter.
+    } else {
+        companies = await findAllCompanies();
+    }
 
     if (companies === null) {
         return NextResponse.json(
