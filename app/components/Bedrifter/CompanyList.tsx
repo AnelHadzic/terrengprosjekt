@@ -10,7 +10,7 @@ export default function CompanyList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_URL = "http://localhost:3000/api/company"
+        const API_URL = "/api/company"
         const response = await axios.get(API_URL)
         console.log(response.data.data)
         setCompanyList(response.data.data)

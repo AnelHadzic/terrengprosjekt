@@ -19,7 +19,7 @@ export function useCompany(companyId: string) {
 
   const fetchCompanyData = useCallback(async () => {
     try {
-      const API_URL = `http://localhost:3000/api/company/${companyId}`
+      const API_URL = `/api/company/${companyId}`
       const response = await axios.get(API_URL)
       setCompany(response.data.data)
     } catch (err) {
@@ -48,7 +48,7 @@ export function useCompany(companyId: string) {
   const handleDeleteClick = async () => {
     console.log("test")
     try {
-      const API_URL = `http://localhost:3000/api/company/${companyId}`
+      const API_URL = `/api/company/${companyId}`
       await axios.delete(API_URL)
       router.push("/bedrifter")
     } catch (err) {
@@ -58,7 +58,7 @@ export function useCompany(companyId: string) {
 
   const handleSaveClick = async () => {
     try {
-      const API_URL = `http://localhost:3000/api/company/${companyId}`
+      const API_URL = `/api/company/${companyId}`
       await axios.patch(API_URL, editedCompany)
       setIsEditing(false)
       fetchCompanyData() // Fetch the updated data after saving
