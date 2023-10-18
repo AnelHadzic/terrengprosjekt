@@ -57,6 +57,17 @@ export async function findCompaniesByName(companyName: string) {
   return null
 }
 
+export async function findCompaniesByWhitelist(email: string) {
+  const regex = RegExp(email, "i")
+  const session = await Company.find({ email: regex })
+
+  if (session) {
+    return session
+  }
+
+  return null
+}
+
 export async function createCompany(company: ICompany) {
   const newEntry = new Company(company)
   await newEntry.save()
