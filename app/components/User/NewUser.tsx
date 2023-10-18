@@ -1,6 +1,7 @@
 import { RoleEnum, Roles } from "@/app/lib/enum/role-type"
+import { ICompany } from "@/app/lib/interface/ICompany"
 import { useRouter } from "next/navigation"
-import React from "react"
+import React, { useCallback, useEffect } from "react"
 import { useState } from "react"
 
 export default function NewUser() {
@@ -10,7 +11,9 @@ export default function NewUser() {
   const [phone, setPhone] = useState("")
   const [companyId, setCompanyId] = useState("")
   const [regNumbers, setRegNumbers] = useState([""])
-  const [roleId, setRoleId] = useState("1")
+  const [roleId, setRoleId] = useState("2")
+  const [companySuggestions, setCompanySuggestions] = useState<ICompany[]>()
+  const [searchTerm, setSearchTerm] = useState("")
 
   const router = useRouter()
 
@@ -55,6 +58,45 @@ export default function NewUser() {
       .catch((error) => {
         console.error(error)
       })
+  }
+
+  const handleCompanySearch = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/company?companyName=${searchTerm}`)
+      if (response.status === 200) {
+        const data = await response.json()
+        if (Array.isArray(data.data)) {
+          const resultCompanies = data.data as ICompany[]
+          setCompanySuggestions(resultCompanies)
+        } else {
+          console.error(
+            "API response does not contain an array of company data",
+          )
+        }
+      } else {
+        console.error("API request failed with status: " + response.status)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }, [searchTerm])
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleCompanySearch()
+      console.log("SOMEBODY TYPETH")
+    } else {
+      setCompanySuggestions([])
+    }
+  }, [handleCompanySearch, searchTerm])
+
+  // Function to set the selected company
+  const selectCompany = (selectedCompany: ICompany) => {
+    if (selectedCompany._id) {
+      setCompanyId(selectedCompany._id)
+      setSearchTerm(selectedCompany.companyName)
+    }
+    setCompanySuggestions([]) // Clear suggestions after selecting a company
   }
 
   return (
@@ -133,16 +175,27 @@ export default function NewUser() {
           htmlFor="companyId"
           className="block text-sm font-medium text-gray-700"
         >
-          Bedriftens ID (temp løsning)
+          Bedrift
         </label>
         <input
           type="text"
           id="companyId"
           name="companyId"
-          value={companyId}
-          onChange={(e) => setCompanyId(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="border rounded-md p-2 w-full focus:outline-none focus:ring focus:border-blue-300"
         />
+        <ul className="mt-2">
+          {companySuggestions?.map((company) => (
+            <li
+              key={company._id}
+              onClick={() => selectCompany(company)}
+              className="cursor-pointer text-blue-500 hover:text-blue-700"
+            >
+              {company.companyName}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="mb-4">
@@ -161,7 +214,7 @@ export default function NewUser() {
                 value={regnr}
                 onChange={(e) => addInput(index, e.target.value)}
                 className="border rounded-md p-2 w-full focus:outline-none focus:ring focus:border-blue-300"
-                />
+              />
               <div className="mr-6"></div>
               {index > 0 ? (
                 <svg
