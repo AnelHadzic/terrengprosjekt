@@ -1,51 +1,20 @@
-"use client";
-import Sidebar from "@/app/components/shared/Sidebar";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import ParkeringsListe from "@/app/components/parkering/ParkeringsListe";
-import ParkingContext from "@/app/contexts/ParkingContext";
-import { ParkingLot } from "@/app/contexts/ParkingContext";
-import dynamic from "next/dynamic";
+"use client"
+import { useRouter } from "next/navigation"
+import ParkeringsListe from "@/app/components/parkering/ParkeringsListe"
+import dynamic from "next/dynamic"
+import { ParkingProvider } from "@/app/contexts/ParkingContext"
 
 const MapComp = dynamic(
   () => import("@/app/components/parkering/ParkeringMap"),
   {
     ssr: false,
-  }
-);
+  },
+)
 
 const Page = () => {
-  const [parkingList, setParkingList] = useState<ParkingLot[]>([]);
-  const [search, setSearch] = useState<string | null>("");
-
-  // Først setter jeg koordinater i en state. Dette er default koordinater når brukeren laster inn siden.
-  // Denne brukes i Map.tsx og i Tabell.tsx
-  const [currentCoordinates, setCurrentCoordinates] = useState<
-    [number, number]
-  >([59.212575443746296, 10.924253141809777]);
-
-  // Dette er en state for å hente navn av den parkeringsplassen som ble valgt i listen.
-  // Denne brukes i Tabell.tsx og nede i Rediger component.
-  const [pickedParking, setPickedParking] = useState<[number, number] | null>(
-    null
-  );
-
-  // Wrapper AppContext.Provider i ytterste lag, og dette utnytter useContext hooken, slik at alle variabler kan brukes i de andre komponentene, uten at jeg må sende de ned via props.
-  // Dette forsikrer at jeg ikke må loke rundt med nesting av props gjennom flere lag av komponenter, som kan være tidskrevende.
   return (
     <>
-      <ParkingContext.Provider
-        value={{
-          parkingList,
-          setParkingList,
-          search,
-          setSearch,
-          currentCoordinates,
-          setCurrentCoordinates,
-          pickedParking,
-          setPickedParking,
-        }}
-      >
+      <ParkingProvider>
         <main className="flex min-h-screen flex-col items-center">
           <div className="mb-6"></div>
           <div className="grid grid-cols-2 gap-4">
@@ -59,13 +28,13 @@ const Page = () => {
           <div className="mt-6"></div>
           <Logg />
         </main>
-      </ParkingContext.Provider>
+      </ParkingProvider>
     </>
-  );
-};
+  )
+}
 
 const Tabell = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <>
@@ -86,8 +55,8 @@ const Tabell = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 const Map = () => {
   return (
@@ -103,15 +72,15 @@ const Map = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 const Logg = () => {
   return (
     <>
       <div>Hendelser</div>
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

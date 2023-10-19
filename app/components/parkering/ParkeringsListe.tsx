@@ -1,17 +1,11 @@
 "use client"
-import React, { useEffect, Fragment, useContext } from "react"
+import React, { useEffect, Fragment } from "react"
 import axios from "axios"
-import ParkingContext from "@/app/contexts/ParkingContext"
+import { useParkingContext } from "@/app/contexts/ParkingContext"
 
 const ParkeringsListe = () => {
-  const {
-    parkingList,
-    setParkingList,
-    search,
-    setSearch,
-    setCurrentCoordinates,
-    setPickedParking,
-  } = useContext(ParkingContext)
+  const { parkingList, setParkingList, search, setSearch, setPickedParking } =
+    useParkingContext()
 
   // Dersom man velger noe fra tabellen, vil den hente disse dataene, så sette statene slik at vi kan bruke de i App.tsx og Main.tsx
   const pickedParking = (e: {
@@ -36,7 +30,7 @@ const ParkeringsListe = () => {
     fetchData()
   }, [])
 
-  // Filtrerer databasen basert på hva search staten er.
+  // Filtrerer basert på hva search staten er.
   // Setter data i lowercase, og dataen inkluderer hva lowercase søkeordet er.
   const filteredList = parkingList.filter((parkering) =>
     search

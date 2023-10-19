@@ -1,6 +1,6 @@
-import BedriftContext from "@/app/contexts/BedriftContext"
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 import axios from "axios"
-import React, { Fragment, useContext, useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 
 export type ParkingLot = {
   parkingName: string
@@ -8,7 +8,7 @@ export type ParkingLot = {
 }
 
 const PrivateParking = () => {
-  const { privateParkings, setPrivateParkings } = useContext(BedriftContext)
+  const { privateParkings, setPrivateParkings } = useNewCompanyContext()
 
   const [parkingList, setParkingList] = useState<ParkingLot[]>([])
   const [search, setSearch] = useState<string | null>("")

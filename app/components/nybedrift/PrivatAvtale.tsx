@@ -1,12 +1,10 @@
-import React, { useContext } from "react"
-import BedriftContext from "@/app/contexts/BedriftContext"
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 import DomeneComponent from "./DomeneComponent"
-import BedriftListComponent from "./BedriftListComponent"
 import PrivateListComponent from "./PrivateListComponent"
 import PrivateParking from "../parkering/PrivateParking"
 
 const PrivatAvtale = () => {
-  const { privateAgreement, privateAgreementType } = useContext(BedriftContext)
+  const { privateAgreement, privateAgreementType } = useNewCompanyContext()
 
   return (
     <>
@@ -61,7 +59,7 @@ const AgreementType = () => {
   }
 
   const { privateAgreementType, setPrivateAgreementType } =
-    useContext(BedriftContext)
+    useNewCompanyContext()
   return (
     <>
       <div className="flex items-center mb-4">
@@ -109,7 +107,7 @@ const Avtale = () => {
     setPrivateAgreement(event.target.value === "True")
   }
 
-  const { privateAgreement, setPrivateAgreement } = useContext(BedriftContext)
+  const { privateAgreement, setPrivateAgreement } = useNewCompanyContext()
   return (
     <>
       <div className="flex items-center mb-4">

@@ -1,8 +1,8 @@
 import React, { useContext } from "react"
-import BedriftContext from "@/app/contexts/BedriftContext"
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 
 const BedriftOppsummering = () => {
-  const { companyAgreement, privateAgreement } = useContext(BedriftContext)
+  const { companyAgreement, privateAgreement } = useNewCompanyContext()
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -18,7 +18,7 @@ const BedriftOppsummering = () => {
 }
 
 const GeneralInfo = () => {
-  const { companyName, contactPerson } = useContext(BedriftContext)
+  const { companyName, contactPerson } = useNewCompanyContext()
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -42,7 +42,7 @@ const GeneralInfo = () => {
 
 const PrivatInfo = () => {
   const { privateAgreementType, privateWhitelist, domains, privateParkings } =
-    useContext(BedriftContext)
+    useNewCompanyContext()
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -89,7 +89,7 @@ const PrivatInfo = () => {
 
 const BedriftInfo = () => {
   const { companyAgreementType, companyWhitelist, domains, companyParkings } =
-    useContext(BedriftContext)
+    useNewCompanyContext()
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

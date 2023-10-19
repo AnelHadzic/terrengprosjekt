@@ -1,70 +1,11 @@
 import axios from "axios"
 import React, { ReactNode, createContext, useContext, useState } from "react"
 import { useRouter } from "next/navigation"
+import { NewCompanyData } from "./types/NewCompanyData"
 
-type BedriftsData = {
-  stepper: number
-  setStepper: React.Dispatch<React.SetStateAction<number>>
-  incrementStepper: () => void
-  decrementStepper: () => void
-  companyName: string
-  setCompanyName: React.Dispatch<React.SetStateAction<string>>
-  contactPerson: string
-  setContactPerson: React.Dispatch<React.SetStateAction<string>>
+const NewCompanyContext = createContext<NewCompanyData | undefined>(undefined)
 
-  //3
-  privateAgreement: boolean
-  setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>
-  privateAgreementType: string
-  setPrivateAgreementType: React.Dispatch<React.SetStateAction<string>>
-  companyAgreement: boolean
-  setCompanyAgreement: React.Dispatch<React.SetStateAction<boolean>>
-  companyAgreementType: string
-  setCompanyAgreementType: React.Dispatch<React.SetStateAction<string>>
-
-  // Privat Avtale : 3
-  privateWhitelist: string[]
-  setPrivateWhitelist: React.Dispatch<React.SetStateAction<string[]>>
-  privateParkings: {
-    parkingName: string
-    parkingLimit: number
-  }[]
-  setPrivateParkings: React.Dispatch<
-    React.SetStateAction<
-      {
-        parkingName: string
-        parkingLimit: number
-      }[]
-    >
-  >
-
-  // Bedrifts Avtale : 4
-  domains: string[]
-  setDomains: React.Dispatch<React.SetStateAction<string[]>>
-  companyWhitelist: string[]
-  setCompanyWhitelist: React.Dispatch<React.SetStateAction<string[]>>
-  companyParkings: {
-    parkingName: string
-    parkingLimit: number
-  }[]
-  setCompanyParkings: React.Dispatch<
-    React.SetStateAction<
-      {
-        parkingName: string
-        parkingLimit: number
-      }[]
-    >
-  >
-  handleSubmit: () => Promise<void>
-  status: string
-  setStatus: React.Dispatch<React.SetStateAction<string>>
-  error: string
-  setError: React.Dispatch<React.SetStateAction<string>>
-}
-
-const BedriftsContext = createContext<BedriftsData | undefined>(undefined)
-
-export const BedriftsProvider = (props: { children: ReactNode }) => {
+export const NewCompanyProvider = (props: { children: ReactNode }) => {
   const { children } = props
 
   const [stepper, setStepper] = useState<number>(1)
@@ -147,7 +88,7 @@ export const BedriftsProvider = (props: { children: ReactNode }) => {
     }
   }
 
-  const contextValue: BedriftsData = {
+  const contextValue: NewCompanyData = {
     stepper,
     setStepper,
     incrementStepper,
@@ -176,20 +117,22 @@ export const BedriftsProvider = (props: { children: ReactNode }) => {
     setCompanyParkings,
     handleSubmit,
     error,
+    setError,
     status,
+    setStatus,
   }
 
   return (
-    <BedriftsContext.Provider value={contextValue}>
+    <NewCompanyContext.Provider value={contextValue}>
       {children}
-    </BedriftsContext.Provider>
+    </NewCompanyContext.Provider>
   )
 }
 
-export const useBedriftsContext = () => {
-  const context = useContext(BedriftsContext)
+export const useNewCompanyContext = () => {
+  const context = useContext(NewCompanyContext)
   if (!context) {
-    throw new Error("BedriftsContext needs a BedriftsProvider")
+    throw new Error("NewCompanyContext needs a NewCompanyProvider")
   }
   return context
 }

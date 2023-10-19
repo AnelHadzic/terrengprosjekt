@@ -2,23 +2,23 @@
 import BedriftInfo from "@/app/components/nybedrift/BedriftInfo"
 import BedriftOppsummering from "@/app/components/nybedrift/BedriftOppsummering"
 import BedriftStepper from "@/app/components/nybedrift/BedriftStepper"
-import React, { useState } from "react"
-import BedriftContext, {
-  BedriftsProvider,
-  useBedriftsContext,
-} from "@/app/contexts/BedriftContext"
+
 import BedriftsAvtale from "@/app/components/nybedrift/BedriftsAvtale"
 import PrivatAvtale from "@/app/components/nybedrift/PrivatAvtale"
-import axios from "axios"
-import { useRouter } from "next/navigation"
+import {
+  NewCompanyProvider,
+  useNewCompanyContext,
+} from "@/app/contexts/NewCompanyContext"
 
 const Page = () => {
-  ;<BedriftsProvider>
-    <main className="flex min-h-screen flex-col items-center">
-      <BedriftStepper />
-      <Bedriftscontent />
-    </main>
-  </BedriftsProvider>
+  return (
+    <NewCompanyProvider>
+      <main className="flex min-h-screen flex-col items-center">
+        <BedriftStepper />
+        <Bedriftscontent />
+      </main>
+    </NewCompanyProvider>
+  )
 }
 
 const Bedriftscontent = () => {
@@ -29,7 +29,7 @@ const Bedriftscontent = () => {
     handleSubmit,
     error,
     status,
-  } = useBedriftsContext()
+  } = useNewCompanyContext()
 
   return (
     <>
