@@ -1,39 +1,48 @@
-import React, { createContext } from "react";
+import { ReactNode, createContext, useContext, useState } from "react"
+import { ParkingData, ParkingLot } from "./types/ParkingData"
 
-export type ParkingLot = {
-  parkingName: string;
-  parkingCapacity: number;
-  parkingCoordinates: number[][];
-};
+const ParkingContext = createContext<ParkingData | undefined>(undefined)
 
-export const ParkingContext = createContext<{
-  // Lagrer liste med parkeringer. GET
-  parkingList: ParkingLot[];
-  setParkingList: React.Dispatch<React.SetStateAction<ParkingLot[]>>;
+export const ParkingProvider = (props: { children: ReactNode }) => {
+  const { children } = props
 
-  // Koordinater
-  currentCoordinates: [number, number];
-  setCurrentCoordinates: React.Dispatch<React.SetStateAction<[number, number]>>;
+  const [parkingList, setParkingList] = useState<ParkingLot[]>([])
+  const [search, setSearch] = useState<string | null>("")
 
-  // Valgt parkering
-  pickedParking: [number, number] | null;
-  setPickedParking: React.Dispatch<
-    React.SetStateAction<[number, number] | null>
-  >;
+  // Først setter jeg koordinater i en state. Dette er default koordinater når brukeren laster inn siden.
+  // Denne brukes i Map.tsx og i Tabell.tsx
+  const [currentCoordinates, setCurrentCoordinates] = useState<
+    [number, number]
+  >([59.212575443746296, 10.924253141809777])
 
-  // Søk for liste
-  search: string | null;
-  setSearch: React.Dispatch<React.SetStateAction<string | null>>;
-}>({
-  // Setter forventet default value
-  parkingList: [],
-  setParkingList: () => {},
-  currentCoordinates: [59.212575443746296, 10.924253141809777],
-  setCurrentCoordinates: () => {},
-  pickedParking: null,
-  setPickedParking: () => {},
-  search: null,
-  setSearch: () => {},
-});
+  // Dette er en state for å hente navn av den parkeringsplassen som ble valgt i listen.
+  // Denne brukes i Tabell.tsx og nede i Rediger component.
+  const [pickedParking, setPickedParking] = useState<[number, number] | null>(
+    null,
+  )
 
-export default ParkingContext;
+  const contextValue: ParkingData = {
+    parkingList,
+    setParkingList,
+    currentCoordinates,
+    setCurrentCoordinates,
+    pickedParking,
+    setPickedParking,
+    search,
+    setSearch,
+  }
+
+  return (
+    <ParkingContext.Provider value={contextValue}>
+      {children}
+    </ParkingContext.Provider>
+  )
+}
+
+export const useParkingContext = () => {
+  const context = useContext(ParkingContext)
+  if (!context) {
+    throw new Error("ParkingContext needs a ParkingProvider")
+  }
+  return context
+}

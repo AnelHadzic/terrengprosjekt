@@ -1,12 +1,11 @@
-import React, { useContext } from "react"
-import BedriftContext from "@/app/contexts/BedriftContext"
+import React from "react"
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 import DomeneComponent from "./DomeneComponent"
 import BedriftListComponent from "./BedriftListComponent"
 import ComapnyParking from "../parkering/CompanyParking"
 
 const BedriftsAvtale = () => {
-  const { companyAgreement, companyAgreementType } = useContext(BedriftContext)
-
+  const { companyAgreement, companyAgreementType } = useNewCompanyContext()
   return (
     <>
       <div className="max-w-sm p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -60,7 +59,8 @@ const AgreementType = () => {
   }
 
   const { companyAgreementType, setCompanyAgreementType } =
-    useContext(BedriftContext)
+    useNewCompanyContext()
+
   return (
     <>
       <div className="flex items-center mb-4">
@@ -108,7 +108,7 @@ const Avtale = () => {
     setCompanyAgreement(event.target.value === "True")
   }
 
-  const { companyAgreement, setCompanyAgreement } = useContext(BedriftContext)
+  const { companyAgreement, setCompanyAgreement } = useNewCompanyContext()
   return (
     <>
       <div className="flex items-center mb-4">

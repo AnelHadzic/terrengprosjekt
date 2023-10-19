@@ -1,5 +1,4 @@
 "use client"
-import Sidebar from "@/app/components/shared/Sidebar"
 import axios from "axios"
 import React, { useState } from "react"
 

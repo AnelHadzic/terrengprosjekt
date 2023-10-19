@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import BedriftContext from "@/app/contexts/BedriftContext";
+import React from "react"
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 
 const BedriftInfo = () => {
   const { companyName, contactPerson, setCompanyName, setContactPerson } =
-    useContext(BedriftContext);
+    useNewCompanyContext()
 
   return (
     <div className="max-w-sm p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -42,7 +42,7 @@ const BedriftInfo = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BedriftInfo;
+export default BedriftInfo

@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import BedriftContext from "@/app/contexts/BedriftContext";
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 
 const BedriftStepper = () => {
-  const { stepper, setStepper } = useContext(BedriftContext);
+  const { stepper, setStepper } = useNewCompanyContext()
 
   return (
     <>
@@ -114,7 +113,7 @@ const BedriftStepper = () => {
         </li>
       </ol>
     </>
-  );
-};
+  )
+}
 
-export default BedriftStepper;
+export default BedriftStepper

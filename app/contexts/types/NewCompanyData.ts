@@ -1,19 +1,14 @@
-import React, { createContext } from "react"
-
-export const BedriftContext = createContext<{
-  // Definerer typene til hver av disse
-
-  // Hoved page stepper
+export type NewCompanyData = {
   stepper: number
   setStepper: React.Dispatch<React.SetStateAction<number>>
-
-  // Bedrifts Info : 1
+  incrementStepper: () => void
+  decrementStepper: () => void
   companyName: string
   setCompanyName: React.Dispatch<React.SetStateAction<string>>
   contactPerson: string
   setContactPerson: React.Dispatch<React.SetStateAction<string>>
 
-  // Velg Avtale : 2
+  //3
   privateAgreement: boolean
   setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>
   privateAgreementType: string
@@ -56,32 +51,9 @@ export const BedriftContext = createContext<{
       }[]
     >
   >
-}>({
-  // Setter forventet default value
-  stepper: 0,
-  setStepper: () => {},
-  companyName: "",
-  setCompanyName: () => {},
-  contactPerson: "",
-  setContactPerson: () => {},
-  privateAgreement: false,
-  setPrivateAgreement: () => {},
-  privateAgreementType: "",
-  setPrivateAgreementType: () => {},
-  companyAgreement: false,
-  setCompanyAgreement: () => {},
-  companyAgreementType: "",
-  setCompanyAgreementType: () => {},
-  domains: [""],
-  setDomains: () => {},
-  privateWhitelist: [""],
-  setPrivateWhitelist: () => {},
-  companyWhitelist: [""],
-  setCompanyWhitelist: () => {},
-  privateParkings: [],
-  setPrivateParkings: () => {},
-  companyParkings: [],
-  setCompanyParkings: () => {},
-})
-
-export default BedriftContext
+  handleSubmit: () => Promise<void>
+  status: string
+  setStatus: React.Dispatch<React.SetStateAction<string>>
+  error: string
+  setError: React.Dispatch<React.SetStateAction<string>>
+}

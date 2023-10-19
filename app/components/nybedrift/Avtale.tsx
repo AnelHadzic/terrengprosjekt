@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import BedriftContext from "@/app/contexts/BedriftContext";
+import { useNewCompanyContext } from "@/app/contexts/NewCompanyContext"
 
 const Avtale = () => {
   const {
@@ -11,19 +10,19 @@ const Avtale = () => {
     setCompanyAgreement,
     setPrivateAgreementType,
     setCompanyAgreementType,
-  } = useContext(BedriftContext);
+  } = useNewCompanyContext()
 
   const handlePrivateRadioChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setPrivateAgreementType(event.target.value);
-  };
+    setPrivateAgreementType(event.target.value)
+  }
 
   const handleCompanyRadioChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setCompanyAgreementType(event.target.value);
-  };
+    setCompanyAgreementType(event.target.value)
+  }
 
   return (
     <div className="w-full max-w-4xl p-6 mt-6 pb-12 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -82,7 +81,7 @@ const Avtale = () => {
               onChange={handlePrivateRadioChange}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
-            
+
             <label
               htmlFor="privat-liste"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -152,7 +151,7 @@ const Avtale = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Avtale;
+export default Avtale

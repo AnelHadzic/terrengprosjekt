@@ -1,5 +1,4 @@
-"use client";
-import React, { useContext } from "react";
+"use client"
 import {
   FeatureGroup,
   MapContainer,
@@ -8,34 +7,34 @@ import {
   Popup,
   TileLayer,
   useMap,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import icon from "@/app/assets/marker";
-import ParkingContext from "@/app/contexts/ParkingContext";
-import { LatLngExpression } from "leaflet";
+} from "react-leaflet"
+import "leaflet/dist/leaflet.css"
+import icon from "@/app/assets/marker"
+import { useParkingContext } from "@/app/contexts/ParkingContext"
+import { LatLngExpression } from "leaflet"
 
-const orangeOptions = { color: "orange" };
+const orangeOptions = { color: "orange" }
 
 // MapContainer er ellers immutable, så vi kan ikke bare endre center= attributt når staten til currentCoordinates endres. Så derfor må jeg lage en annen Compontent som kjører og er mutable hver gang staten endres.
 // Dette skjer under her. Henter inn coordinates i form av prop. Coords er altså currentCoordinates staten. Bruker useMap hook fra leaflet for å kunne gjøre endringer. Dermed bruker jeg setView metoden for å legge inn nye koordinater og zoomer til den.
 function SetViewOnChange({ coords }: { coords: LatLngExpression }) {
-  const { pickedParking } = useContext(ParkingContext);
-  const map = useMap();
+  const { pickedParking } = useParkingContext()
+  const map = useMap()
 
   if (pickedParking) {
-    map.setView(coords, map.getZoom());
+    map.setView(coords, map.getZoom())
   }
 
-  return null;
+  return null
 }
 
 const ParkeringMap = () => {
   const { currentCoordinates, parkingList, pickedParking, setPickedParking } =
-    useContext(ParkingContext);
+    useParkingContext()
 
   const handlePolygonClick = (name: string) => {
-    console.log(name);
-  };
+    console.log(name)
+  }
 
   return (
     <>
@@ -90,7 +89,7 @@ const ParkeringMap = () => {
         Reset kartet
       </button>
     </>
-  );
-};
+  )
+}
 
-export default ParkeringMap;
+export default ParkeringMap
