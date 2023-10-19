@@ -1,19 +1,18 @@
-import React, { createContext } from "react"
+import axios from "axios"
+import React, { ReactNode, createContext, useContext, useState } from "react"
+import { useRouter } from "next/navigation"
 
-export const BedriftContext = createContext<{
-  // Definerer typene til hver av disse
-
-  // Hoved page stepper
+type BedriftsData = {
   stepper: number
   setStepper: React.Dispatch<React.SetStateAction<number>>
-
-  // Bedrifts Info : 1
+  incrementStepper: () => void
+  decrementStepper: () => void
   companyName: string
   setCompanyName: React.Dispatch<React.SetStateAction<string>>
   contactPerson: string
   setContactPerson: React.Dispatch<React.SetStateAction<string>>
 
-  // Velg Avtale : 2
+  //3
   privateAgreement: boolean
   setPrivateAgreement: React.Dispatch<React.SetStateAction<boolean>>
   privateAgreementType: string
@@ -56,32 +55,141 @@ export const BedriftContext = createContext<{
       }[]
     >
   >
-}>({
-  // Setter forventet default value
-  stepper: 0,
-  setStepper: () => {},
-  companyName: "",
-  setCompanyName: () => {},
-  contactPerson: "",
-  setContactPerson: () => {},
-  privateAgreement: false,
-  setPrivateAgreement: () => {},
-  privateAgreementType: "",
-  setPrivateAgreementType: () => {},
-  companyAgreement: false,
-  setCompanyAgreement: () => {},
-  companyAgreementType: "",
-  setCompanyAgreementType: () => {},
-  domains: [""],
-  setDomains: () => {},
-  privateWhitelist: [""],
-  setPrivateWhitelist: () => {},
-  companyWhitelist: [""],
-  setCompanyWhitelist: () => {},
-  privateParkings: [],
-  setPrivateParkings: () => {},
-  companyParkings: [],
-  setCompanyParkings: () => {},
-})
+  handleSubmit: () => Promise<void>
+  status: string
+  setStatus: React.Dispatch<React.SetStateAction<string>>
+  error: string
+  setError: React.Dispatch<React.SetStateAction<string>>
+}
 
-export default BedriftContext
+const BedriftsContext = createContext<BedriftsData | undefined>(undefined)
+
+export const BedriftsProvider = (props: { children: ReactNode }) => {
+  const { children } = props
+
+  const [stepper, setStepper] = useState<number>(1)
+
+  // STEPPER
+  const incrementStepper = () => {
+    setStepper((prev) => prev + 1)
+  }
+
+  const decrementStepper = () => {
+    setStepper((prev) => prev - 1)
+  }
+
+  // SIDE 1
+  const [companyName, setCompanyName] = useState<string>("")
+  const [contactPerson, setContactPerson] = useState<string>("")
+
+  // SIDE2
+  const [privateAgreement, setPrivateAgreement] = useState<boolean>(false)
+  const [companyAgreement, setCompanyAgreement] = useState<boolean>(false)
+  const [privateAgreementType, setPrivateAgreementType] = useState<string>("")
+  const [companyAgreementType, setCompanyAgreementType] = useState<string>("")
+
+  // SIDE 3
+  const [privateWhitelist, setPrivateWhitelist] = useState<string[]>([""])
+  const [privateParkings, setPrivateParkings] = useState<
+    Array<{ parkingName: string; parkingLimit: number }>
+  >([])
+
+  // SIDE 4
+  const [domains, setDomains] = useState<string[]>([""])
+  const [companyWhitelist, setCompanyWhitelist] = useState<string[]>([""])
+  const [companyParkings, setCompanyParkings] = useState<
+    Array<{ parkingName: string; parkingLimit: number }>
+  >([])
+
+  // HANDLE SUBMIT TO USE API
+  const [error, setError] = useState<string>("")
+  const [status, setStatus] = useState<string>("")
+
+  const router = useRouter()
+
+  const handleSubmit = async (): Promise<void> => {
+    const payload = {
+      companyName: companyName,
+      contactEmail: contactPerson,
+      privateAgreement: privateAgreement
+        ? {
+            domains: privateAgreementType === "Domain" ? domains : undefined,
+            emails:
+              privateAgreementType === "Whitelist"
+                ? privateWhitelist
+                : undefined,
+            parkingSpots: privateParkings,
+          }
+        : undefined,
+      companyAgreement: companyAgreement
+        ? {
+            domains: companyAgreementType === "Domain" ? domains : undefined,
+            emails:
+              companyAgreementType === "Whitelist"
+                ? companyWhitelist
+                : undefined,
+            parkingSpots: companyParkings,
+          }
+        : undefined,
+      internalComment: "string",
+    }
+    console.log(JSON.stringify(payload))
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/company",
+        payload,
+      )
+      setStatus("Bedrift er nå lagt inn")
+      router.push("/bedrifter")
+    } catch (error) {
+      setError("Noe gikk galt")
+    }
+  }
+
+  const contextValue: BedriftsData = {
+    stepper,
+    setStepper,
+    incrementStepper,
+    decrementStepper,
+    companyName,
+    setCompanyName,
+    contactPerson,
+    setContactPerson,
+    privateAgreement,
+    setPrivateAgreement,
+    companyAgreement,
+    setCompanyAgreement,
+    privateAgreementType,
+    setPrivateAgreementType,
+    companyAgreementType,
+    setCompanyAgreementType,
+    privateWhitelist,
+    setPrivateWhitelist,
+    privateParkings,
+    setPrivateParkings,
+    domains,
+    setDomains,
+    companyWhitelist,
+    setCompanyWhitelist,
+    companyParkings,
+    setCompanyParkings,
+    handleSubmit,
+    error,
+    status,
+  }
+
+  return (
+    <BedriftsContext.Provider value={contextValue}>
+      {children}
+    </BedriftsContext.Provider>
+  )
+}
+
+export const useBedriftsContext = () => {
+  const context = useContext(BedriftsContext)
+  if (!context) {
+    throw new Error("BedriftsContext needs a BedriftsProvider")
+  }
+  return context
+}

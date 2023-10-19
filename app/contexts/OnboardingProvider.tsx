@@ -33,7 +33,7 @@ export const OnboardingProvider = (props: { children: ReactNode }) => {
   const [mobilnummer, setMobilnummer] = useState<number | null>(null)
   const [regNumbers, setRegNumbers] = useState([""])
 
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   const brukerEmail = session?.user?.email
 
