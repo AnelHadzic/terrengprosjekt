@@ -12,7 +12,7 @@ const schema = new Schema({
   phone: String,
   created: { type: Date, default: Date.now },
   token: String,
-  type: {
+  role: {
     type: Number,
     enum: Roles,
     default: Role.Unknown,

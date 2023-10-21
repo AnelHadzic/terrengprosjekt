@@ -33,7 +33,6 @@ export default function SingleCompany({ companyId }: { companyId: string }) {
           />
         ) : (
           // isEdit mode
-
           <EditCompanyDetails
             editedCompany={editedCompany}
             handleCompanyUpdate={handleCompanyUpdate}
