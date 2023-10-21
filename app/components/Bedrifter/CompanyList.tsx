@@ -1,15 +1,20 @@
 "use client"
 import { ICompany } from "@/app/lib/interface/ICompany"
+import debounce from "@/app/utilities/debounce"
 import axios from "axios"
 import { useRouter } from "next/navigation"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 
 export default function CompanyList() {
   const [companyList, setCompanyList] = useState<ICompany[]>([])
   const [searchQuery, setSearchQuery] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
 
   const router = useRouter()
   useEffect(() => {
+    setLoading(true)
+    setError("")
     const fetchData = async () => {
       try {
         const API_URL = "/api/company"
@@ -18,24 +23,33 @@ export default function CompanyList() {
         setCompanyList(response.data.data)
       } catch (err) {
         console.log(err)
+      } finally {
+        setLoading(false)
       }
     }
 
     fetchData()
   }, [])
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const debouncedFetchDataRef = useRef(
+    debounce(async (query: string) => {
       try {
-        const API_URL = `/api/company?searchQuery=${searchQuery}`
+        const API_URL = `/api/company?searchQuery=${query}`
         const response = await axios.get(API_URL)
+
         setCompanyList(response.data.data)
       } catch (err) {
         console.log(err)
+      } finally {
+        setLoading(false)
       }
-    }
+    }, 300),
+  )
 
-    fetchData()
+  useEffect(() => {
+    setLoading(true)
+    setError("")
+    debouncedFetchDataRef.current(searchQuery)
   }, [searchQuery])
 
   return (
@@ -51,6 +65,18 @@ export default function CompanyList() {
           className="border rounded-md p-2 w-full focus:outline-none focus:ring focus:border-blue-300"
         />
       </div>
+
+      {loading && (
+        <p className="p-6 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-100 dark:hover:bg-gray-900">
+          Loading...
+        </p>
+      )}
+      {error && (
+        <p className="p-6 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-100 dark:hover:bg-gray-900">
+          {error}
+        </p>
+      )}
+
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
