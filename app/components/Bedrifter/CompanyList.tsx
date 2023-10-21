@@ -6,6 +6,8 @@ import { Fragment, useEffect, useState } from "react"
 
 export default function CompanyList() {
   const [companyList, setCompanyList] = useState<ICompany[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
+
   const router = useRouter()
   useEffect(() => {
     const fetchData = async () => {
@@ -22,8 +24,33 @@ export default function CompanyList() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const API_URL = `/api/company?searchQuery=${searchQuery}`
+        const response = await axios.get(API_URL)
+        setCompanyList(response.data.data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchData()
+  }, [searchQuery])
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="p-1">
+        <input
+          type="text"
+          id="searchQuery"
+          name="searchQuery"
+          placeholder="Søk etter for eksempel bedriftsnavn, domene, parkeringsplass eller lignende"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border rounded-md p-2 w-full focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
