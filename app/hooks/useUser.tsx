@@ -16,7 +16,7 @@ export function useUser(email: string) {
     role: 0,
     companyId: "",
     carRegNumbers: [""],
-    primaryCarRegNumber: ""
+    primaryCarRegNumber: "",
   })
 
   const fetchUserData = useCallback(async () => {
@@ -31,21 +31,21 @@ export function useUser(email: string) {
 
   const handleEditClick = () => {
     if (user) {
-        setEditedUser(user)
+      setEditedUser(user)
     }
     setIsEditing(true)
   }
 
   const handleCancelEditClick = () => {
     setEditedUser({
-        email: "",
-        firstname: "",
-        lastname: "",
-        phone: "",
-        role: 0,
-        companyId: "",
-        carRegNumbers: [""],
-        primaryCarRegNumber: ""
+      email: "",
+      firstname: "",
+      lastname: "",
+      phone: "",
+      role: 0,
+      companyId: "",
+      carRegNumbers: [""],
+      primaryCarRegNumber: "",
     })
     setIsEditing(false)
   }
@@ -66,8 +66,11 @@ export function useUser(email: string) {
       const API_URL = `/api/users/${email}`
       await axios.patch(API_URL, editedUser)
       setIsEditing(false)
-      fetchUserData
-() // Fetch the updated data after saving
+      if (email === editedUser.email) {
+        fetchUserData()
+      } else {
+        router.push(`/brukere/${editedUser.email}`)
+      }
     } catch (err) {
       console.log(err)
     }

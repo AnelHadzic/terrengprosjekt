@@ -1,4 +1,7 @@
+import { RoleEnum, Roles } from "@/app/lib/enum/role-type"
+import { ICompany } from "@/app/lib/interface/ICompany"
 import { IUser } from "@/app/lib/interface/IUser"
+import { useCallback, useEffect, useState } from "react"
 
 type CompanyDetailsProps = {
   user: IUser | undefined
@@ -7,6 +10,7 @@ type CompanyDetailsProps = {
 }
 
 export default function UserDetails(props: CompanyDetailsProps) {
+  const [companyName, setCompanyName] = useState("")
   const { user, handleEditClick, handleDeleteClick } = props
 
   function handleEdit() {
@@ -16,6 +20,31 @@ export default function UserDetails(props: CompanyDetailsProps) {
   function handleDelete() {
     handleDeleteClick?.()
   }
+
+  const getCurrentCompany = useCallback(async () => {
+    if (user?.companyId) {
+      try {
+        const response = await fetch(`/api/company/${user.companyId}`)
+        if (response.status === 200) {
+          const data = await response.json()
+          if (data.data) {
+            const resultCompany = data.data as ICompany
+            setCompanyName(resultCompany.companyName)
+          } else {
+            console.error("API response does not contain expected company data")
+          }
+        } else {
+          console.error("API request failed with status: " + response.status)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }, [user?.companyId])
+
+  useEffect(() => {
+    getCurrentCompany()
+  }, [getCurrentCompany])
 
   return (
     <>
@@ -41,11 +70,23 @@ export default function UserDetails(props: CompanyDetailsProps) {
       <h2 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
         Rolle
       </h2>
-      <p className="mb-6">{user?.role}</p>
+      <p className="mb-6">
+        {user?.role ? (
+          <>
+            {RoleEnum[user?.role] === "Admin" ? "Administrator" : null}
+            {RoleEnum[user?.role] === "Customer" ? "Kunde" : null}
+            {RoleEnum[user?.role] === "Inspector" ? "Inspektøy" : null}
+            {RoleEnum[user?.role] === "CompanyAdmin"
+              ? "Bedriftsadministrator"
+              : null}
+          </>
+        ) : null}
+      </p>
+
       <h2 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
         Bedrift
       </h2>
-      <p className="mb-6">{user?.companyId}</p>
+      <p className="mb-6">{companyName}</p>
 
       <div className="flex items-center justify-between">
         <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
