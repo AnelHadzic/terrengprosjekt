@@ -1,5 +1,6 @@
 import {
   createCompany,
+  findCompaniesByMultiSearch,
   findCompaniesDomainByCompanyAgreement,
   findCompaniesDomainByPrivateAgreement,
   findCompaniesListByCompanyAgreement,
@@ -14,6 +15,8 @@ export async function GET({ nextUrl }: NextRequest) {
   await connectToDb()
   const companyName = nextUrl?.searchParams?.get("companyName")
   const email = nextUrl?.searchParams?.get("email")
+  const searchQuery = nextUrl?.searchParams?.get("searchQuery")
+
   let companies
 
   // Hvis companyName parameter blir brukt, så bruk findCompaniesByName funksjon
@@ -48,6 +51,8 @@ export async function GET({ nextUrl }: NextRequest) {
     // Returner data hvis noen ble funnet.
     return NextResponse.json({ emailExists, data: companies }, { status: 200 })
     // Hvis companyName søk ikke finner noe, så søk alle bedrifter.
+  } else if (searchQuery) {
+    companies = await findCompaniesByMultiSearch(searchQuery)
   } else {
     companies = await findAllCompanies()
   }
