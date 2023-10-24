@@ -52,6 +52,25 @@ export async function findUserByToken(token: string) {
   return null
 }
 
+export async function findUsersByMultiSearch(searchQuery: string) {
+  const regex = RegExp(searchQuery, "i")
+  const session = await User.find({
+    $or: [
+      { email: regex },
+      { firstname: regex },
+      { lastname: regex },
+      { phone: regex },
+      { carRegNumbers: { $in: [regex] } },
+      { primaryCarRegNumber: regex },
+    ],
+  })
+  if (session) {
+    return session
+  }
+
+  return null
+}
+
 export async function createUser(user: IUser) {
   const newEntry = new User(user)
   await newEntry.save()
