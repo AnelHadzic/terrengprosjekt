@@ -102,7 +102,7 @@ export default function EditUserDetails(props: UserDetailsProps) {
 
   const getCurrentCompany = useCallback(async () => {
     try {
-      const response = await fetch(`/api/company/${editedUser.companyId}`)
+      const response = await fetch(`/api/company/${editedUser.company}`)
       if (response.status === 200) {
         const data = await response.json()
         if (data.data) {
@@ -117,7 +117,7 @@ export default function EditUserDetails(props: UserDetailsProps) {
     } catch (error) {
       console.error(error)
     }
-  }, [editedUser.companyId])
+  }, [editedUser.company])
 
   useEffect(() => {
     getCurrentCompany()
@@ -168,15 +168,15 @@ export default function EditUserDetails(props: UserDetailsProps) {
 
         <div className="mb-4 mt-6" >
           <label
-            htmlFor="companyId"
+            htmlFor="company"
             className="block text-sm font-medium text-gray-700"
           >
             Bedrift
           </label>
           <input
             type="text"
-            id="companyId"
-            name="companyId"
+            id="company"
+            name="company"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border rounded-md p-2 w-full focus:outline-none focus:ring focus:border-blue-300"

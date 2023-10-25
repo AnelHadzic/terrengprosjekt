@@ -19,6 +19,7 @@ type UserWithCompany = {
 
 export function useUser(email: string) {
   const router = useRouter()
+  const decodedEditedEmail = decodeURIComponent(email);
 
   const [user, setUser] = useState<UserWithCompany | undefined>()
   const [isEditing, setIsEditing] = useState(false)
@@ -89,7 +90,9 @@ export function useUser(email: string) {
       const API_URL = `/api/users/${email}`
       await axios.patch(API_URL, editedUser)
       setIsEditing(false)
-      if (email === editedUser.email) {
+      console.log(decodedEditedEmail + " VS " + editedUser.email)
+
+      if (decodedEditedEmail === editedUser.email) {
         fetchUserData()
       } else {
         router.push(`/brukere/${editedUser.email}`)

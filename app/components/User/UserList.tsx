@@ -1,22 +1,22 @@
 import { ICompany } from "@/app/lib/interface/ICompany"
-import { IUser } from "@/app/lib/interface/IUser"
 import debounce from "@/app/utilities/debounce"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
 type UserWithCompany = {
-  email: string,
-  firstname?: string,
-  lastname?: string,
-  phone?: string,
-  created?: Date,
-  token?: string,
-  role?: number,
-  company?: ICompany,
-  carRegNumbers?: string[],
+  email: string
+  firstname?: string
+  lastname?: string
+  phone?: string
+  created?: Date
+  token?: string
+  role?: number
+  companyInfo?: ICompany
+  carRegNumbers?: string[]
   primaryCarRegNumber?: string
 }
+
 
 export default function UserList() {
   const [userList, setUserList] = useState<UserWithCompany[]>([])
@@ -33,7 +33,6 @@ export default function UserList() {
         const API_URL = "/api/users"
         const response = await axios.get(API_URL)
         setUserList(response.data.data)
-        
       } catch (err) {
         console.log(err)
       } finally {
@@ -49,6 +48,7 @@ export default function UserList() {
       try {
         const API_URL = `/api/users?searchQuery=${query}`
         const response = await axios.get(API_URL)
+        console.log(response.data.data)
 
         const responseUsers = response.data.data as UserWithCompany[]
 
@@ -133,9 +133,9 @@ export default function UserList() {
                   {item.email}
                 </th>
                 <td className="px-6 py-4">
-                  {item.company === undefined
+                  {item.companyInfo === undefined
                     ? "Ukjent Bedrift"
-                    : item.company?.companyName}
+                    : item.companyInfo?.companyName}
                 </td>
                 <td className="px-6 py-4">{item.phone}</td>
                 <td className="px-6 py-4">{item.primaryCarRegNumber}</td>

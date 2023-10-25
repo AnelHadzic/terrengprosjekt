@@ -23,7 +23,7 @@ const schema = new Schema({
     ref: "Company",
   },
   carRegNumbers: [String],
-  primaryCarRegNumber: String
+  primaryCarRegNumber: String,
 })
 
 export const User = mongoose.models.User || mongoose.model("User", schema)
@@ -41,18 +41,6 @@ export async function findUser(email: string | null) {
   return null
 }
 
-export async function findAllUsers() {
-  try {
-    return await User.find().populate({
-      path: "company",
-      model: Company,
-    })
-
-  } catch (error) {
-    return null
-  }
-}
-
 export async function findUserByToken(token: string) {
   const session = await User.findOne({ token: { $eq: token } }).populate({
     path: "company",
@@ -66,22 +54,67 @@ export async function findUserByToken(token: string) {
   return null
 }
 
+// export async function findAllUsers() {
+//   try {
+//     return await User.find().populate({
+//       path: "company",
+//       model: Company,
+//     })
+//   } catch (error) {
+//     return null
+//   }
+// }
+
+export async function findAllUsers() {
+  try {
+    return await User.aggregate([
+      {
+        $lookup: {
+          from: "companies",
+          localField: "company",
+          foreignField: "_id",
+          as: "companyInfo",
+        },
+      },
+      {
+        $unwind: "$companyInfo",
+      },
+    ])
+  } catch (error) {
+    return null
+  }
+}
+
 export async function findUsersByMultiSearch(searchQuery: string) {
-  const regex = RegExp(searchQuery, "i")
-  const session = await User.find({
-    $or: [
-      { email: regex },
-      { firstname: regex },
-      { lastname: regex },
-      { phone: regex },
-      { company: regex },
-      { carRegNumbers: { $in: [regex] } },
-      { primaryCarRegNumber: regex },
-    ],
-  }).populate({
-    path: "company",
-    model: Company,
-  })
+  const regex = new RegExp(searchQuery, "i")
+
+  const session = await User.aggregate([
+    {
+      $lookup: {
+        from: "companies",
+        localField: "company",
+        foreignField: "_id",
+        as: "companyInfo",
+      },
+    },
+    {
+      $match: {
+        $or: [
+          { email: regex },
+          { firstname: regex },
+          { lastname: regex },
+          { phone: regex },
+          { "companyInfo.companyName": regex },
+          { carRegNumbers: { $in: [regex] } },
+          { primaryCarRegNumber: regex },
+        ],
+      },
+    },
+    {
+      $unwind: "$companyInfo",
+    },
+  ])
+
   if (session) {
     return session
   }
