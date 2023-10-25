@@ -36,7 +36,7 @@ export default function EditUserDetails(props: UserDetailsProps) {
   const selectCompany = (selectedCompany: ICompany) => {
     if (selectedCompany._id) {
       //setCompanyId(selectedCompany._id)
-      handleUpdate({ companyId: selectedCompany._id })
+      handleUpdate({ company: selectedCompany._id })
       setSearchTerm(selectedCompany.companyName)
     }
     setCompanySuggestions([]) // Clear suggestions after selecting a company

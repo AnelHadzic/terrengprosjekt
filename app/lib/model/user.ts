@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose"
 import { Role, Roles } from "../enum/role-type"
 import { IUser } from "../interface/IUser"
+import { Company } from "./company"
 
 const schema = new Schema({
   email: {
@@ -17,7 +18,10 @@ const schema = new Schema({
     enum: Roles,
     default: Role.Unknown,
   },
-  companyId: String,
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Company",
+  },
   carRegNumbers: [String],
   primaryCarRegNumber: String
 })
@@ -25,7 +29,10 @@ const schema = new Schema({
 export const User = mongoose.models.User || mongoose.model("User", schema)
 
 export async function findUser(email: string | null) {
-  const session = await User.findOne({ email: { $eq: email } })
+  const session = await User.findOne({ email: { $eq: email } }).populate({
+    path: "company",
+    model: Company,
+  })
 
   if (session) {
     return session
@@ -36,14 +43,21 @@ export async function findUser(email: string | null) {
 
 export async function findAllUsers() {
   try {
-    return await User.find()
+    return await User.find().populate({
+      path: "company",
+      model: Company,
+    })
+
   } catch (error) {
     return null
   }
 }
 
 export async function findUserByToken(token: string) {
-  const session = await User.findOne({ token: { $eq: token } })
+  const session = await User.findOne({ token: { $eq: token } }).populate({
+    path: "company",
+    model: Company,
+  })
 
   if (session) {
     return session
@@ -60,9 +74,13 @@ export async function findUsersByMultiSearch(searchQuery: string) {
       { firstname: regex },
       { lastname: regex },
       { phone: regex },
+      { company: regex },
       { carRegNumbers: { $in: [regex] } },
       { primaryCarRegNumber: regex },
     ],
+  }).populate({
+    path: "company",
+    model: Company,
   })
   if (session) {
     return session
