@@ -90,7 +90,6 @@ export function useUser(email: string) {
       const API_URL = `/api/users/${email}`
       await axios.patch(API_URL, editedUser)
       setIsEditing(false)
-      console.log(decodedEditedEmail + " VS " + editedUser.email)
 
       if (decodedEditedEmail === editedUser.email) {
         fetchUserData()
