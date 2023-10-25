@@ -1,12 +1,27 @@
 import connectToDb from "@/app/lib/db/mongoose"
 import { IUser } from "@/app/lib/interface/IUser"
-import { createUser, findAllUsers, findUser } from "@/app/lib/model/user"
+import {
+  createUser,
+  findAllUsers,
+  findUser,
+  findUsersByMultiSearch,
+} from "@/app/lib/model/user"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET({ nextUrl }: NextRequest) {
   await connectToDb()
   const email = nextUrl?.searchParams?.get("email")
-  const users = email ? await findUser(email) : await findAllUsers()
+  const searchQuery = nextUrl?.searchParams?.get("searchQuery")
+
+  let users
+
+  if (email) {
+    users = await findUser(email)
+  } else if (searchQuery) {
+    users = await findUsersByMultiSearch(searchQuery)
+  } else {
+    users = await findAllUsers()
+  }
 
   if (users === null) {
     return NextResponse.json(
