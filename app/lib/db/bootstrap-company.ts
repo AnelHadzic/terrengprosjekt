@@ -3,6 +3,7 @@ import { ICompany } from "./../interface/ICompany";
 export const systemCompanies = () => {
   const companies = [
     {
+      _id: "652f74492b45acf167a7940a",
       companyName: "Høgskolen i Østfold",
       contactEmail: "mariusca@hiof.no",
       privateAgreement: {

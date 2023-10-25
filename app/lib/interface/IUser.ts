@@ -6,7 +6,7 @@ export interface IUser{
     created?: Date,
     token?: string,
     role?: number,
-    companyId?: string,
+    company?: string,
     carRegNumbers?: string[],
     primaryCarRegNumber?: string
   }
