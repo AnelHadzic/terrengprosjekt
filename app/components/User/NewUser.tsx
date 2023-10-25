@@ -39,8 +39,8 @@ export default function NewUser() {
       firstname: firstName,
       lastname: lastName,
       phone: phone,
-      companyId: companyId,
-      type: roleId,
+      company: companyId,
+      role: roleId,
       carRegNumbers: regNumbers,
       primaryCarRegNumber: regNumbers[0],
     }
@@ -96,7 +96,7 @@ export default function NewUser() {
       setCompanyId(selectedCompany._id)
       setSearchTerm(selectedCompany.companyName)
     }
-    setCompanySuggestions([]) // Clear suggestions after selecting a company
+    setCompanySuggestions([])
   }
 
   return (
@@ -310,7 +310,7 @@ export default function NewUser() {
             <option key={role} value={role}>
               {RoleEnum[role] === "Admin" ? "Administrator" : null}
               {RoleEnum[role] === "Customer" ? "Kunde" : null}
-              {RoleEnum[role] === "Inspector" ? "Inspektøy" : null}
+              {RoleEnum[role] === "Inspector" ? "Inspektør" : null}
               {RoleEnum[role] === "CompanyAdmin"
                 ? "Bedriftsadministrator"
                 : null}
