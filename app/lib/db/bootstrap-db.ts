@@ -2,7 +2,7 @@ import { systemUsers } from "./bootstrap-users"
 import { User, createUser } from "../model/user"
 import { systemCompanies } from "./bootstrap-company"
 import { Company, createCompany } from "../model/company"
-import { ParkingLot, createParkingLot } from "../model/parkinglot"
+import { ParkingLot, createParkingLot } from "../model/parkingLot"
 import { systemParkings } from "./bootstrap-parkings"
 
 const createAdminUsers = async () => {

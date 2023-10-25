@@ -1,13 +1,49 @@
 "use client"
 
 import { useSession, signOut } from "next-auth/react"
-import { Icon } from "@iconify/react"
+import { useEffect, useState } from "react"
+import { IParkingSession } from "./lib/interface/IParkingSession"
+import { IUser } from "./lib/interface/IUser"
+import { useRouter } from "next/navigation"
+import ChooseParking from "./components/UserParking/ChooseParking"
 
 export default function Home() {
   const { data: session, status } = useSession()
+
+  const [userData, setUserData] = useState<IUser | undefined>(undefined)
+  const [parkingSession, setParkingSession] = useState<IParkingSession[]>([])
+
+  const getUserData = async () => {
+    const response = await fetch(`/api/users/${session?.user?.email}`, {
+      method: "GET",
+    })
+
+    const result = (await response.json()) as { data: IUser }
+    setUserData(result.data)
+    getParkingSession()
+  }
+
+  const getParkingSession = async () => {
+    const response = await fetch(
+      `/api/parkingSession?${userData?.primaryCarRegNumber}`,
+      {
+        method: "GET",
+      },
+    )
+
+    const result = (await response.json()) as { data: IParkingSession[] }
+    setParkingSession(result.data)
+  }
+
+  useEffect(() => {
+    if (session) {
+      getUserData()
+    }
+  }, [session])
+
   return (
     <>
-      <div className="min-h-screen bg-white flex flex-col ... items-center justify-center">
+      <main className="bg-white flex flex-col items-center min-h-screen p-4 sm:p-8">
         {status === "loading" && (
           <>
             <div role="status">
@@ -33,38 +69,108 @@ export default function Home() {
         )}
         {status === "authenticated" && (
           <>
-            <p>Du er logget inn som {session?.user?.email}</p>
-            <button onClick={() => signOut()}>Logg ut</button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="200"
-              height="200"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="#4ecb71"
-                d="m5 11l1.5-4.5h11L19 11m-1.5 5a1.5 1.5 0 0 1-1.5-1.5a1.5 1.5 0 0 1 1.5-1.5a1.5 1.5 0 0 1 1.5 1.5a1.5 1.5 0 0 1-1.5 1.5m-11 0A1.5 1.5 0 0 1 5 14.5A1.5 1.5 0 0 1 6.5 13A1.5 1.5 0 0 1 8 14.5A1.5 1.5 0 0 1 6.5 16M18.92 6c-.2-.58-.76-1-1.42-1h-11c-.66 0-1.22.42-1.42 1L3 12v8a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h12v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-8l-2.08-6Z"
+            <p className="mb-10">Du er logget inn som {session?.user?.email}</p>
+            {parkingSession?.length > 0 ? (
+              <ActiveParking
+                parkingSession={parkingSession}
+                getUserData={getUserData}
               />
-            </svg>
-
-            <p className="font-bold">DIN PARKERING ER AKTIV TIL</p>
-            <button
-              type="button"
-              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-            >
-              KL 17.00
-            </button>
-            <p>PARKERINGSPLASS P1</p>
-            <div className="mb-6"></div>
-            <button
-              type="button"
-              className="text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
-            >
-              Stopp Parkering
-            </button>
+            ) : (
+              <InActiveParking userData={userData} getUserData={getUserData} />
+            )}
           </>
         )}
-      </div>
+      </main>
+    </>
+  )
+}
+
+const ActiveParking = ({
+  parkingSession,
+  getUserData,
+}: {
+  parkingSession: IParkingSession[]
+  getUserData: () => Promise<void>
+}) => {
+  const stopParking = async () => {
+    await fetch(`/api/parkingSession/by-id/${parkingSession[0]?._id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        getUserData()
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
+  const formattedEndTime = parkingSession[0].endTime
+    ? parkingSession[0].endTime.toLocaleString()
+    : ""
+
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="200"
+        height="200"
+        viewBox="0 0 512 512"
+      >
+        <path
+          fill="#4ecb71"
+          d="M447.68 220.78a16 16 0 0 0-1-3.08l-37.78-88.16C400.19 109.17 379 96 354.89 96H157.11c-24.09 0-45.3 13.17-54 33.54L65.29 217.7A15.72 15.72 0 0 0 64 224v176a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-16h256v16a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V224a16.15 16.15 0 0 0-.32-3.22ZM144 320a32 32 0 1 1 32-32a32 32 0 0 1-32 32Zm224 0a32 32 0 1 1 32-32a32 32 0 0 1-32 32ZM104.26 208l28.23-65.85C136.11 133.69 146 128 157.11 128h197.78c11.1 0 21 5.69 24.62 14.15L407.74 208Z"
+        />
+      </svg>
+
+      <p className="mb-6">DIN PARKERING ER AKTIV TIL</p>
+      <button
+        type="button"
+        className=" mb-6 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+      >
+        {formattedEndTime}
+      </button>
+      <p className="mb-2">Parkeringsplass: {parkingSession[0].parkingName}</p>
+      <p className="mb-2">Valgt Regnr: {parkingSession[0].licensePlate}</p>
+      <button
+        onClick={() => stopParking()}
+        type="button"
+        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+      >
+        STOPP PARKERING
+      </button>
+    </>
+  )
+}
+
+const InActiveParking = ({
+  userData,
+  getUserData,
+}: {
+  userData: IUser | undefined
+  getUserData: () => Promise<void>
+}) => {
+  const router = useRouter()
+
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="200"
+        height="200"
+        viewBox="0 0 512 512"
+      >
+        <path
+          fill="#ccc"
+          d="M447.68 220.78a16 16 0 0 0-1-3.08l-37.78-88.16C400.19 109.17 379 96 354.89 96H157.11c-24.09 0-45.3 13.17-54 33.54L65.29 217.7A15.72 15.72 0 0 0 64 224v176a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-16h256v16a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V224a16.15 16.15 0 0 0-.32-3.22ZM144 320a32 32 0 1 1 32-32a32 32 0 0 1-32 32Zm224 0a32 32 0 1 1 32-32a32 32 0 0 1-32 32ZM104.26 208l28.23-65.85C136.11 133.69 146 128 157.11 128h197.78c11.1 0 21 5.69 24.62 14.15L407.74 208Z"
+        />
+      </svg>
+
+      <p className="mb-6">Du har ingen aktive parkeringer</p>
+      <ChooseParking userData={userData} getUserData={getUserData} />
     </>
   )
 }
