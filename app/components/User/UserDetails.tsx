@@ -2,18 +2,20 @@ import { RoleEnum } from "@/app/lib/enum/role-type"
 import { ICompany } from "@/app/lib/interface/ICompany"
 
 type CompanyDetailsProps = {
-  user: {
-    email: string,
-    firstname?: string,
-    lastname?: string,
-    phone?: string,
-    created?: Date,
-    token?: string,
-    role?: number,
-    company?: ICompany,
-    carRegNumbers?: string[],
-    primaryCarRegNumber?: string
-  } | undefined
+  user:
+    | {
+        email: string
+        firstname?: string
+        lastname?: string
+        phone?: string
+        created?: Date
+        token?: string
+        role?: number
+        company?: ICompany
+        carRegNumbers?: string[]
+        primaryCarRegNumber?: string
+      }
+    | undefined
   handleEditClick?: () => void
   handleDeleteClick?: () => void
 }
@@ -58,9 +60,9 @@ export default function UserDetails(props: CompanyDetailsProps) {
           <>
             {RoleEnum[user?.role] === "Admin" ? "Administrator" : null}
             {RoleEnum[user?.role] === "Customer" ? "Kunde" : null}
-            {RoleEnum[user?.role] === "Inspector" ? "Inspektøy" : null}
-            {RoleEnum[user?.role] === "CompanyAdmin"
-              ? "Bedriftsadministrator"
+            {RoleEnum[user?.role] === "Inspector" ? "Inspektør" : null}
+            {RoleEnum[user?.role] === "CompanyManager"
+              ? "Bedriftsansvarlig"
               : null}
           </>
         ) : null}

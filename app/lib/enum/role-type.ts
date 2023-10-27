@@ -3,7 +3,7 @@ export enum RoleEnum {
   Admin = 1,
   Customer = 2,
   Inspector = 3,
-  CompanyAdmin = 4,
+  CompanyManager = 4,
 }
 
 export const Role: typeof RoleEnum = {
@@ -11,7 +11,7 @@ export const Role: typeof RoleEnum = {
   Admin: RoleEnum.Admin,
   Customer: RoleEnum.Customer,
   Inspector: RoleEnum.Inspector,
-  CompanyAdmin: RoleEnum.CompanyAdmin,
+  CompanyManager: RoleEnum.CompanyManager,
 }
 
 export const Roles = [
@@ -19,5 +19,5 @@ export const Roles = [
   RoleEnum.Admin,
   RoleEnum.Customer,
   RoleEnum.Inspector,
-  RoleEnum.CompanyAdmin,
+  RoleEnum.CompanyManager,
 ]
