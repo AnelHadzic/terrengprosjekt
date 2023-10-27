@@ -1,23 +1,11 @@
 import { ICompany } from "@/app/lib/interface/ICompany"
 import { IUser } from "@/app/lib/interface/IUser"
+import UserWithCompany from "@/app/lib/types/UserWithCompany"
 import debounce from "@/app/utilities/debounce"
 import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
-
-type UserWithCompany = {
-  email: string
-  firstname?: string
-  lastname?: string
-  phone?: string
-  created?: Date
-  token?: string
-  role?: number
-  companyInfo?: ICompany
-  carRegNumbers?: string[]
-  primaryCarRegNumber?: string
-}
 
 export default function UserList() {
   const [currentUserCompany, setCurrentUserCompany] = useState<ICompany>()
