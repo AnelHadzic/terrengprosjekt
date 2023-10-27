@@ -1,6 +1,28 @@
-import React from "react"
+"use client"
+import { IUser } from "@/app/lib/interface/IUser"
+import { useSession } from "next-auth/react"
+import React, { useEffect, useState } from "react"
 
 const CompanyManagerSidebar = () => {
+  const { data: session, status } = useSession()
+
+  const [userData, setUserData] = useState<IUser | undefined>(undefined)
+
+  const getUserData = async () => {
+    const response = await fetch(`/api/users/${session?.user?.email}`, {
+      method: "GET",
+    })
+
+    const result = (await response.json()) as { data: IUser }
+    setUserData(result.data)
+  }
+
+  useEffect(() => {
+    if (session) {
+      getUserData()
+    }
+  }, [session])
+
   return (
     <>
       <button
@@ -34,7 +56,7 @@ const CompanyManagerSidebar = () => {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <span className="ml-3">bruker@hiof.no</span>
+              <span className="ml-3">{userData?.email}</span>
             </li>
             <li>
               <a

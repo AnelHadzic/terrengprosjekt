@@ -1,9 +1,11 @@
 import connectToDb from "@/app/lib/db/mongoose"
 import { IUser } from "@/app/lib/interface/IUser"
+import mongoose from "mongoose"
 import {
   createUser,
   findAllUsers,
   findUser,
+  findUsersByCompanyId,
   findUsersByMultiSearch,
 } from "@/app/lib/model/user"
 import { NextRequest, NextResponse } from "next/server"
@@ -12,11 +14,22 @@ export async function GET({ nextUrl }: NextRequest) {
   await connectToDb()
   const email = nextUrl?.searchParams?.get("email")
   const searchQuery = nextUrl?.searchParams?.get("searchQuery")
+  const companyId = nextUrl?.searchParams?.get("companyId")
 
   let users
 
   if (email) {
     users = await findUser(email)
+  } else if (companyId) {
+    if (!mongoose.isValidObjectId(companyId)) {
+      return NextResponse.json(
+        {
+          data: "Invalid companyId format. Must be must be a string of 12 bytes or a string of 24 hex characters or a number.",
+        },
+        { status: 400 },
+      )
+    }
+    users = await findUsersByCompanyId(companyId)
   } else if (searchQuery) {
     users = await findUsersByMultiSearch(searchQuery)
   } else {
