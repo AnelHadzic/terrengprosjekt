@@ -12,6 +12,7 @@ export default function MyCompany() {
   return (
     <>
       <MyCompanyOverview loggedInUser={loggedInUser}></MyCompanyOverview>
+      
       <CMUserList></CMUserList>
     </>
   )
