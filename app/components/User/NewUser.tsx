@@ -311,9 +311,7 @@ export default function NewUser() {
               {RoleEnum[role] === "Admin" ? "Administrator" : null}
               {RoleEnum[role] === "Customer" ? "Kunde" : null}
               {RoleEnum[role] === "Inspector" ? "Inspektør" : null}
-              {RoleEnum[role] === "CompanyAdmin"
-                ? "Bedriftsadministrator"
-                : null}
+              {RoleEnum[role] === "CompanyManager" ? "Bedriftsansvarlig" : null}
             </option>
           ))}
         </select>

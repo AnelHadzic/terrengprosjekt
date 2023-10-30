@@ -166,7 +166,7 @@ export default function EditUserDetails(props: UserDetailsProps) {
           className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:ring-opacity-50 focus:outline-none"
         />
 
-        <div className="mb-4 mt-6" >
+        <div className="mb-4 mt-6">
           <label
             htmlFor="company"
             className="block text-sm font-medium text-gray-700"
@@ -299,7 +299,7 @@ export default function EditUserDetails(props: UserDetailsProps) {
             id="roleId"
             name="roleId"
             value={editedUser.role}
-            onChange={(e) => handleUpdate({role: Number(e.target.value)})}
+            onChange={(e) => handleUpdate({ role: Number(e.target.value) })}
             className="border rounded-md p-2 w-full focus:outline-none focus:ring focus:border-blue-300"
           >
             {Roles.map((role) => (
@@ -307,8 +307,8 @@ export default function EditUserDetails(props: UserDetailsProps) {
                 {RoleEnum[role] === "Admin" ? "Administrator" : null}
                 {RoleEnum[role] === "Customer" ? "Kunde" : null}
                 {RoleEnum[role] === "Inspector" ? "Inspektøy" : null}
-                {RoleEnum[role] === "CompanyAdmin"
-                  ? "Bedriftsadministrator"
+                {RoleEnum[role] === "CompanyManager"
+                  ? "Bedriftansvarlig"
                   : null}
               </option>
             ))}
