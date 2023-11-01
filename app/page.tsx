@@ -79,7 +79,9 @@ const ActiveParking = ({
   }
 
   const formattedEndTime = parkingSession[0].endTime
-    ? parkingSession[0].endTime.toLocaleString()
+    ? new Date(parkingSession[0].endTime).toLocaleString(undefined, {
+        timeStyle: "short",
+      })
     : ""
 
   return (
