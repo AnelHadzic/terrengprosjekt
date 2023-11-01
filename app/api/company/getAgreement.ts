@@ -15,17 +15,26 @@ export const getAgreement = async (email: string) => {
   const companiesDomainByCompanyAgreement =
     await findCompaniesDomainByCompanyAgreement(email)
 
+  let agreementType
+  let agreementData
+
   if (companiesListByPrivateAgreement?.length) {
-    return "ListByPrivateAgreement"
+    agreementType = "ListByPrivateAgreement"
+    agreementData =
+      companiesListByPrivateAgreement[0]?.privateAgreement?.parkingSpots
+  } else if (companiesListByCompanyAgreement?.length) {
+    agreementType = "ListByCompanyAgreement"
+    agreementData =
+      companiesListByCompanyAgreement[0]?.companyAgreement?.parkingSpots
+  } else if (companiesDomainByPrivateAgreement?.length) {
+    agreementType = "DomainByPrivateAgreement"
+    agreementData =
+      companiesDomainByPrivateAgreement[0]?.privateAgreement?.parkingSpots
+  } else if (companiesDomainByCompanyAgreement?.length) {
+    agreementType = "DomainByCompanyAgreement"
+    agreementData =
+      companiesDomainByCompanyAgreement[0]?.companyAgreement?.parkingSpots
   }
-  if (companiesListByCompanyAgreement?.length) {
-    return "ListByCompanyAgreement"
-  }
-  if (companiesDomainByPrivateAgreement?.length) {
-    return "DomainByPrivateAgreement"
-  }
-  if (companiesDomainByCompanyAgreement?.length) {
-    return "DomainByCompanyAgreement"
-  }
-  return null
+
+  return { agreementType, agreementData }
 }

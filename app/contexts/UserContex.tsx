@@ -10,6 +10,7 @@ import { UserData } from "./types/UserData"
 import { IUser } from "../lib/interface/IUser"
 import { IParkingSession } from "../lib/interface/IParkingSession"
 import { useSession } from "next-auth/react"
+import { IUserCompany } from "./interface/CompanyAgreement"
 
 const UserContext = createContext<UserData | undefined>(undefined)
 
@@ -19,6 +20,31 @@ export const UserProvider = (props: { children: ReactNode }) => {
 
   const [userData, setUserData] = useState<IUser | undefined>(undefined)
   const [parkingSession, setParkingSession] = useState<IParkingSession[]>([])
+  const [userCompany, setUserCompany] = useState<IUserCompany | undefined>(
+    undefined,
+  )
+
+  const getUserCompany = async () => {
+    if (!session) {
+      return
+    }
+
+    try {
+      // Making the API call
+      const response = await fetch(
+        `/api/company?email=${session?.user?.email}`,
+        {
+          method: "GET",
+        },
+      )
+
+      const result = (await response.json()) as { data: IUserCompany }
+
+      setUserCompany(result.data)
+    } catch (error) {
+      console.error("An error occurred:", error)
+    }
+  }
 
   const getUserData = async () => {
     const response = await fetch(`/api/users/${session?.user?.email}`, {
@@ -28,6 +54,7 @@ export const UserProvider = (props: { children: ReactNode }) => {
     const result = (await response.json()) as { data: IUser }
     setUserData(result.data)
     getParkingSession()
+    getUserCompany()
   }
 
   const getParkingSession = async () => {
@@ -55,6 +82,8 @@ export const UserProvider = (props: { children: ReactNode }) => {
     setParkingSession,
     getUserData,
     status,
+    userCompany,
+    getUserCompany,
   }
 
   return (

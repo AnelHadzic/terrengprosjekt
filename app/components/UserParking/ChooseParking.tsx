@@ -1,39 +1,18 @@
-import React, { useState, useEffect, Fragment } from "react"
+import React, { useState } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { IUser } from "@/app/lib/interface/IUser"
-import { parkingProps } from "@/app/(pages)/inspectorTool/page"
 import { useRouter } from "next/navigation"
+import { useUserDataContext } from "@/app/contexts/UserContex"
+import { IParkingSpot } from "@/app/contexts/interface/CompanyAgreement"
 
-const ChooseParking = ({
-  userData,
-  getUserData,
-}: {
-  userData: IUser | undefined
-  getUserData: () => void
-}) => {
-  const [parkingSpots, setParkingSpots] = useState<[]>([])
+const ChooseParking = () => {
   const [chosenParking, setChosenParking] = useState<string>("")
   const [selectedTime, setSelectedTime] = useState<Date | null>(null)
   const router = useRouter()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/parkingLot`, {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-          },
-        })
-        const result = await response.json()
-        setParkingSpots(result.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchData()
-  }, [])
+  const { userCompany, userData, getUserData } = useUserDataContext()
+
+  const parkingSpots: IParkingSpot[] | undefined = userCompany?.agreementData
 
   const currentTime = new Date()
   const endTime = new Date(currentTime.getTime() + 8 * 60 * 60 * 1000)
@@ -74,16 +53,16 @@ const ChooseParking = ({
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Hvor skal du parkere?
         </h5>
-        {parkingSpots.map((item: parkingProps, index) => (
-          <Fragment key={index}>
-            <button
-              onClick={() => setChosenParking(item.parkingName)}
-              className="inline-flex items-center px-3 py-2 mr-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              {item.parkingName}
-            </button>
-          </Fragment>
+        {parkingSpots?.map((item: IParkingSpot, index) => (
+          <button
+            className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            key={index}
+            onClick={() => setChosenParking(item.parkingName)}
+          >
+            {item.parkingName}
+          </button>
         ))}
+
         <p>Valgt: {chosenParking}</p>
         <div className="mb-6"></div>
         <hr className="mb-6" />

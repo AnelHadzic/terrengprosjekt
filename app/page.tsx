@@ -9,8 +9,8 @@ export default function Home() {
 }
 
 function MainContent() {
-  const { userData, parkingSession, getUserData, status } = useUserDataContext()
-
+  const { userData, parkingSession, getUserData, status, userCompany } =
+    useUserDataContext()
   return (
     <>
       <main className="bg-white flex flex-col items-center min-h-screen p-4 sm:p-8">
@@ -46,7 +46,7 @@ function MainContent() {
                 getUserData={getUserData}
               />
             ) : (
-              <InActiveParking userData={userData} getUserData={getUserData} />
+              <InActiveParking />
             )}
           </>
         )}
@@ -116,13 +116,7 @@ const ActiveParking = ({
   )
 }
 
-const InActiveParking = ({
-  userData,
-  getUserData,
-}: {
-  userData: IUser | undefined
-  getUserData: () => Promise<void>
-}) => {
+const InActiveParking = () => {
   return (
     <>
       <svg
@@ -138,7 +132,7 @@ const InActiveParking = ({
       </svg>
 
       <p className="mb-6">Du har ingen aktive parkeringer</p>
-      <ChooseParking userData={userData} getUserData={getUserData} />
+      <ChooseParking />
     </>
   )
 }
