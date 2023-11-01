@@ -8,7 +8,7 @@ export default function Home() {
   return <MainContent />
 }
 
-export function MainContent() {
+function MainContent() {
   const { userData, parkingSession, getUserData, status } = useUserDataContext()
 
   return (
