@@ -13,7 +13,7 @@ export const systemUsers = () => {
       primaryCarRegNumber: "HJ73642",
     },
     {
-      email: "anel@hiof.no",
+      email: "anelh@hiof.no",
       firstname: "Anel",
       lastname: "Hadzic",
       phone: "87654321",

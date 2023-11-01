@@ -7,10 +7,14 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
+type UserWithStatus = UserWithCompany & {
+  status: string
+}
+
 export default function UserList() {
   const [currentUserCompany, setCurrentUserCompany] = useState<ICompany>()
   const { data: session, status } = useSession()
-  const [userList, setUserList] = useState<UserWithCompany[]>([])
+  const [userList, setUserList] = useState<UserWithStatus[]>([])
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [loading, setLoading] = useState(true)
@@ -31,6 +35,17 @@ export default function UserList() {
     }
   }, [session])
 
+  const fetchUserStatus = async (email: string) => {
+    try {
+      const response = await axios.get(`/api/company?email=${email}`)
+      console.log(response)
+      return response.data.data.agreementType
+    } catch (err) {
+      console.error(err)
+      return "Error fetching status"
+    }
+  }
+
   useEffect(() => {
     setLoading(true)
     setError("")
@@ -38,7 +53,16 @@ export default function UserList() {
       try {
         const API_URL = `/api/users?companyId=${currentUserCompany?._id}`
         const response = await axios.get(API_URL)
-        setUserList(response.data.data)
+        const users = response.data.data as UserWithCompany[]
+
+        const updatedUserList = await Promise.all(
+          users.map(async (user: UserWithCompany) => {
+            const status = await fetchUserStatus(user.email)
+            return { ...user, status }
+          }),
+        )
+
+        setUserList(updatedUserList)
       } catch (err) {
         console.log(err)
       } finally {
@@ -57,7 +81,7 @@ export default function UserList() {
         try {
           const API_URL = `/api/users?companyId=${currentUserCompany?._id}&searchQuery=${searchQuery}`
           const response = await axios.get(API_URL)
-          const responseUsers = response.data.data as UserWithCompany[]
+          const responseUsers = response.data.data as UserWithStatus[]
 
           setUserList(responseUsers)
         } catch (err) {
@@ -147,7 +171,20 @@ export default function UserList() {
                   </td>
                   <td className="px-6 py-4">{item.phone}</td>
                   <td className="px-6 py-4">{item.primaryCarRegNumber}</td>
-                  <td className="px-6 py-4">Temp aktiv status</td>
+                  <td className="px-6 py-4">
+                    {item.status === "ListByPrivateAgreement"
+                      ? "Privat (whitelist)"
+                      : null}
+                    {item.status === "ListByCompanyAgreement"
+                      ? "Bedrift (whitelist)"
+                      : null}
+                    {item.status === "DomainByPrivateAgreement"
+                      ? "Privat"
+                      : null}
+                    {item.status === "DomainByCompanyAgreement"
+                      ? "Bedrift"
+                      : null}
+                  </td>
                 </tr>
               </Fragment>
             ))}
