@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react"
 import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css" // Import the styles
+import "react-datepicker/dist/react-datepicker.css"
 import { IUser } from "@/app/lib/interface/IUser"
 import { parkingProps } from "@/app/(pages)/inspectorTool/page"
+import { useRouter } from "next/navigation"
 
 const ChooseParking = ({
   userData,
@@ -14,6 +15,7 @@ const ChooseParking = ({
   const [parkingSpots, setParkingSpots] = useState<[]>([])
   const [chosenParking, setChosenParking] = useState<string>("")
   const [selectedTime, setSelectedTime] = useState<Date | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +65,12 @@ const ChooseParking = ({
   return (
     <>
       <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <p
+          onClick={() => router.push(`/mine-biler`)}
+          className="flex justify-center border-dotted  border-2 border-indigo-600 ... mb-3"
+        >
+          {userData?.primaryCarRegNumber}
+        </p>
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Hvor skal du parkere?
         </h5>

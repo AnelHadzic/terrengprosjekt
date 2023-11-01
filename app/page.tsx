@@ -1,45 +1,15 @@
 "use client"
-
-import { useSession, signOut } from "next-auth/react"
-import { useEffect, useState } from "react"
 import { IParkingSession } from "./lib/interface/IParkingSession"
 import { IUser } from "./lib/interface/IUser"
-import { useRouter } from "next/navigation"
 import ChooseParking from "./components/UserParking/ChooseParking"
+import { UserProvider, useUserDataContext } from "./contexts/UserContex"
 
 export default function Home() {
-  const { data: session, status } = useSession()
+  return <MainContent />
+}
 
-  const [userData, setUserData] = useState<IUser | undefined>(undefined)
-  const [parkingSession, setParkingSession] = useState<IParkingSession[]>([])
-
-  const getUserData = async () => {
-    const response = await fetch(`/api/users/${session?.user?.email}`, {
-      method: "GET",
-    })
-
-    const result = (await response.json()) as { data: IUser }
-    setUserData(result.data)
-    getParkingSession()
-  }
-
-  const getParkingSession = async () => {
-    const response = await fetch(
-      `/api/parkingSession?${userData?.primaryCarRegNumber}`,
-      {
-        method: "GET",
-      },
-    )
-
-    const result = (await response.json()) as { data: IParkingSession[] }
-    setParkingSession(result.data)
-  }
-
-  useEffect(() => {
-    if (session) {
-      getUserData()
-    }
-  }, [session])
+function MainContent() {
+  const { userData, parkingSession, getUserData, status } = useUserDataContext()
 
   return (
     <>
@@ -69,7 +39,7 @@ export default function Home() {
         )}
         {status === "authenticated" && (
           <>
-            <p className="mb-10">Du er logget inn som {session?.user?.email}</p>
+            <p className="mb-10">Du er logget inn som {userData?.email}</p>
             {parkingSession?.length > 0 ? (
               <ActiveParking
                 parkingSession={parkingSession}
@@ -153,8 +123,6 @@ const InActiveParking = ({
   userData: IUser | undefined
   getUserData: () => Promise<void>
 }) => {
-  const router = useRouter()
-
   return (
     <>
       <svg

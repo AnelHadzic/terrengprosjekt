@@ -10,6 +10,7 @@ import connectToDb from "@/app/lib/db/mongoose"
 import { ICompany } from "@/app/lib/interface/ICompany"
 import { findAllCompanies, findCompaniesByName } from "@/app/lib/model/company"
 import { NextRequest, NextResponse } from "next/server"
+import { getAgreement } from "./getAgreement"
 
 export async function GET({ nextUrl }: NextRequest) {
   await connectToDb()
@@ -25,31 +26,15 @@ export async function GET({ nextUrl }: NextRequest) {
 
     // Hvis email blir brukt som parameter, så bruk disse 4 funksjonene under.
   } else if (email) {
-    const companiesListByPrivateAgreement =
-      await findCompaniesListByPrivateAgreement(email)
-    const companiesListByCompanyAgreement =
-      await findCompaniesListByCompanyAgreement(email)
-    const companiesDomainByPrivateAgreement =
-      await findCompaniesDomainByPrivateAgreement(email)
-    const companiesDomainByCompanyAgreement =
-      await findCompaniesDomainByCompanyAgreement(email)
+    const companyAgreement = await getAgreement(email)
 
-    // Combine results if necessary
-    companies = {
-      companiesListByPrivateAgreement,
-      companiesListByCompanyAgreement,
-      companiesDomainByPrivateAgreement,
-      companiesDomainByCompanyAgreement,
-    }
-
-    const emailExists =
-      (companiesListByPrivateAgreement?.length ?? 0) > 0 ||
-      (companiesListByCompanyAgreement?.length ?? 0) > 0 ||
-      (companiesDomainByPrivateAgreement?.length ?? 0) > 0 ||
-      (companiesDomainByCompanyAgreement?.length ?? 0) > 0
+    const emailExists = Boolean(companyAgreement)
 
     // Returner data hvis noen ble funnet.
-    return NextResponse.json({ emailExists, data: companies }, { status: 200 })
+    return NextResponse.json(
+      { emailExists, data: companyAgreement },
+      { status: 200 },
+    )
     // Hvis companyName søk ikke finner noe, så søk alle bedrifter.
   } else if (searchQuery) {
     companies = await findCompaniesByMultiSearch(searchQuery)
