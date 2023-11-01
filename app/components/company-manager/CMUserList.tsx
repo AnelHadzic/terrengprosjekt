@@ -78,9 +78,11 @@ export default function UserList() {
 
   return (
     <>
-      <h2 className="text-xl mt-6 mb-2 font-bold leading-none text-gray-900 dark:text-white">
-        Brukere
-      </h2>
+      <div className="border-t-2 mt-8 border-gray-200 mb-4">
+        <h2 className="text-xl pl-4 mt-6 mb-2 font-bold leading-none text-gray-900 dark:text-white">
+          Brukere
+        </h2>
+      </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className="p-1">
           <input
