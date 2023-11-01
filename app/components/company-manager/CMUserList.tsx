@@ -1,5 +1,4 @@
 import { ICompany } from "@/app/lib/interface/ICompany"
-import { IUser } from "@/app/lib/interface/IUser"
 import UserWithCompany from "@/app/lib/types/UserWithCompany"
 import debounce from "@/app/utilities/debounce"
 import axios from "axios"
