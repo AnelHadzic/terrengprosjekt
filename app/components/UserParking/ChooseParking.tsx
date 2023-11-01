@@ -14,9 +14,12 @@ const ChooseParking = () => {
 
   const parkingSpots: IParkingSpot[] | undefined = userCompany?.agreementData
 
-  const currentTime = new Date()
-  const endTime = new Date(currentTime.getTime() + 8 * 60 * 60 * 1000)
   const startParking = async () => {
+    const currentTime = new Date()
+
+    // Midlertidig løsning for å få vår tidssone
+    currentTime.setHours(currentTime.getHours() + 1)
+
     if (userData) {
       const payload = {
         parkingName: chosenParking,
