@@ -22,7 +22,7 @@ export default function MyCompanyOverview(props: CompanyDetailsProps) {
   const { loggedInUser } = props
 
   return (
-    <>
+    <div className="pl-6">
       <h1 className="text-2xl mb-2 font-bold leading-none text-gray-900 dark:text-white">
         {loggedInUser?.company?.companyName}
       </h1>
@@ -67,6 +67,6 @@ export default function MyCompanyOverview(props: CompanyDetailsProps) {
       ) : (
         <p>Ingen parkeringer</p>
       )}
-    </>
+    </div>
   )
 }
