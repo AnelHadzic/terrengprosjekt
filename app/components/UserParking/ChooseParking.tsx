@@ -4,6 +4,15 @@ import "react-datepicker/dist/react-datepicker.css"
 import { useRouter } from "next/navigation"
 import { useUserDataContext } from "@/app/contexts/UserContex"
 import { IParkingSpot } from "@/app/contexts/interface/CompanyAgreement"
+import UserParkering from "../parkering/UserParkering"
+import dynamic from "next/dynamic"
+
+const MapComp = dynamic(
+  () => import("@/app/components/parkering/UserParkering"),
+  {
+    ssr: false,
+  },
+)
 
 const ChooseParking = () => {
   const [chosenParking, setChosenParking] = useState<string>("")
@@ -67,6 +76,7 @@ const ChooseParking = () => {
         ))}
 
         <p>Valgt: {chosenParking}</p>
+        {chosenParking ? <MapComp parkingName={chosenParking} /> : null}
         <div className="mb-6"></div>
         <hr className="mb-6" />
 
