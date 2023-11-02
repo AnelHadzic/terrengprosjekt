@@ -1,4 +1,5 @@
 import { ICompany } from "@/app/lib/interface/ICompany"
+import { IUser } from "@/app/lib/interface/IUser"
 import UserWithCompany from "@/app/lib/types/UserWithCompany"
 import debounce from "@/app/utilities/debounce"
 import axios from "axios"
@@ -25,7 +26,6 @@ export default function UserList() {
     })
 
     const result = await response.json()
-    console.log("SETTING CURRENT USER COMPANY: " + JSON.stringify(result.data.company))
     setCurrentUserCompany(result.data.company as ICompany)
   }
 
@@ -38,7 +38,6 @@ export default function UserList() {
   const fetchUserStatus = async (email: string) => {
     try {
       const response = await axios.get(`/api/company?email=${email}`)
-      console.log(response)
       return response.data.data.agreementType
     } catch (err) {
       console.error(err)
@@ -77,8 +76,6 @@ export default function UserList() {
 
   const debouncedFetchDataRef = useRef(
     debounce(async (query: string, company: ICompany) => {
-      console.log(currentUserCompany)
-
       if (company) {
         try {
           const API_URL = `/api/users?companyId=${company._id}&searchQuery=${query}`
@@ -91,7 +88,7 @@ export default function UserList() {
               return { ...user, status }
             }),
           )
-  
+
           setUserList(updatedUserList)
         } catch (err) {
           console.log(err)
@@ -108,6 +105,29 @@ export default function UserList() {
 
     debouncedFetchDataRef.current(searchQuery, currentUserCompany)
   }, [currentUserCompany, searchQuery])
+
+  const handleAgreementTypeChange = async (
+    user: IUser,
+    newAgreementType: string,
+  ) => {
+    try {
+      await axios.post("/api/updateAgreementType", {
+        email: user.email,
+        agreementType: newAgreementType,
+      })
+
+      setUserList((prevUserList) => {
+        const updatedUserList = [...prevUserList]
+        const userIndex = updatedUserList.findIndex(
+          (u) => u.email === user.email,
+        )
+        updatedUserList[userIndex] = { ...user, status: newAgreementType }
+        return updatedUserList
+      })
+    } catch (error) {
+      console.error("Error updating agreement type:", error)
+    }
+  }
 
   return (
     <>
@@ -163,10 +183,7 @@ export default function UserList() {
           <tbody>
             {userList.map((item, index) => (
               <Fragment key={index}>
-                <tr
-                  onClick={() => router.push(`/brukere/${item.email}`)}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-100 dark:hover:bg-gray-900 transition-all cursor-pointer"
-                >
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-100 dark:hover:bg-gray-900 transition-all cursor-pointer">
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -181,18 +198,22 @@ export default function UserList() {
                   <td className="px-6 py-4">{item.phone}</td>
                   <td className="px-6 py-4">{item.primaryCarRegNumber}</td>
                   <td className="px-6 py-4">
-                    {item.status === "ListByPrivateAgreement"
-                      ? "Privat (whitelist)"
-                      : null}
-                    {item.status === "ListByCompanyAgreement"
-                      ? "Bedrift (whitelist)"
-                      : null}
-                    {item.status === "DomainByPrivateAgreement"
-                      ? "Privat"
-                      : null}
-                    {item.status === "DomainByCompanyAgreement"
-                      ? "Bedrift"
-                      : null}
+                    <select
+                      value={item.status}
+                      onChange={(e) =>
+                        handleAgreementTypeChange(item, e.target.value)
+                      }
+                    >
+                      <option value="ListByPrivateAgreement">
+                        Privat (whitelist)
+                      </option>
+                      <option value="ListByCompanyAgreement">
+                        Bedrift (whitelist)
+                      </option>
+                      <option value="DomainByPrivateAgreement" disabled>Privat (fra domene)</option>
+                      <option value="DomainByCompanyAgreement" disabled>Bedrift (fra domene)</option>
+                      <option value="NoAgreement">Ingen whitelist</option>
+                    </select>
                   </td>
                 </tr>
               </Fragment>
