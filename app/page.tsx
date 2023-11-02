@@ -1,16 +1,13 @@
 "use client"
-import { IParkingSession } from "./lib/interface/IParkingSession"
-import { IUser } from "./lib/interface/IUser"
 import ChooseParking from "./components/UserParking/ChooseParking"
-import { UserProvider, useUserDataContext } from "./contexts/UserContex"
+import { useUserDataContext } from "./contexts/UserContex"
 
 export default function Home() {
   return <MainContent />
 }
 
 function MainContent() {
-  const { userData, parkingSession, getUserData, status, userCompany } =
-    useUserDataContext()
+  const { userData, parkingSession, status } = useUserDataContext()
   return (
     <>
       <main className="bg-white flex flex-col items-center min-h-screen p-4 sm:p-8">
@@ -41,10 +38,7 @@ function MainContent() {
           <>
             <p className="mb-10">Du er logget inn som {userData?.email}</p>
             {parkingSession?.length > 0 ? (
-              <ActiveParking
-                parkingSession={parkingSession}
-                getUserData={getUserData}
-              />
+              <ActiveParking />
             ) : (
               <InActiveParking />
             )}
@@ -55,13 +49,9 @@ function MainContent() {
   )
 }
 
-const ActiveParking = ({
-  parkingSession,
-  getUserData,
-}: {
-  parkingSession: IParkingSession[]
-  getUserData: () => Promise<void>
-}) => {
+const ActiveParking = () => {
+  const { parkingSession, getUserData } = useUserDataContext()
+
   const stopParking = async () => {
     await fetch(`/api/parkingSession/by-id/${parkingSession[0]?._id}`, {
       method: "DELETE",
