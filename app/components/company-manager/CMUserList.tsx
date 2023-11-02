@@ -25,6 +25,7 @@ export default function UserList() {
     })
 
     const result = await response.json()
+    console.log("SETTING CURRENT USER COMPANY: " + JSON.stringify(result.data.company))
     setCurrentUserCompany(result.data.company as ICompany)
   }
 
@@ -75,14 +76,23 @@ export default function UserList() {
   }, [currentUserCompany, currentUserCompany?._id])
 
   const debouncedFetchDataRef = useRef(
-    debounce(async (query: string) => {
-      if (currentUserCompany) {
+    debounce(async (query: string, company: ICompany) => {
+      console.log(currentUserCompany)
+
+      if (company) {
         try {
-          const API_URL = `/api/users?companyId=${currentUserCompany?._id}&searchQuery=${searchQuery}`
+          const API_URL = `/api/users?companyId=${company._id}&searchQuery=${query}`
           const response = await axios.get(API_URL)
           const responseUsers = response.data.data as UserWithStatus[]
 
-          setUserList(responseUsers)
+          const updatedUserList = await Promise.all(
+            responseUsers.map(async (user: UserWithCompany) => {
+              const status = await fetchUserStatus(user.email)
+              return { ...user, status }
+            }),
+          )
+  
+          setUserList(updatedUserList)
         } catch (err) {
           console.log(err)
         } finally {
@@ -96,7 +106,7 @@ export default function UserList() {
     setLoading(true)
     setError("")
 
-    debouncedFetchDataRef.current(searchQuery)
+    debouncedFetchDataRef.current(searchQuery, currentUserCompany)
   }, [currentUserCompany, searchQuery])
 
   return (
