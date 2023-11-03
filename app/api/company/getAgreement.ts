@@ -34,6 +34,9 @@ export const getAgreement = async (email: string) => {
     agreementType = "DomainByCompanyAgreement"
     agreementData =
       companiesDomainByCompanyAgreement[0]?.companyAgreement?.parkingSpots
+  } else {
+    agreementType = "NoAgreement"
+    agreementData = null
   }
 
   return { agreementType, agreementData }

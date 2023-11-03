@@ -60,7 +60,7 @@ export default function MyCompanyOverview(props: CompanyDetailsProps) {
             <>
               <p className="mb-4">
                 Status:{" "}
-                <span className="font-bold text-green-500">Inaktiv</span>
+                <span className="font-bold text-red-500">Inaktiv</span>
               </p>
               <p>Ingen parkeringer</p>
             </>
@@ -93,7 +93,7 @@ export default function MyCompanyOverview(props: CompanyDetailsProps) {
             <>
               <p className="mb-4">
                 Status:{" "}
-                <span className="font-bold text-green-500">Inaktiv</span>
+                <span className="font-bold text-red-500">Inaktiv</span>
               </p>
               <p>Ingen parkeringer</p>
             </>

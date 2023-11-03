@@ -107,25 +107,84 @@ export default function UserList() {
   }, [currentUserCompany, searchQuery])
 
   const handleAgreementTypeChange = async (
-    user: IUser,
+    user: UserWithStatus,
     newAgreementType: string,
   ) => {
-    try {
-      await axios.post("/api/updateAgreementType", {
-        email: user.email,
-        agreementType: newAgreementType,
-      })
+    let isValidUpdate = true
+    switch (newAgreementType) {
+      case "ListByPrivateAgreement":
+        if (user.companyInfo?.privateAgreement) {
+          if (
+            !user.companyInfo?.privateAgreement.emails?.includes(user.email)
+          ) {
+            user.companyInfo.privateAgreement.emails?.push(user.email)
+          } else {
+            isValidUpdate = false
+          }
+        } else {
+          isValidUpdate = false
+        }
+        break
 
-      setUserList((prevUserList) => {
-        const updatedUserList = [...prevUserList]
-        const userIndex = updatedUserList.findIndex(
-          (u) => u.email === user.email,
+      case "ListByCompanyAgreement":
+        if (user.companyInfo?.companyAgreement) {
+          if (
+            !user.companyInfo?.companyAgreement.emails?.includes(user.email)
+          ) {
+            user.companyInfo.companyAgreement.emails?.push(user.email)
+          } else {
+            isValidUpdate = false
+          }
+        } else {
+          isValidUpdate = false
+        }
+        break
+
+      case "NoAgreement":
+        // Remove from both whitelists
+        if (user.companyInfo?.privateAgreement) {
+          if (user.companyInfo?.privateAgreement.emails?.includes(user.email)) {
+            user.companyInfo.privateAgreement.emails =
+              user.companyInfo.privateAgreement.emails.filter(
+                (email) => email !== user.email,
+              )
+          }
+        }
+        if (user.companyInfo?.companyAgreement) {
+          if (user.companyInfo?.companyAgreement.emails?.includes(user.email)) {
+            user.companyInfo.companyAgreement.emails =
+              user.companyInfo.companyAgreement.emails.filter(
+                (email) => email !== user.email,
+              )
+          }
+        }
+        break
+
+      default:
+        isValidUpdate = false
+        break
+    }
+
+    if (isValidUpdate) {
+      try {
+        await axios.patch(
+          `/api/company/${user.companyInfo?._id}`,
+          user.companyInfo,
         )
-        updatedUserList[userIndex] = { ...user, status: newAgreementType }
-        return updatedUserList
-      })
-    } catch (error) {
-      console.error("Error updating agreement type:", error)
+
+        setUserList((prevUserList) => {
+          const updatedUserList = [...prevUserList]
+          const userIndex = updatedUserList.findIndex(
+            (u) => u.email === user.email,
+          )
+          updatedUserList[userIndex] = { ...user, status: newAgreementType }
+          return updatedUserList
+        })
+      } catch (error) {
+        console.error("Error updating agreement type:", error)
+      }
+    } else {
+      console.error("Invalid update.")
     }
   }
 
@@ -160,7 +219,7 @@ export default function UserList() {
           </p>
         )}
 
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-900 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
@@ -186,7 +245,7 @@ export default function UserList() {
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-100 dark:hover:bg-gray-900 transition-all cursor-pointer">
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                   >
                     {item.email}
                   </th>
@@ -197,7 +256,11 @@ export default function UserList() {
                   </td>
                   <td className="px-6 py-4">{item.phone}</td>
                   <td className="px-6 py-4">{item.primaryCarRegNumber}</td>
-                  <td className="px-6 py-4">
+                  <td
+                    className={`px-6 py-4 ${
+                      item.status === "NoAgreement" ? "text-red-500" : ""
+                    }`}
+                  >
                     <select
                       value={item.status}
                       onChange={(e) =>
@@ -210,9 +273,13 @@ export default function UserList() {
                       <option value="ListByCompanyAgreement">
                         Bedrift (whitelist)
                       </option>
-                      <option value="DomainByPrivateAgreement" disabled>Privat (fra domene)</option>
-                      <option value="DomainByCompanyAgreement" disabled>Bedrift (fra domene)</option>
                       <option value="NoAgreement">Ingen whitelist</option>
+                      <option value="DomainByPrivateAgreement" disabled>
+                        Privat (fra domene)
+                      </option>
+                      <option value="DomainByCompanyAgreement" disabled>
+                        Bedrift (fra domene)
+                      </option>
                     </select>
                   </td>
                 </tr>
