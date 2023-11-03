@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   const body = await request.json()
 
   const parkingLot: IParkingLot = body as IParkingLot
-
+  console.log(parkingLot)
   try {
     await createParkingLot(parkingLot)
     return NextResponse.json({ data: parkingLot }, { status: 201 })
