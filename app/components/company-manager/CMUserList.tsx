@@ -474,7 +474,7 @@ export default function UserList() {
                 <td
                   onClick={() => handleAddNewUser()}
                   colSpan={5}
-                  className="px-6 py-4"
+                  className="px-6 py-4 hover:bg-green-100 hover:underline"
                 >
                   + Legg til ny bruker i whitelist
                 </td>
