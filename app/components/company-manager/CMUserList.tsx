@@ -339,15 +339,6 @@ export default function UserList() {
                   }
                   className="px-6 py-4"
                 >
-                  {/* <input
-                    className="w-20"
-                    type="text"
-                    placeholder="12345678"
-                    value={newUser.phone}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, phone: e.target.value })
-                    }
-                  /> */}
                 </td>
                 <td
                   onClick={() =>
@@ -355,18 +346,6 @@ export default function UserList() {
                   }
                   className="px-6 py-4"
                 >
-                  {/* <input
-                    className="w-20"
-                    type="text"
-                    placeholder="AE12345"
-                    value={newUser.primaryCarRegNumber}
-                    onChange={(e) =>
-                      setNewUser({
-                        ...newUser,
-                        primaryCarRegNumber: e.target.value,
-                      })
-                    }
-                  /> */}
                 </td>
                 <td
                   className={`px-6 py-4 ${
