@@ -6,6 +6,8 @@ import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify"
+
 
 type UserWithStatus = UserWithCompany & {
   status: string
@@ -122,6 +124,7 @@ export default function UserList() {
             isValidUpdate = false
           }
         } else {
+          toast.error("Bedriften har ingen privatavtale.")
           isValidUpdate = false
         }
         break
@@ -136,6 +139,7 @@ export default function UserList() {
             isValidUpdate = false
           }
         } else {
+          toast.error("Bedriften har ingen bedriftsavtale.")
           isValidUpdate = false
         }
         break
