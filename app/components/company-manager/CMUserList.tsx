@@ -185,6 +185,7 @@ export default function UserList() {
           return updatedUserList
         })
       } catch (error) {
+        toast.error("Oppdatering feilet. Kontakt administrator.")
         console.error("Error updating agreement type:", error)
       }
     } else {
