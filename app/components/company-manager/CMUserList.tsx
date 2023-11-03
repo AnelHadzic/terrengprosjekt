@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 
-
 type UserWithStatus = UserWithCompany & {
   status: string
 }
@@ -21,6 +20,31 @@ export default function UserList() {
   const [searchQuery, setSearchQuery] = useState("")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [newUser, setNewUser] = useState<UserWithStatus | null>(null)
+
+  const handleAddNewUser = () => {
+    const defaultUser: UserWithStatus = {
+      email: "",
+      companyInfo: currentUserCompany,
+      phone: "",
+      primaryCarRegNumber: "",
+      status: "NoAgreement",
+    }
+    setNewUser(defaultUser)
+  }
+
+  const handleSaveNewUser = () => {
+    if (newUser) {
+      //setUserList((prevUserList) => [...prevUserList, newUser])
+      setNewUser(null)
+    }
+  }
+
+  const handleCancelNewUser = () => {
+    if (newUser) {
+      setNewUser(null)
+    }
+  }
 
   const getUserData = async () => {
     const response = await fetch(`/api/users/${session?.user?.email}`, {
@@ -197,7 +221,7 @@ export default function UserList() {
     <>
       <div className="border-t-2 mt-8 border-gray-200 mb-4">
         <h2 className="text-xl pl-4 mt-6 mb-2 font-bold leading-none text-gray-900 dark:text-white">
-          Brukere
+          Brukere ({userList.length})
         </h2>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -290,6 +314,117 @@ export default function UserList() {
                 </tr>
               </Fragment>
             ))}
+
+            {newUser && (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-900 transition-all cursor-pointer">
+                <td className="px-6 py-4">
+                  <input
+                    className="w-36"
+                    type="text"
+                    placeholder="ola@nordmann.no"
+                    value={newUser.email}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, email: e.target.value })
+                    }
+                  />
+                </td>
+                <td className="px-6 py-4">
+                  {newUser.companyInfo?.companyName}
+                </td>
+                <td
+                  onClick={() =>
+                    toast.warning(
+                      "Mobilnummer skal settes av bruker ved først login.",
+                    )
+                  }
+                  className="px-6 py-4"
+                >
+                  {/* <input
+                    className="w-20"
+                    type="text"
+                    placeholder="12345678"
+                    value={newUser.phone}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, phone: e.target.value })
+                    }
+                  /> */}
+                </td>
+                <td
+                  onClick={() =>
+                    toast.warn("Regnr skal settes av bruker ved først login.")
+                  }
+                  className="px-6 py-4"
+                >
+                  {/* <input
+                    className="w-20"
+                    type="text"
+                    placeholder="AE12345"
+                    value={newUser.primaryCarRegNumber}
+                    onChange={(e) =>
+                      setNewUser({
+                        ...newUser,
+                        primaryCarRegNumber: e.target.value,
+                      })
+                    }
+                  /> */}
+                </td>
+                <td
+                  className={`px-6 py-4 ${
+                    newUser.status === "NoAgreement" ? "text-red-500" : ""
+                  }`}
+                >
+                  <select
+                    value={newUser.status}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, status: e.target.value })
+                    }
+                  >
+                    <option value="ListByPrivateAgreement">
+                      Privat (whitelist)
+                    </option>
+                    <option value="ListByCompanyAgreement">
+                      Bedrift (whitelist)
+                    </option>
+                    <option value="NoAgreement">Ingen whitelist</option>
+                    <option value="DomainByPrivateAgreement" disabled>
+                      Privat (fra domene)
+                    </option>
+                    <option value="DomainByCompanyAgreement" disabled>
+                      Bedrift (fra domene)
+                    </option>
+                  </select>
+                </td>
+              </tr>
+            )}
+
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700  dark:hover:bg-gray-900  transition-all cursor-pointer">
+              {newUser ? (
+                <>
+                  <td
+                    onClick={() => handleSaveNewUser()}
+                    colSpan={3}
+                    className="px-6 py-4 hover:bg-green-100 hover:underline"
+                  >
+                    Lagre
+                  </td>
+                  <td
+                    onClick={() => handleCancelNewUser()}
+                    colSpan={2}
+                    className="px-6 py-4 hover:bg-red-100 hover:underline"
+                  >
+                    Avbryt
+                  </td>
+                </>
+              ) : (
+                <td
+                  onClick={() => handleAddNewUser()}
+                  colSpan={5}
+                  className="px-6 py-4"
+                >
+                  + Legg til ny bruker i whitelist
+                </td>
+              )}
+            </tr>
           </tbody>
         </table>
       </div>
