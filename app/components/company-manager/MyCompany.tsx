@@ -10,7 +10,7 @@ export default function MyCompany() {
     getUserData()
   }, [getUserData, loggedInUser?.email])
   return (
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-screen-md w-full">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-screen-lg w-full">
         <MyCompanyOverview loggedInUser={loggedInUser}></MyCompanyOverview>
 
         <CMUserList></CMUserList>

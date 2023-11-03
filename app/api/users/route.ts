@@ -6,6 +6,7 @@ import {
   findAllUsers,
   findUser,
   findUsersByCompanyId,
+  findUsersByCompanyIdAndMultiSearch,
   findUsersByMultiSearch,
 } from "@/app/lib/model/user"
 import { NextRequest, NextResponse } from "next/server"
@@ -29,7 +30,12 @@ export async function GET({ nextUrl }: NextRequest) {
         { status: 400 },
       )
     }
-    users = await findUsersByCompanyId(companyId)
+    if (searchQuery) {
+      users = await findUsersByCompanyIdAndMultiSearch(companyId, searchQuery)
+    }
+    else {
+      users = await findUsersByCompanyId(companyId)
+    }
   } else if (searchQuery) {
     users = await findUsersByMultiSearch(searchQuery)
   } else {

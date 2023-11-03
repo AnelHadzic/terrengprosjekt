@@ -5,6 +5,9 @@ import AuthProvider from "./contexts/AuthProvider"
 import Script from "next/script"
 import Navbar from "./components/shared/Navbar"
 import { UserProvider } from "./contexts/UserContex"
+import { ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,6 +28,18 @@ export default function RootLayout({
         <AuthProvider>
           <UserProvider>{children}</UserProvider>
         </AuthProvider>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </body>
     </html>
   )
