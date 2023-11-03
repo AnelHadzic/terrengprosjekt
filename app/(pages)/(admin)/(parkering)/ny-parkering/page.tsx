@@ -1,39 +1,54 @@
 "use client"
 import axios from "axios"
+import { LatLngLiteral } from "leaflet"
+import dynamic from "next/dynamic"
+import { useRouter } from "next/navigation"
 import React, { useState } from "react"
+
+export interface MapLayer {
+  id: number | string
+  latlngs: LatLngLiteral[]
+}
+
+const MapComp = dynamic(
+  () => import("@/app/components/parkering/AddNewParking"),
+  {
+    ssr: false,
+    loading: () => <p>Laster...</p>,
+  },
+)
 
 const Page = () => {
   const [parking, setParking] = useState<string>("")
   const [capacity, setCapacity] = useState<number>()
+  const [parkingControl, setParkingControl] = useState<string | undefined>(
+    undefined,
+  )
+  const [mapLayers, setMapLayers] = useState<MapLayer[]>([])
 
-  // POLYGONER
-  const [polygons, setPolygons] = useState<string[]>(["", "", "", ""])
-
-  // ERROR OG STATUS
   const [error, setError] = useState<string>("")
   const [status, setStatus] = useState<string>("")
 
-  const handlePolygonChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const newPolygons = [...polygons]
-    newPolygons[index] = e.target.value
-    setPolygons(newPolygons)
-  }
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const parsedPolygons = polygons.map((coordinate) => {
-      const [lat, lon] = coordinate.split(",").map(Number)
-      return [lat, lon]
-    })
+    if (mapLayers.length === 0 || !mapLayers[0].latlngs) {
+      setError("Finner ingen koordinater. Har du lagt dem inn i kartet?")
+      return
+    }
+
+    const parkingCoordinates = mapLayers[0].latlngs.map((latlng) => [
+      latlng.lat,
+      latlng.lng,
+    ])
 
     const payload = {
       parkingName: parking,
       parkingCapacity: capacity,
-      parkingCoordinates: parsedPolygons,
+      parkingCoordinates: parkingCoordinates,
+      parkingControl: parkingControl,
     }
 
     try {
@@ -41,11 +56,10 @@ const Page = () => {
         "http://localhost:3000/api/parkingLot",
         payload,
       )
-      console.log(response.data)
-
-      setStatus("Parkering er nå lagt inn")
+      router.push("/parkeringsplasser")
     } catch (error) {
       setError("Noe gikk galt")
+      console.error(error)
     }
   }
 
@@ -53,6 +67,9 @@ const Page = () => {
     <>
       <div className="mb-6"></div>
       <main className="flex min-h-screen flex-col items-center">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Registrer ny parkeringsplass
+        </h5>
         {status && <div>{status}</div>}
         {error && <div>{error}</div>}
         <form onSubmit={handleSubmit}>
@@ -89,69 +106,25 @@ const Page = () => {
           </div>
           <div className="mb-6">
             <label
-              htmlFor="kapasitet"
+              htmlFor="parkingControl"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Koordinater polygon 1
+              Kontrollnivå for parkeringsplassen
             </label>
-            <p>Eksempel: 59.21382377058328, 10.923819589171227</p>
-            <input
-              type="text"
-              id="koordinater1"
+            <select
+              id="parkingControl"
+              value={parkingControl}
+              onChange={(e) => setParkingControl(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(e) => handlePolygonChange(e, 0)}
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="kapasitet"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Koordinater polygon 2
-              <p>Eksempel: 59.21377027228968, 10.925277369770821</p>
-            </label>
-            <input
-              type="text"
-              id="koordinater2"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(e) => handlePolygonChange(e, 1)}
-              required
-            />
+              <option value="">Velg kontrollnivå</option>
+              <option value="Lav">Lav</option>
+              <option value="Medium">Medium</option>
+              <option value="Høy">Høy</option>
+            </select>
           </div>
-          <div className="mb-6">
-            <label
-              htmlFor="kapasitet"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Koordinater polygon 3
-              <p>Eksempel: 59.2136275382605, 10.925310897383508</p>
-            </label>
-            <input
-              type="text"
-              id="koordinater3"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(e) => handlePolygonChange(e, 2)}
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="kapasitet"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Koordinater polygon 4
-              <p>Eksempel: 59.21369210542608, 10.923799472603616</p>
-            </label>
-            <input
-              type="text"
-              id="koordinater4"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(e) => handlePolygonChange(e, 3)}
-              required
-            />
-          </div>
-
+          <MapComp mapLayers={mapLayers} setMapLayers={setMapLayers} />
+          <div className="mb-6"></div>
           <button
             type="submit"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
