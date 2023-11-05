@@ -1,6 +1,6 @@
-import { ICompany } from "../interface/ICompany"
+import { ICompany } from "../../../interface/ICompany"
 
-type UserWithCompany = {
+type UserWithCompanyInfo = {
     email: string
     firstname?: string
     lastname?: string
@@ -13,4 +13,4 @@ type UserWithCompany = {
     primaryCarRegNumber?: string
   }
 
-  export default UserWithCompany
+  export default UserWithCompanyInfo
