@@ -1,10 +1,12 @@
-import { Schema } from "mongoose"
+import mongoose, { Schema } from "mongoose"
 import { Role, Roles } from "../../enum/role-type"
 export { createUser } from "./create"
 export { findAllUsers } from "./findAll"
 export { findUsersByCompanyId } from "./findByCompany"
 export { findUsersByCompanyIdAndMultiSearch } from "./findByCompanyAndMultiSearch"
-export { findUsersByMultiSearch} from "./findByMultiSearch"
+export { findUsersByMultiSearch } from "./findByMultiSearch"
+export { findUser } from "./findOne"
+export { editUser } from "./edit"
 export { deleteUser } from "./delete"
 
 const schema = new Schema({

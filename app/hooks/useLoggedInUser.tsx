@@ -1,23 +1,9 @@
 import { useCallback, useState } from "react"
 import { useSession } from "next-auth/react"
-import { IUser } from "../lib/interface/IUser"
-import { ICompany } from "../lib/interface/ICompany"
-
-type UserWithCompany = {
-    email: string,
-    firstname?: string,
-    lastname?: string,
-    phone?: string,
-    created?: Date,
-    token?: string,
-    role?: number,
-    company?: ICompany,
-    carRegNumbers?: string[],
-    primaryCarRegNumber?: string
-  }
+import UserWithPopulatedCompany from "../lib/model/user/types/UserWithPopulatedCompany"
 
 export function useLoggedInUser() {
-  const [loggedInUser, setLoggedInUser] = useState<UserWithCompany>()
+  const [loggedInUser, setLoggedInUser] = useState<UserWithPopulatedCompany>()
   const { data: session, status } = useSession()
 
   const getUserData = useCallback(async () => {

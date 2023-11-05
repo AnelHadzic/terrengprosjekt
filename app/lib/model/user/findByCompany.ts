@@ -1,5 +1,5 @@
 import { User } from "."
-import mongoose from 'mongoose';
+import mongoose from "mongoose"
 export async function findUsersByCompanyId(companyId: string) {
   const mongooseId = new mongoose.Types.ObjectId(companyId)
 
@@ -14,9 +14,7 @@ export async function findUsersByCompanyId(companyId: string) {
     },
     {
       $match: {
-        $or: [
-          { company: mongooseId},
-        ],
+        $or: [{ company: mongooseId }],
       },
     },
     {

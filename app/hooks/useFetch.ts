@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-export type Method = "post" | "get" | "put" | "delete"
+export type Method = "post" | "get" | "put" | "delete" | "patch"
 
 const useFetch = <T>() => {
   const [data, setData] = useState<T | null>(null)

@@ -1,9 +1,12 @@
-import mongoose from "mongoose";
-import { User } from ".";
+import mongoose from "mongoose"
+import { User } from "."
 
-export async function findUsersByCompanyIdAndMultiSearch(companyId: string, searchQuery: string) {
-  const mongooseId = new mongoose.Types.ObjectId(companyId);
-  const regex = new RegExp(searchQuery, "i");
+export async function findUsersByCompanyIdAndMultiSearch(
+  companyId: string,
+  searchQuery: string,
+) {
+  const mongooseId = new mongoose.Types.ObjectId(companyId)
+  const regex = new RegExp(searchQuery, "i")
 
   const session = await User.aggregate([
     {
@@ -18,9 +21,7 @@ export async function findUsersByCompanyIdAndMultiSearch(companyId: string, sear
       $match: {
         $and: [
           {
-            $or: [
-              { company: mongooseId },
-            ],
+            $or: [{ company: mongooseId }],
           },
           {
             $or: [
@@ -39,11 +40,11 @@ export async function findUsersByCompanyIdAndMultiSearch(companyId: string, sear
     {
       $unwind: "$companyInfo",
     },
-  ]);
+  ])
 
   if (session) {
-    return session;
+    return session
   }
 
-  return null;
+  return null
 }
