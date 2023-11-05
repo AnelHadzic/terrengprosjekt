@@ -10,6 +10,7 @@ export async function deleteUser(email: string) {
 
     return deletedUser
   } catch (error) {
-    throw new Error(`Error deleting user: ${error}`)
+    console.error(Error(`Error deleting user: ${error}`))
+    return null
   }
 }

@@ -15,6 +15,7 @@ export async function editUser(email: string, updatedData: Partial<IUser>) {
 
     return existingUser
   } catch (error) {
-    throw new Error(`Error editing user: ${error}`)
+    console.error(Error(`Error editing user: ${error}`))
+    return null
   }
 }
