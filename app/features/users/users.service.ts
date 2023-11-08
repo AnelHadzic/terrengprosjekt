@@ -9,7 +9,25 @@ import {
   findUsersByMultiSearch,
 } from "@/app/lib/model/user"
 import UserWithCompanyInfo from "@/app/lib/model/user/types/UserWithCompanyInfo"
+import UserWithPopulatedCompany from "@/app/lib/model/user/types/UserWithPopulatedCompany"
 import { Result } from "@/app/types"
+
+export const single = async (
+  email: string,
+): Promise<Result<UserWithPopulatedCompany>> => {
+  try {
+    const user = await findUser(email)
+    if (user === null) {
+      return {
+        success: false,
+        error: `Could not find user with email ${email}`,
+      }
+    }
+    return { success: true, data: user as UserWithPopulatedCompany }
+  } catch (error) {
+    return { success: false, error: `An error occurred: ${error}` }
+  }
+}
 
 export const list = async (filter?: {
   companyId: string | null
