@@ -53,7 +53,7 @@ const ChooseParking = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
         <MyCar />
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
         <PickTime
@@ -82,7 +82,21 @@ const ChooseParking = () => {
               onClick={() => startParking()}
               className="flex justify-center items-center w-full mt-6 px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              START PARKERING
+              <div className="flex flex-row align-center">
+                <p className="text-xl">START PARKERING</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  viewBox="0 0 24 24"
+                  className="ml-6"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M21.409 9.353a2.998 2.998 0 0 1 0 5.294L8.597 21.614C6.534 22.736 4 21.276 4 18.968V5.033c0-2.31 2.534-3.769 4.597-2.648l12.812 6.968Z"
+                  />
+                </svg>
+              </div>
             </button>
           </>
         )}
@@ -158,7 +172,28 @@ const PickParkingSpot = ({
           key={index}
           onClick={() => setChosenParking(item.parkingName)}
         >
-          {item.parkingName}
+          <div className="flex flex-row align-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 48 48"
+              className="mr-6"
+            >
+              <g
+                fill="none"
+                stroke="currentColor"
+                stroke-linejoin="round"
+                stroke-width="4"
+              >
+                <path d="M24 44s16-12 16-25c0-8.284-7.163-15-16-15S8 10.716 8 19c0 13 16 25 16 25Z" />
+                <path stroke-linecap="round" d="M21 14v16" />
+                <path d="M21 14h6a4 4 0 0 1 0 8h-6v-8Z" />
+              </g>
+            </svg>
+
+            <p className="text-xl">{item.parkingName}</p>
+          </div>
         </button>
       ))}
       {chosenParking ? (
