@@ -1,6 +1,6 @@
 import { Company } from "."
 
-export async function findCompany(companyId: string | null) {
+export async function findCompany(companyId: string | undefined) {
     const session = await Company.findOne({ _id: { $eq: companyId } })
   
     if (session) {
