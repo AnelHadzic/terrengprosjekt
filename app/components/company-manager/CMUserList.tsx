@@ -1,15 +1,14 @@
 import { ICompany } from "@/app/lib/interface/ICompany"
 import { IUser } from "@/app/lib/interface/IUser"
-import UserWithCompany from "@/app/lib/types/UserWithCompany"
+import UserWithCompanyInfo from "@/app/lib/model/user/types/UserWithCompanyInfo"
 import debounce from "@/app/utilities/debounce"
 import axios, { HttpStatusCode } from "axios"
-import { STATUS_CODES } from "http"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 
-type UserWithStatus = UserWithCompany & {
+type UserWithStatus = UserWithCompanyInfo & {
   status: string
 }
 
@@ -156,10 +155,10 @@ export default function UserList() {
       try {
         const API_URL = `/api/users?companyId=${currentUserCompany?._id}`
         const response = await axios.get(API_URL)
-        const users = response.data.data as UserWithCompany[]
+        const users = response.data.data as UserWithCompanyInfo[]
 
         const updatedUserList = await Promise.all(
-          users.map(async (user: UserWithCompany) => {
+          users.map(async (user: UserWithCompanyInfo) => {
             const status = await fetchUserStatus(user.email)
             return { ...user, status }
           }),
@@ -187,7 +186,7 @@ export default function UserList() {
           const responseUsers = response.data.data as UserWithStatus[]
 
           const updatedUserList = await Promise.all(
-            responseUsers.map(async (user: UserWithCompany) => {
+            responseUsers.map(async (user: UserWithCompanyInfo) => {
               const status = await fetchUserStatus(user.email)
               return { ...user, status }
             }),

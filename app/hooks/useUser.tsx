@@ -2,26 +2,13 @@ import axios from "axios"
 import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { IUser } from "../lib/interface/IUser"
-import { ICompany } from "../lib/interface/ICompany"
-
-type UserWithCompany = {
-  email: string,
-  firstname?: string,
-  lastname?: string,
-  phone?: string,
-  created?: Date,
-  token?: string,
-  role?: number,
-  company?: ICompany,
-  carRegNumbers?: string[],
-  primaryCarRegNumber?: string
-}
+import UserWithPopulatedCompany from "../lib/model/user/types/UserWithPopulatedCompany"
 
 export function useUser(email: string) {
   const router = useRouter()
   const decodedEditedEmail = decodeURIComponent(email);
 
-  const [user, setUser] = useState<UserWithCompany | undefined>()
+  const [user, setUser] = useState<UserWithPopulatedCompany | undefined>()
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<IUser>({
     email: "",

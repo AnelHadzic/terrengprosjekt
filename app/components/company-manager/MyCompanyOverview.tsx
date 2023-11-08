@@ -1,20 +1,10 @@
 import { ICompany } from "@/app/lib/interface/ICompany"
+import UserWithPopulatedCompany from "@/app/lib/model/user/types/UserWithPopulatedCompany"
 import { Fragment } from "react"
 
 type CompanyDetailsProps = {
   loggedInUser:
-    | {
-        email: string
-        firstname?: string
-        lastname?: string
-        phone?: string
-        created?: Date
-        token?: string
-        role?: number
-        company?: ICompany
-        carRegNumbers?: string[]
-        primaryCarRegNumber?: string
-      }
+    | UserWithPopulatedCompany
     | undefined
 }
 
