@@ -31,8 +31,30 @@ const EditCars = () => {
     setRegNumbers([...regNumbers, ""])
   }
 
-  const addNewRegList = () => {
-    console.log(regNumbers)
+  const addNewRegList = async () => {
+    const payload = {
+      carRegNumbers: regNumbers,
+    }
+
+    try {
+      await fetch(`/api/users/${userData?.email}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("SUCCESS")
+          getUserData()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -106,7 +128,21 @@ const EditCars = () => {
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
-          <p className="text-lg">Lagre</p>
+          <div className="flex flex-row items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              className="mr-6"
+            >
+              <path
+                fill="currentColor"
+                d="M7 19v-6h10v6h2V7.828L16.172 5H5v14h2ZM4 3h13l4 4v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm5 12v4h6v-4H9Z"
+              />
+            </svg>
+            <p className="text-lg">Lagre</p>
+          </div>
         </button>
       </div>
     </>
