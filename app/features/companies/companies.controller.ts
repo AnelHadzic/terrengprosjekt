@@ -7,7 +7,7 @@ import mongoose from "mongoose"
 const getCompanyData = (data: unknown) => {
   return data &&
     typeof data === "object" &&
-    ["companyId", "companyName"].every((key) => Object.keys(data).includes(key))
+    ["companyName"].every((key) => Object.keys(data).includes(key))
     ? (data as ICompany)
     : null
 }
@@ -29,7 +29,7 @@ export const createCompany = async (
     return NextResponse.json(
       {
         success: false,
-        error: "Missing required field: companyId, companyName",
+        error: "Missing required field: companyName",
       },
       { status: 400 },
     )

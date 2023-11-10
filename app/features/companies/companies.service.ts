@@ -19,7 +19,7 @@ export const single = async (companyId: string): Promise<Result<ICompany>> => {
       return {
         success: false,
         error: `Could not find company with id: ${companyId}`,
-        type: `Company.NotFound`
+        type: `Company.NotFound`,
       }
     }
     return { success: true, data: company }
@@ -49,26 +49,28 @@ export const list = async (filter?: {
   return { success: true, data: companies }
 }
 
-export const agreementStatusForUser = async (email: string): Promise<Result<UserExistenceAndAgreement>> => {
-    const agreement = await getAgreement(email)
+export const agreementStatusForUser = async (
+  email: string,
+): Promise<Result<UserExistenceAndAgreement>> => {
+  const agreement = await getAgreement(email)
 
-    let existingEmail = false
+  let existingEmail = false
 
-    const existingUser = await usersService.single(email)
-    if (existingUser.success) {
-      existingEmail = true
-    }
-    
-    if (agreement.agreementData != null) {
-      existingEmail = true
-    }
+  const existingUser = await usersService.single(email)
+  if (existingUser.success) {
+    existingEmail = true
+  }
 
-    const userExistenceAndAgreement: UserExistenceAndAgreement = {
-        emailExists: existingEmail,
-        agreement: agreement
-    }
+  if (agreement.agreementData != null) {
+    existingEmail = true
+  }
 
-    return {success: true, data: userExistenceAndAgreement}
+  const userExistenceAndAgreement: UserExistenceAndAgreement = {
+    emailExists: existingEmail,
+    agreement: agreement,
+  }
+
+  return { success: true, data: userExistenceAndAgreement }
 }
 
 export const create = async (company: ICompany): Promise<Result<ICompany>> => {
@@ -82,7 +84,7 @@ export const create = async (company: ICompany): Promise<Result<ICompany>> => {
   }
 
   const createdCompany = await createCompany(company)
-  return { success: true, data: company }
+  return { success: true, data: createdCompany }
 }
 
 export const edit = async (
@@ -107,25 +109,22 @@ export const edit = async (
 }
 
 export const remove = async (companyId: string): Promise<Result<ICompany>> => {
-    const existingCompany = await findCompany(companyId)
-    if (existingCompany) {
-        const removedCompany = await deleteCompany(companyId)
-        if (removedCompany) {
-            return {success: true, data: removedCompany}
-        }
-        else {
-            return {
-                success: false, error: "Failed to remove existing company."
-            }
-        }
+  const existingCompany = await findCompany(companyId)
+  if (existingCompany) {
+    const removedCompany = await deleteCompany(companyId)
+    if (removedCompany) {
+      return { success: true, data: removedCompany }
+    } else {
+      return {
+        success: false,
+        error: "Failed to remove existing company.",
+      }
     }
-    else {
-        return {
-            success: false,
-            type: "Company.NotFound",
-            error: `Company with id ${companyId} does not exist.`
-        }
+  } else {
+    return {
+      success: false,
+      type: "Company.NotFound",
+      error: `Company with id ${companyId} does not exist.`,
     }
+  }
 }
-
-
