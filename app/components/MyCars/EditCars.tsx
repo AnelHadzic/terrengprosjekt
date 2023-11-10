@@ -6,6 +6,7 @@ const EditCars = () => {
   const { userData, getUserData } = useUserDataContext()
 
   const [regNumbers, setRegNumbers] = useState<string[]>([""])
+  const [success, setSuccess] = useState<string>("")
 
   useEffect(() => {
     setRegNumbers(userData?.carRegNumbers ?? [""])
@@ -48,6 +49,7 @@ const EditCars = () => {
         .then((data) => {
           console.log("SUCCESS")
           getUserData()
+          setSuccess("Fullført lagring")
         })
         .catch((error) => {
           console.error(error)
@@ -123,6 +125,7 @@ const EditCars = () => {
             </div>
           </button>
         </div>
+        {success != "" && <p>{success}</p>}
         <button
           onClick={() => addNewRegList()}
           type="button"
