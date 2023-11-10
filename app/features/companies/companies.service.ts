@@ -11,6 +11,7 @@ import { ICompany } from "@/app/lib/interface/ICompany"
 import { Result } from "@/app/types"
 import { getAgreement } from "./getAgreement"
 import * as usersService from "../users/users.service"
+import { IUser } from "@/app/lib/interface/IUser"
 
 export const single = async (companyId: string): Promise<Result<ICompany>> => {
   try {
@@ -74,6 +75,7 @@ export const agreementStatusForUser = async (
 }
 
 export const create = async (company: ICompany): Promise<Result<ICompany>> => {
+  mongoose
   const existingCompany = await findCompany(company._id)
   if (existingCompany) {
     return {
@@ -83,8 +85,71 @@ export const create = async (company: ICompany): Promise<Result<ICompany>> => {
     }
   }
 
-  const createdCompany = await createCompany(company)
-  return { success: true, data: createdCompany }
+  let existingEmails: string[] = []
+  if (company.companyAgreement?.emails) {
+    await Promise.all(
+      company.companyAgreement?.emails.map(async (email) => {
+        const existingUserResult = await usersService.single(email)
+        if (existingUserResult.success) {
+          existingEmails.push(existingUserResult.data.email)
+        }
+      }),
+    )
+  }
+  if (company.privateAgreement?.emails) {
+    await Promise.all(
+      company.privateAgreement?.emails.map(async (email) => {
+        const existingUserResult = await usersService.single(email)
+        if (existingUserResult.success) {
+          existingEmails.push(existingUserResult.data.email)
+        }
+      }),
+    )
+  }
+  if (existingEmails.length > 0) {
+    return {
+      success: false,
+      error: `Users with the following email(s) already exists: ${existingEmails.join(
+        `, `,
+      )}`,
+    }
+  }
+
+  const createdCompany = (await createCompany(company)) as ICompany
+
+  let userCreationResults: Result<IUser>[] = []
+  if (company.companyAgreement?.emails) {
+    company.companyAgreement?.emails.map(async (email) => {
+      const newUser: IUser = { email: email, company: createdCompany._id, role: 2 }
+      const createdUserResult = await usersService.create(newUser)
+      userCreationResults.push(createdUserResult)
+    })
+  }
+
+  if (company.privateAgreement?.emails) {
+    company.privateAgreement?.emails.map(async (email) => {
+      const newUser: IUser = { email: email, company: createdCompany._id, role: 2 }
+      const createdUserResult = await usersService.create(newUser)
+      userCreationResults.push(createdUserResult)
+    })
+  }
+
+  const hasErrors = userCreationResults.some((result) => !result.success)
+
+  if (hasErrors) {
+    let errorMessages: string[] = []
+    userCreationResults.map((result) => {
+      if (!result.success) {
+        errorMessages.push(result.error)
+      }
+    })
+
+    // Delete createdCompany and all new users. 
+    
+    return { success: false, error: errorMessages.join(`. \n`) }
+  } else {
+    return { success: true, data: createdCompany }
+  }
 }
 
 export const edit = async (
