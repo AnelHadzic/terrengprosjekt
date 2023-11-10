@@ -82,6 +82,7 @@ const ChoosePrimaryCar = () => {
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
       <MyCars />
+      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
     </>
   )
 }
@@ -89,10 +90,12 @@ const MyCarSettings = () => {
   return (
     <>
       <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Utfør endringer på bilen din
+        Administrer dine biler her
       </h5>
+      <p>Husk å lagre endringene dine</p>
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
       <EditCars />
+      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
     </>
   )
 }
