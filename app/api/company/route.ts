@@ -1,16 +1,12 @@
 import {
   createCompany,
   findCompaniesByMultiSearch,
-  findCompaniesDomainByCompanyAgreement,
-  findCompaniesDomainByPrivateAgreement,
-  findCompaniesListByCompanyAgreement,
-  findCompaniesListByPrivateAgreement,
 } from "./../../lib/model/company"
 import connectToDb from "@/app/lib/db/mongoose"
 import { ICompany } from "@/app/lib/interface/ICompany"
 import { findAllCompanies, findCompaniesByName } from "@/app/lib/model/company"
 import { NextRequest, NextResponse } from "next/server"
-import { getAgreement } from "./getAgreement"
+import { getAgreement } from "../../features/companies/getAgreement"
 
 export async function GET({ nextUrl }: NextRequest) {
   await connectToDb()

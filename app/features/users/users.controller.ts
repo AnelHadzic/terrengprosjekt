@@ -1,7 +1,7 @@
 import UserWithCompanyInfo from "@/app/lib/model/user/types/UserWithCompanyInfo"
 import { Result } from "@/app/types"
 import { NextRequest, NextResponse } from "next/server"
-import * as userService from "./users.service"
+import * as usersService from "./users.service"
 import { IUser } from "@/app/lib/interface/IUser"
 import UserWithPopulatedCompany from "@/app/lib/model/user/types/UserWithPopulatedCompany"
 
@@ -36,7 +36,7 @@ export const createUser = async (
     )
   }
 
-  const createdUserResult = await userService.create(userData)
+  const createdUserResult = await usersService.create(userData)
 
   if (!createdUserResult.success) {
     switch (createdUserResult.type) {
@@ -65,7 +65,7 @@ export const listUsers = async (filter?: {
   companyId: string | null
   search: string | null
 }): Promise<NextResponse<Result<UserWithCompanyInfo[]>>> => {
-  const users = await userService.list(filter)
+  const users = await usersService.list(filter)
 
   if (!users.success)
     return NextResponse.json(
@@ -82,16 +82,27 @@ export const listUsers = async (filter?: {
 export const getUserByEmail = async (
   email: string,
 ): Promise<NextResponse<Result<UserWithPopulatedCompany>>> => {
-  const user = await userService.single(email)
+  const user = await usersService.single(email)
 
   if (!user.success)
-    return NextResponse.json(
-      {
-        success: false,
-        error: user.error,
-      },
-      { status: 500 },
-    )
+    switch (user.type) {
+      case "User.NotFound":
+        return NextResponse.json(
+          {
+            success: false,
+            error: user.error,
+          },
+          { status: 404 },
+        )
+      default:
+        return NextResponse.json(
+          {
+            success: false,
+            error: user.error,
+          },
+          { status: 500 },
+        )
+    }
 
   return NextResponse.json(user, { status: 200 })
 }
@@ -119,7 +130,7 @@ export const updateUserByEmail = async (
       { status: 400 },
     )
   }
-  const editedUserResult = await userService.edit(userData.email, userData)
+  const editedUserResult = await usersService.edit(email, userData)
 
   if (!editedUserResult.success) {
     switch (editedUserResult.type) {
@@ -145,29 +156,32 @@ export const updateUserByEmail = async (
   return NextResponse.json(editedUserResult, { status: 200 })
 }
 
-export const deleteUserByEmail = async (req: NextRequest, email: string): Promise<NextResponse<Result<IUser>>> => {
-    const deletedUserResult = await userService.remove(email)
+export const deleteUserByEmail = async (
+  req: NextRequest,
+  email: string,
+): Promise<NextResponse<Result<IUser>>> => {
+  const deletedUserResult = await usersService.remove(email)
 
-    if (!deletedUserResult.success) {
-        switch (deletedUserResult.type) {
-          case "User.NotFound":
-            return NextResponse.json(
-              {
-                success: false,
-                error: deletedUserResult.error,
-              },
-              { status: 404 },
-            )
-          default:
-            return NextResponse.json(
-              {
-                success: false,
-                error: deletedUserResult.error,
-              },
-              { status: 500 },
-            )
-        }
-      }
+  if (!deletedUserResult.success) {
+    switch (deletedUserResult.type) {
+      case "User.NotFound":
+        return NextResponse.json(
+          {
+            success: false,
+            error: deletedUserResult.error,
+          },
+          { status: 404 },
+        )
+      default:
+        return NextResponse.json(
+          {
+            success: false,
+            error: deletedUserResult.error,
+          },
+          { status: 500 },
+        )
+    }
+  }
 
   return NextResponse.json(deletedUserResult, { status: 200 })
 }

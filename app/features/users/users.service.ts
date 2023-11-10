@@ -21,6 +21,7 @@ export const single = async (
       return {
         success: false,
         error: `Could not find user with email ${email}`,
+        type: `User.NotFound`,
       }
     }
     return { success: true, data: user as UserWithPopulatedCompany }
