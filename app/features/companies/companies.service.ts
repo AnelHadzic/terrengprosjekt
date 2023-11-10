@@ -10,6 +10,7 @@ import {
 import { ICompany } from "@/app/lib/interface/ICompany"
 import { Result } from "@/app/types"
 import { getAgreement } from "./getAgreement"
+import * as usersService from "../users/users.service"
 
 export const single = async (companyId: string): Promise<Result<ICompany>> => {
   try {
@@ -50,8 +51,20 @@ export const list = async (filter?: {
 
 export const agreementStatusForUser = async (email: string): Promise<Result<UserExistenceAndAgreement>> => {
     const agreement = await getAgreement(email)
+
+    let existingEmail = false
+
+    const existingUser = await usersService.single(email)
+    if (existingUser.success) {
+      existingEmail = true
+    }
+    
+    if (agreement.agreementData != null) {
+      existingEmail = true
+    }
+
     const userExistenceAndAgreement: UserExistenceAndAgreement = {
-        emailExists: Boolean(agreement),
+        emailExists: existingEmail,
         agreement: agreement
     }
 

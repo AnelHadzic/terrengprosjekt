@@ -103,6 +103,16 @@ export const getCompanyById = async (
   return NextResponse.json(company, { status: 200 })
 }
 
+export const getUserExistenceAndAgreement = async (
+  email: string,
+): Promise<NextResponse<Result<UserExistenceAndAgreement>>> => {
+  // Might want to add some error handling here in the future.
+  const userExistenceAndAgreement =
+    await companiesService.agreementStatusForUser(email)
+
+  return NextResponse.json(userExistenceAndAgreement, { status: 200 })
+}
+
 export const updateCompanyById = async (
   req: NextRequest,
   companyId: string,
