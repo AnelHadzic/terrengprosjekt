@@ -18,6 +18,7 @@ export const single = async (companyId: string): Promise<Result<ICompany>> => {
       return {
         success: false,
         error: `Could not find company with id: ${companyId}`,
+        type: `Company.NotFound`
       }
     }
     return { success: true, data: company }
