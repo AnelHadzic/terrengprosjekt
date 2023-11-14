@@ -76,7 +76,7 @@ export const agreementStatusForUser = async (
 
 export const create = async (company: ICompany): Promise<Result<ICompany>> => {
   mongoose
-  const existingCompany = await findCompany(company._id)
+  const existingCompany = await findCompany(company._id, company.companyName)
   if (existingCompany) {
     return {
       success: false,

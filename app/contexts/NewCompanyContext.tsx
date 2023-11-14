@@ -2,6 +2,9 @@ import axios from "axios"
 import React, { ReactNode, createContext, useContext, useState } from "react"
 import { useRouter } from "next/navigation"
 import { NewCompanyData } from "./types/NewCompanyData"
+import { NextResponse } from "next/server"
+import { Result } from "../types"
+import { ICompany } from "../lib/interface/ICompany"
 
 const NewCompanyContext = createContext<NewCompanyData | undefined>(undefined)
 
@@ -74,18 +77,33 @@ export const NewCompanyProvider = (props: { children: ReactNode }) => {
         : undefined,
       internalComment: "string",
     }
-    console.log(JSON.stringify(payload))
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/company",
-        payload,
-      )
-      setStatus("Bedrift er nå lagt inn")
-      router.push("/bedrifter")
-    } catch (error) {
-      setError("Noe gikk galt")
-    }
+    // try {
+      const response = await axios.post("/api/v2/companies", payload)
+      console.log(response.data)
+
+      if (response.status != 500) {
+        const result = response.data as Result<ICompany>
+
+        if (result.success) {
+          setError("")
+          setStatus("Bedrift er nå lagt inn. Går tilbake til liste.")
+
+          await new Promise((resolve) => setTimeout(resolve, 2000))
+          router.push("/bedrifter")
+        } else {
+          setError(result.error)
+          setStatus("")
+        }
+      } else {
+        setError(
+          "Noe gikk galt med forespørselen. Prøv igjen eller kontakt administrator.",
+        )
+      }
+    // } catch (error) {
+    //   console.log(error)
+    //   setError("En feil har oppstått. Prøv igjen eller kontakt administrator.")
+    // }
   }
 
   const contextValue: NewCompanyData = {
