@@ -1,5 +1,5 @@
-import { RoleEnum } from "@/app/lib/enum/role-type"
 import { ICompany } from "@/app/lib/interface/ICompany"
+import displayUserRole from "./user-util"
 
 type CompanyDetailsProps = {
   user:
@@ -56,16 +56,9 @@ export default function UserDetails(props: CompanyDetailsProps) {
         Rolle
       </h2>
       <p className="mb-6">
-        {user?.role ? (
           <>
-            {RoleEnum[user?.role] === "Admin" ? "Administrator" : null}
-            {RoleEnum[user?.role] === "Customer" ? "Kunde" : null}
-            {RoleEnum[user?.role] === "Inspector" ? "Inspektør" : null}
-            {RoleEnum[user?.role] === "CompanyManager"
-              ? "Bedriftsansvarlig"
-              : null}
+            {displayUserRole(user?.role)}
           </>
-        ) : null}
       </p>
 
       <h2 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
