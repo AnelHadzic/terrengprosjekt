@@ -33,7 +33,8 @@ export async function POST(request: Request) {
 
   try {
     await createParkingSession(parkingSession)
-    return NextResponse.json({ data: parkingSession }, { status: 201 })
+    console.log(parkingSession)
+    return NextResponse.json({ data: parkingSession }, { status: 201 })    
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to create parkingSession in db. Error: " + error },

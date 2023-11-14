@@ -32,13 +32,27 @@ const ActiveParking = () => {
   const { parkingSession, getUserData } = useUserDataContext()
 
   const stopParking = async () => {
+    const stopTime = new Date()
+
+    const payload = {
+      endTime: stopTime,
+    }
+
     await fetch(`/api/parkingSession/by-id/${parkingSession[0]?._id}`, {
-      method: "DELETE",
+      method: "PATCH",
+      body: JSON.stringify(payload),
       headers: {
         "Content-type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Failed to update parking session. Status: ${response.status}. Response: ${response.statusText}`,
+          )
+        }
+        return response.json()
+      })
       .then((data) => {
         getUserData()
       })
