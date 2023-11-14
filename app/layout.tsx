@@ -6,8 +6,7 @@ import Script from "next/script"
 import Navbar from "./components/shared/Navbar"
 import { UserProvider } from "./contexts/UserContex"
 import { ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
-
+import "react-toastify/dist/ReactToastify.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
         <AuthProvider>
-          <UserProvider>{children}</UserProvider>
+          <UserProvider>
+            <Navbar />
+            {children}
+          </UserProvider>
         </AuthProvider>
         <ToastContainer
           position="bottom-right"
