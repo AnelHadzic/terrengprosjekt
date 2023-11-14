@@ -81,7 +81,9 @@ const ChoosePrimaryCar = () => {
       </h5>
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-      <MyCars />
+      <div className="flex flex-col items-center">
+        <MyCars />
+      </div>
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
     </>
   )

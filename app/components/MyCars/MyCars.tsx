@@ -2,6 +2,7 @@
 import { useUserDataContext } from "@/app/contexts/UserContex"
 import { useRouter } from "next/navigation"
 import React, { useState } from "react"
+import Loading from "../shared/Loading"
 
 const MyCars = () => {
   const { userData, getUserData } = useUserDataContext()
@@ -36,12 +37,14 @@ const MyCars = () => {
         console.error(error)
       })
   }
-  return (
-    <>
-      <div className="mb-4">
+  if (!regNumbers) {
+    return <Loading />
+  } else
+    return (
+      <>
         {regNumbers?.map((regnr, index) => (
           <React.Fragment key={index}>
-            <div className="flex flex-row items-center mb-3">
+            <div className="mb-3 w-full">
               <button
                 onClick={() => {
                   handleButtonClick(regnr)
@@ -79,9 +82,8 @@ const MyCars = () => {
             </div>
           </React.Fragment>
         ))}
-      </div>
-    </>
-  )
+      </>
+    )
 }
 
 export default MyCars
