@@ -7,7 +7,7 @@ export type Data<T> = {
 
 export type ResultError = {
   success: false
-  type?: string
+  type?: string | number
   error: string
 }
 

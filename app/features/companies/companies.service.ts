@@ -12,6 +12,7 @@ import { Result } from "@/app/types"
 import { getAgreement } from "./getAgreement"
 import * as usersService from "../users/users.service"
 import { IUser } from "@/app/lib/interface/IUser"
+import { ErrorEnum } from "@/app/lib/enum/error-type"
 
 export const single = async (companyId: string): Promise<Result<ICompany>> => {
   try {
@@ -80,8 +81,8 @@ export const create = async (company: ICompany): Promise<Result<ICompany>> => {
   if (existingCompany) {
     return {
       success: false,
-      type: "Company.Duplicate",
-      error: `Company with id ${company._id} already exists.`,
+      type: ErrorEnum.Duplicate,
+      error: `Company already exists.`,
     }
   }
 

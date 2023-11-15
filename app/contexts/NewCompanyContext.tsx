@@ -5,6 +5,8 @@ import { NewCompanyData } from "./types/NewCompanyData"
 import { NextResponse } from "next/server"
 import { Result } from "../types"
 import { ICompany } from "../lib/interface/ICompany"
+import { toast } from "react-toastify"
+import { ErrorEnum } from "../lib/enum/error-type"
 
 const NewCompanyContext = createContext<NewCompanyData | undefined>(undefined)
 
@@ -79,26 +81,33 @@ export const NewCompanyProvider = (props: { children: ReactNode }) => {
     }
 
     // try {
-      const response = await axios.post("/api/v2/companies", payload)
-      console.log(response.data)
+      
+      const response = await fetch(`/api/v2/companies`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
 
       if (response.status != 500) {
-        const result = response.data as Result<ICompany>
+        const result = await response.json() as Result<ICompany>
 
         if (result.success) {
-          setError("")
-          setStatus("Bedrift er nå lagt inn. Går tilbake til liste.")
+          toast.success("Ny bedrift opprettet! Går tilbake til liste straks..")
 
-          await new Promise((resolve) => setTimeout(resolve, 2000))
+          await new Promise((resolve) => setTimeout(resolve, 4000))
           router.push("/bedrifter")
         } else {
-          setError(result.error)
-          setStatus("")
+          if(result.type == ErrorEnum.Duplicate) {
+            toast.error("Denne bedriften finnes allerede. Prøv et annet navn.")
+          }
+          else {
+            toast.error("Støtte på en ukjent feil. Kontakt administrator.")
+          }
         }
       } else {
-        setError(
-          "Noe gikk galt med forespørselen. Prøv igjen eller kontakt administrator.",
-        )
+        toast.error("Støtte på en feil med sending til server. Prøv igjen eller kontakt administrator.")
       }
     // } catch (error) {
     //   console.log(error)
