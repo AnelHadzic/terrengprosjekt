@@ -1,7 +1,7 @@
 "use client"
 import { ICompany } from "@/app/lib/interface/ICompany"
+import { Result } from "@/app/types"
 import debounce from "@/app/utilities/debounce"
-import axios from "axios"
 import { useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
@@ -17,10 +17,16 @@ export default function CompanyList() {
     setError("")
     const fetchData = async () => {
       try {
-        const API_URL = "/api/company"
-        const response = await axios.get(API_URL)
-        console.log(response.data.data)
-        setCompanyList(response.data.data)
+        const API_URL = "/api/v2/companies"
+        const response = await fetch(API_URL, { method: "GET" })
+        const result = (await response.json()) as Result<ICompany[]>
+        //const response = await axios.get(API_URL)
+        if (result.success) {
+          setCompanyList(result.data)
+        } else {
+          console.error(result.error)
+          setError("Failed to retrieve companies.")
+        }
       } catch (err) {
         console.log(err)
       } finally {
@@ -34,10 +40,15 @@ export default function CompanyList() {
   const debouncedFetchDataRef = useRef(
     debounce(async (query: string) => {
       try {
-        const API_URL = `/api/company?searchQuery=${query}`
-        const response = await axios.get(API_URL)
-
-        setCompanyList(response.data.data)
+        const API_URL = `/api/v2/companies?searchQuery=${query}`
+        const response = await fetch(API_URL, { method: "GET" })
+        const result = (await response.json()) as Result<ICompany[]>
+        //const response = await axios.get(API_URL)
+        if (result.success) {
+          setCompanyList(result.data)
+        } else {
+          setError("Failed to retrieve companies.")
+        }
       } catch (err) {
         console.log(err)
       } finally {
