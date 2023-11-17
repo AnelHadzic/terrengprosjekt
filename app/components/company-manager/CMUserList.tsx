@@ -1,6 +1,6 @@
 import { useUserWithAgreement } from "@/app/hooks/useUserWithAgreement"
 import { Fragment, useEffect } from "react"
-import { newUserTableRow } from "./NewUserTableRow"
+import { newUserTableRow } from "./newUserTableRow"
 import { newUserActions } from "./newUserActions"
 import { userTableHeaders } from "./userTableHeaders"
 import { userRow } from "./userRow"
