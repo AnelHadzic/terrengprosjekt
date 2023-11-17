@@ -76,7 +76,7 @@ export const edit = async (
   email: string,
   user: IUser,
 ): Promise<Result<IUser>> => {
-  const existingUser = await findUser(user.email)
+  const existingUser = await findUser(email)
   if (existingUser) {
     const updatedUser = (await editUser(email, user)) as IUser
     if (updatedUser) {

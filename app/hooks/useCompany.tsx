@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { Result } from "../types"
 import { toast } from "react-toastify"
 
-// Custom hook to manage company data and editing state
 export function useCompany(companyId: string) {
   const router = useRouter()
 
@@ -27,10 +26,8 @@ export function useCompany(companyId: string) {
       if (result.success) {
         setCompany(result.data)
       }
-      // const API_URL = `/api/v2/companies/${companyId}`
-      // const response = await axios.get(API_URL)
-      // setCompany(response.data.data)
     } catch (err) {
+      toast.error(`Feil i kommunikasjon med server. Error: ${err}`)
       console.log(err)
     }
   }, [companyId])
@@ -57,7 +54,6 @@ export function useCompany(companyId: string) {
     console.log("test")
     try {
       const API_URL = `/api/v2/companies/${companyId}`
-      //await axios.delete(API_URL)
       const response = await fetch(API_URL, { method: "DELETE" })
       const result = (await response.json()) as Result<ICompany>
       if (result.success) {
@@ -67,6 +63,7 @@ export function useCompany(companyId: string) {
         toast.error(`Kunne ikke slette bedriften. Error: "${result.error}" `)
       }
     } catch (err) {
+      toast.error(`Feil i kommunikasjon med server. Error: ${err}`)
       console.log(err)
     }
   }
@@ -74,7 +71,6 @@ export function useCompany(companyId: string) {
   const handleSaveClick = async () => {
     try {
       const API_URL = `/api/v2/companies/${companyId}`
-      // await axios.patch(API_URL, editedCompany)
       const response = await fetch(API_URL, {
         method: "PATCH",
         headers: {
@@ -92,9 +88,8 @@ export function useCompany(companyId: string) {
       else {
         toast.error(`Kunne ikke lagre endringene. Error: ${result.error}`)
       }
-
-      
     } catch (err) {
+      toast.error(`Feil i kommunikasjon med server. Error: ${err}`)
       console.log(err)
     }
   }

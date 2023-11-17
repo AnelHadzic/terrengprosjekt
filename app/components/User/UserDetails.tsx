@@ -1,26 +1,13 @@
-import { ICompany } from "@/app/lib/interface/ICompany"
 import displayUserRole from "./user-util"
+import UserWithPopulatedCompany from "@/app/lib/model/user/types/UserWithPopulatedCompany"
 
-type CompanyDetailsProps = {
-  user:
-    | {
-        email: string
-        firstname?: string
-        lastname?: string
-        phone?: string
-        created?: Date
-        token?: string
-        role?: number
-        company?: ICompany
-        carRegNumbers?: string[]
-        primaryCarRegNumber?: string
-      }
-    | undefined
+type UserDetailsProps = {
+  user: UserWithPopulatedCompany | undefined
   handleEditClick?: () => void
   handleDeleteClick?: () => void
 }
 
-export default function UserDetails(props: CompanyDetailsProps) {
+export default function UserDetails(props: UserDetailsProps) {
   const { user, handleEditClick, handleDeleteClick } = props
 
   function handleEdit() {
@@ -56,9 +43,7 @@ export default function UserDetails(props: CompanyDetailsProps) {
         Rolle
       </h2>
       <p className="mb-6">
-          <>
-            {displayUserRole(user?.role)}
-          </>
+        <>{displayUserRole(user?.role)}</>
       </p>
 
       <h2 className="text-xl font-bold leading-none text-gray-900 dark:text-white">

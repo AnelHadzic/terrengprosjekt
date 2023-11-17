@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 export default function Page({ params }: { params: { email: string } }) {
   const router = useRouter()
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-10">
+    <main className="flex min-h-screen flex-col items-center justify-normal p-10">
       <SingleUser email={params.email} />
       <button
         type="button"
