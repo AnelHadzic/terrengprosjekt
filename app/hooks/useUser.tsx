@@ -110,6 +110,7 @@ export function useUser(email: string) {
         toast.error(`Kunne ikke lagre dine endringer. ${result.error}`)
       }
     } catch (err) {
+      toast.error(`Feil i kommunikasjon med server. Error: ${err}`)
       console.log(err)
     }
   }

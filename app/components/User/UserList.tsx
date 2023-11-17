@@ -31,6 +31,7 @@ export default function UserList() {
           )
         }
       } catch (err) {
+        toast.error(`Feil i kommunikasjon med server. Error: ${err}`)
         console.log(err)
       } finally {
         setLoading(false)
@@ -154,6 +155,7 @@ function loadInitialUsers(
         )
       }
     } catch (err) {
+      toast.error(`Feil i kommunikasjon med server. Error: ${err}`)
       console.log(err)
     } finally {
       setLoading(false)
