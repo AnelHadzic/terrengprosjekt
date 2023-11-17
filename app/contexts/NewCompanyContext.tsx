@@ -2,6 +2,11 @@ import axios from "axios"
 import React, { ReactNode, createContext, useContext, useState } from "react"
 import { useRouter } from "next/navigation"
 import { NewCompanyData } from "./types/NewCompanyData"
+import { NextResponse } from "next/server"
+import { Result } from "../types"
+import { ICompany } from "../lib/interface/ICompany"
+import { toast } from "react-toastify"
+import { ErrorEnum } from "../lib/enum/error-type"
 
 const NewCompanyContext = createContext<NewCompanyData | undefined>(undefined)
 
@@ -74,18 +79,40 @@ export const NewCompanyProvider = (props: { children: ReactNode }) => {
         : undefined,
       internalComment: "string",
     }
-    console.log(JSON.stringify(payload))
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/company",
-        payload,
-      )
-      setStatus("Bedrift er nå lagt inn")
-      router.push("/bedrifter")
-    } catch (error) {
-      setError("Noe gikk galt")
-    }
+    // try {
+      
+      const response = await fetch(`/api/v2/companies`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.status != 500) {
+        const result = await response.json() as Result<ICompany>
+
+        if (result.success) {
+          toast.success("Ny bedrift opprettet! Går tilbake til liste straks..")
+
+          await new Promise((resolve) => setTimeout(resolve, 4000))
+          router.push("/bedrifter")
+        } else {
+          if(result.type == ErrorEnum.Duplicate) {
+            toast.error("Denne bedriften finnes allerede. Prøv et annet navn.")
+          }
+          else {
+            toast.error("Støtte på en ukjent feil. Kontakt administrator.")
+          }
+        }
+      } else {
+        toast.error("Støtte på en feil med sending til server. Prøv igjen eller kontakt administrator.")
+      }
+    // } catch (error) {
+    //   console.log(error)
+    //   setError("En feil har oppstått. Prøv igjen eller kontakt administrator.")
+    // }
   }
 
   const contextValue: NewCompanyData = {

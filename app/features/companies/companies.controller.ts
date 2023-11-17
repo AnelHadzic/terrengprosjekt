@@ -3,6 +3,7 @@ import { Result } from "@/app/types"
 import { NextRequest, NextResponse } from "next/server"
 import * as companiesService from "./companies.service"
 import mongoose from "mongoose"
+import { ErrorEnum } from "@/app/lib/enum/error-type"
 
 const getCompanyData = (data: unknown) => {
   return data &&
@@ -38,10 +39,11 @@ export const createCompany = async (
 
   if (!createdCompanyResult.success) {
     switch (createdCompanyResult.type) {
-      case "Company.Duplicate":
+      case ErrorEnum.Duplicate:
         return NextResponse.json(
           {
             success: false,
+            type: createdCompanyResult.type,
             error: createdCompanyResult.error,
           },
           { status: 409 },

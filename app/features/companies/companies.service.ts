@@ -12,6 +12,7 @@ import { Result } from "@/app/types"
 import { getAgreement } from "./getAgreement"
 import * as usersService from "../users/users.service"
 import { IUser } from "@/app/lib/interface/IUser"
+import { ErrorEnum } from "@/app/lib/enum/error-type"
 
 export const single = async (companyId: string): Promise<Result<ICompany>> => {
   try {
@@ -76,12 +77,12 @@ export const agreementStatusForUser = async (
 
 export const create = async (company: ICompany): Promise<Result<ICompany>> => {
   mongoose
-  const existingCompany = await findCompany(company._id)
+  const existingCompany = await findCompany(company._id, company.companyName)
   if (existingCompany) {
     return {
       success: false,
-      type: "Company.Duplicate",
-      error: `Company with id ${company._id} already exists.`,
+      type: ErrorEnum.Duplicate,
+      error: `Company already exists.`,
     }
   }
 
