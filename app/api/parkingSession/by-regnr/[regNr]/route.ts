@@ -12,7 +12,7 @@ export async function GET(
   const parkingSession = await findParkingSession(regNr)
 
   if (parkingSession === null) {
-    return NextResponse.json({ data: `Not found` }, { status: 404 })
+    return NextResponse.json({ data: null }, { status: 200 })
   }
 
   return NextResponse.json({ data: parkingSession }, { status: 200 })

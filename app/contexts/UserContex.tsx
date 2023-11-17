@@ -19,10 +19,49 @@ export const UserProvider = (props: { children: ReactNode }) => {
   const { data: session, status } = useSession()
 
   const [userData, setUserData] = useState<IUser | undefined>(undefined)
-  const [parkingSession, setParkingSession] = useState<IParkingSession[]>([])
+  const [parkingSession, setParkingSession] = useState<
+    IParkingSession | null | undefined
+  >(undefined)
   const [userCompany, setUserCompany] = useState<IUserCompany | undefined>(
     undefined,
   )
+
+  const getUserData = async () => {
+    if (!session) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/users/${session?.user?.email}`, {
+        method: "GET",
+      })
+
+      const result = (await response.json()) as { data: IUser }
+      setUserData(result.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getParkingSession = async () => {
+    if (!userData) {
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `/api/parkingSession/by-regnr/${userData?.primaryCarRegNumber}`,
+        {
+          method: "GET",
+        },
+      )
+
+      const result = (await response.json()) as { data: IParkingSession }
+      setParkingSession(result.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getUserCompany = async () => {
     if (!session) {
@@ -30,7 +69,6 @@ export const UserProvider = (props: { children: ReactNode }) => {
     }
 
     try {
-      // Making the API call
       const response = await fetch(
         `/api/company?email=${session?.user?.email}`,
         {
@@ -46,34 +84,18 @@ export const UserProvider = (props: { children: ReactNode }) => {
     }
   }
 
-  const getUserData = async () => {
-    const response = await fetch(`/api/users/${session?.user?.email}`, {
-      method: "GET",
-    })
-
-    const result = (await response.json()) as { data: IUser }
-    setUserData(result.data)
-    getParkingSession()
-    getUserCompany()
-  }
-
-  const getParkingSession = async () => {
-    const response = await fetch(
-      `/api/parkingSession?${userData?.primaryCarRegNumber}`,
-      {
-        method: "GET",
-      },
-    )
-
-    const result = (await response.json()) as { data: IParkingSession[] }
-    setParkingSession(result.data)
-  }
-
   useEffect(() => {
     if (session) {
       getUserData()
     }
   }, [session])
+
+  useEffect(() => {
+    if (userData) {
+      getParkingSession()
+      getUserCompany()
+    }
+  }, [userData])
 
   const contextValue: UserData = {
     userData,
