@@ -2,7 +2,7 @@
 import ChooseParking from "./components/UserParking/ChooseParking"
 import Loading from "./components/shared/Loading"
 import { useUserDataContext } from "./contexts/UserContex"
-import { add, format } from "date-fns"
+import { format } from "date-fns"
 
 export default function Home() {
   return (

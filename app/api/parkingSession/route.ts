@@ -10,19 +10,13 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function GET({ nextUrl }: NextRequest) {
   await connectToDb()
-  const licensePlate = nextUrl?.searchParams?.get("licensePlate")
-  const parkingSession = licensePlate
-    ? await findParkingSession(licensePlate)
-    : await getAllParkingSessions()
+  const parkingSessions = await getAllParkingSessions()
 
-  if (parkingSession === null) {
-    return NextResponse.json(
-      { data: "Database operation error" },
-      { status: 500 },
-    )
+  if (parkingSessions === null) {
+    return NextResponse.json({ data: null }, { status: 200 })
   }
 
-  return NextResponse.json({ data: parkingSession }, { status: 200 })
+  return NextResponse.json({ data: parkingSessions }, { status: 200 })
 }
 
 export async function POST(request: Request) {
@@ -34,7 +28,7 @@ export async function POST(request: Request) {
   try {
     await createParkingSession(parkingSession)
     console.log(parkingSession)
-    return NextResponse.json({ data: parkingSession }, { status: 201 })    
+    return NextResponse.json({ data: parkingSession }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to create parkingSession in db. Error: " + error },

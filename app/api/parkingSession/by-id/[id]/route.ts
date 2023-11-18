@@ -12,8 +12,8 @@ export async function DELETE(
   const parkingSessionId = context.params.id
 
   try {
-    const deletedCompany = await deleteParkingSession(parkingSessionId)
-    return NextResponse.json({ data: deletedCompany }, { status: 200 })
+    const deletedParkingSession = await deleteParkingSession(parkingSessionId)
+    return NextResponse.json({ data: deletedParkingSession }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to delete parkingSession in db. Error: " + error },
@@ -22,24 +22,26 @@ export async function DELETE(
   }
 }
 
-
 // Update parkingSession stop time.
 export async function PATCH(
   request: NextRequest,
   context: { params: { id: string } },
 ) {
   try {
-    await connectToDb();
-    const parkingSessionId = context.params.id;
-    const body = await request.json();
-  
+    await connectToDb()
+    const parkingSessionId = context.params.id
+    const body = await request.json()
+
     const editedParkingSessionResponse = await editParkingSession(
       parkingSessionId,
       body,
-    );
-    return new Response(JSON.stringify(editedParkingSessionResponse), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    )
+    return new Response(JSON.stringify(editedParkingSessionResponse), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    })
   } catch (error) {
-    console.error('Error in PATCH function:', error);
-    return new Response('Internal Server Error', { status: 500 });
+    console.error("Error in PATCH function:", error)
+    return new Response("Internal Server Error", { status: 500 })
   }
 }
