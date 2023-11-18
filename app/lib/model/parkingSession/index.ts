@@ -9,6 +9,7 @@ const parkingSessionSchema = new Schema({
   parkingName: String,
   startTime: Date,
   endTime: Date,
+  userEmail: String,
   licensePlate: String,
 })
 

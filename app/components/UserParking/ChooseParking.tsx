@@ -1,5 +1,9 @@
 import React, { useState } from "react"
 import DatePicker from "react-datepicker"
+import { registerLocale } from "react-datepicker"
+import nb from "date-fns/locale/nb"
+registerLocale("nb", nb)
+
 import "react-datepicker/dist/react-datepicker.css"
 import { useRouter } from "next/navigation"
 import { useUserDataContext } from "@/app/contexts/UserContex"
@@ -24,14 +28,12 @@ const ChooseParking = () => {
   const startParking = async () => {
     const currentTime = new Date()
 
-    // Midlertidig løsning for å få vår tidssone
-    currentTime.setHours(currentTime.getHours() + 1)
-
     if (userData) {
       const payload = {
         parkingName: chosenParking,
         startTime: currentTime,
         endTime: selectedTime,
+        userEmail: userData.email,
         licensePlate: userData.primaryCarRegNumber,
       }
       await fetch(`/api/parkingSession`, {
@@ -44,6 +46,7 @@ const ChooseParking = () => {
         .then((response) => response.json())
         .then((data) => {
           getUserData()
+          console.log(data)
         })
         .catch((error) => {
           console.error(error)
@@ -130,6 +133,11 @@ const PickTime = ({
   selectedTime: Date | null
   setSelectedTime: React.Dispatch<React.SetStateAction<Date | null>>
 }) => {
+  const currentDateTime = new Date()
+
+  const midnight = new Date(currentDateTime)
+  midnight.setHours(23, 59, 0, 0)
+
   return (
     <>
       <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -141,10 +149,15 @@ const PickTime = ({
           selected={selectedTime}
           onChange={(date) => setSelectedTime(date)}
           showTimeSelect
+          showIcon
+          minTime={currentDateTime}
+          maxTime={midnight}
+          dateFormat="HH:mm"
+          required
           showTimeSelectOnly
           timeIntervals={30}
-          timeCaption="Time"
-          dateFormat="h:mm aa"
+          timeCaption="Tid"
+          locale="nb"
           className="rounded-lg w-full p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
         />
       </div>
@@ -161,52 +174,69 @@ const PickParkingSpot = ({
   setChosenParking: React.Dispatch<React.SetStateAction<string>>
   chosenParking: string
 }) => {
-  return (
-    <>
-      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        3. Hvor skal du parkere?
-      </h5>
-      {parkingSpots?.map((item: IParkingSpot, index) => (
-        <button
-          className="text-white mb-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-          key={index}
-          onClick={() => setChosenParking(item.parkingName)}
-        >
-          <div className="flex flex-row align-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              viewBox="0 0 48 48"
-              className="mr-6"
-            >
-              <g
-                fill="none"
-                stroke="currentColor"
-                stroke-linejoin="round"
-                stroke-width="4"
+  if (parkingSpots?.length === 1) {
+    setChosenParking(parkingSpots[0].parkingName)
+    return (
+      <>
+        {chosenParking ? (
+          <>
+            <div className="flex justify-center border-solid border-2 border-gray-600 ...">
+              {" "}
+              <p>Valgt: {chosenParking}</p>{" "}
+            </div>
+            <MapComp parkingName={chosenParking} />
+          </>
+        ) : null}
+      </>
+    )
+  } else {
+    return (
+      <>
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          3. Hvor skal du parkere?
+        </h5>
+        {parkingSpots?.map((item: IParkingSpot, index) => (
+          <button
+            className="text-white mb-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            key={index}
+            onClick={() => setChosenParking(item.parkingName)}
+          >
+            <div className="flex flex-row align-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                viewBox="0 0 48 48"
+                className="mr-6"
               >
-                <path d="M24 44s16-12 16-25c0-8.284-7.163-15-16-15S8 10.716 8 19c0 13 16 25 16 25Z" />
-                <path stroke-linecap="round" d="M21 14v16" />
-                <path d="M21 14h6a4 4 0 0 1 0 8h-6v-8Z" />
-              </g>
-            </svg>
+                <g
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinejoin="round"
+                  strokeWidth="4"
+                >
+                  <path d="M24 44s16-12 16-25c0-8.284-7.163-15-16-15S8 10.716 8 19c0 13 16 25 16 25Z" />
+                  <path strokeLinecap="round" d="M21 14v16" />
+                  <path d="M21 14h6a4 4 0 0 1 0 8h-6v-8Z" />
+                </g>
+              </svg>
 
-            <p className="text-xl">{item.parkingName}</p>
-          </div>
-        </button>
-      ))}
-      {chosenParking ? (
-        <>
-          <div className="flex justify-center border-solid border-2 border-gray-600 ...">
-            {" "}
-            <p>Valgt: {chosenParking}</p>{" "}
-          </div>
-          <MapComp parkingName={chosenParking} />
-        </>
-      ) : null}
-    </>
-  )
+              <p className="text-xl">{item.parkingName}</p>
+            </div>
+          </button>
+        ))}
+        {chosenParking ? (
+          <>
+            <div className="flex justify-center border-solid border-2 border-gray-600 ...">
+              {" "}
+              <p>Valgt: {chosenParking}</p>{" "}
+            </div>
+            <MapComp parkingName={chosenParking} />
+          </>
+        ) : null}
+      </>
+    )
+  }
 }
 
 export default ChooseParking

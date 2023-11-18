@@ -3,5 +3,6 @@ export interface IParkingSession {
   parkingName: string
   startTime: Date
   endTime: Date
+  userEmail: string
   licensePlate: string
 }
