@@ -1,19 +1,22 @@
 import connectToDb from "@/app/lib/db/mongoose"
-import { findParkingSession } from "@/app/lib/model/parkingSession"
+import { findParkingSessionByRegNr } from "@/app/lib/model/parkingSession"
 import { NextResponse } from "next/server"
 
 export async function GET(
   request: Request,
   context: { params: { regNr: string } },
 ) {
-  await connectToDb()
-  const regNr = context.params.regNr
+  try {
+    await connectToDb()
+    const regNr = context.params.regNr
 
-  const parkingSession = await findParkingSession(regNr)
+    const parkingSession = await findParkingSessionByRegNr(regNr)
 
-  if (parkingSession === null) {
-    return NextResponse.json({ data: null }, { status: 200 })
+    if (parkingSession === null) {
+      return NextResponse.json({ data: null }, { status: 200 })
+    }
+    return NextResponse.json({ data: parkingSession }, { status: 200 })
+  } catch (error) {
+    return NextResponse.json({ error: error }, { status: 500 })
   }
-
-  return NextResponse.json({ data: parkingSession }, { status: 200 })
 }

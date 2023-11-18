@@ -50,7 +50,7 @@ export const UserProvider = (props: { children: ReactNode }) => {
 
     try {
       const response = await fetch(
-        `/api/parkingSession/by-regnr/${userData?.primaryCarRegNumber}`,
+        `/api/parkingSession/by-email/${userData?.email}`,
         {
           method: "GET",
         },

@@ -1,26 +1,6 @@
 import connectToDb from "@/app/lib/db/mongoose"
-import { deleteParkingSession } from "@/app/lib/model/parkingSession"
-import { editParkingSession } from "@/app/lib/model/parkingSession/edit"
-import { NextRequest, NextResponse } from "next/server"
-
-export async function DELETE(
-  request: Request,
-  context: { params: { id: string } },
-) {
-  await connectToDb()
-
-  const parkingSessionId = context.params.id
-
-  try {
-    const deletedParkingSession = await deleteParkingSession(parkingSessionId)
-    return NextResponse.json({ data: deletedParkingSession }, { status: 200 })
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to delete parkingSession in db. Error: " + error },
-      { status: 400 },
-    )
-  }
-}
+import { editParkingSession } from "@/app/lib/model/parkingSession"
+import { NextRequest } from "next/server"
 
 // Update parkingSession stop time.
 export async function PATCH(

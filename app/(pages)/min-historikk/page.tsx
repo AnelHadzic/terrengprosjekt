@@ -4,7 +4,7 @@ import { useUserDataContext } from "@/app/contexts/UserContex"
 import { IParkingSession } from "@/app/lib/interface/IParkingSession"
 import format from "date-fns/format"
 import { nb } from "date-fns/locale"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 const Page = () => {
   return (
@@ -24,8 +24,10 @@ const MainContent = () => {
     IParkingSession[] | null | undefined
   >(undefined)
 
+  const [page, setPage] = useState<number>(1)
+
   const fetchParkingSessions = async () => {
-    const API_URL = `/api/parkingSession/by-email/${userData?.email}`
+    const API_URL = `/api/parkingSession/history-by-email/${userData?.email}`
 
     if (!userData) {
       return
@@ -68,6 +70,7 @@ const MainContent = () => {
         <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Min parkeringshistorikk
         </h1>
+        <p>Side: {page}</p>
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
         <div className="flex flex-col items-center">
@@ -158,10 +161,74 @@ const MainContent = () => {
               </div>
             </div>
           ))}
+          <Pagination page={page} setPage={setPage} />
         </div>
       </>
     )
   }
+}
+
+const Pagination = ({
+  page,
+  setPage,
+}: {
+  page: number
+  setPage: Dispatch<SetStateAction<number>>
+}) => {
+  return (
+    <>
+      <div className="flex">
+        {page > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => setPage((prev) => prev - 1)}
+              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            >
+              <svg
+                className="w-3.5 h-3.5 me-2 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 5H1m0 0 4 4M1 5l4-4"
+                />
+              </svg>
+              Tilbake
+            </button>
+          </>
+        )}
+        <button
+          type="button"
+          onClick={() => setPage((prev) => prev + 1)}
+          className="text-white flex flex-row bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        >
+          Neste
+          <svg
+            className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9"
+            />
+          </svg>
+        </button>
+      </div>
+    </>
+  )
 }
 
 export default Page

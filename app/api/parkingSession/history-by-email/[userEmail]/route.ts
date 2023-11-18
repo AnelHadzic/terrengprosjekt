@@ -1,5 +1,6 @@
 import connectToDb from "@/app/lib/db/mongoose"
-import { findParkingSessionByEmail } from "@/app/lib/model/parkingSession"
+import { ParkingSession } from "@/app/lib/model/parkingSession"
+import { getAllParkingSessionsByEmail } from "@/app/lib/model/parkingSession/getAll"
 import { NextResponse } from "next/server"
 
 export async function GET(
@@ -10,11 +11,13 @@ export async function GET(
     await connectToDb()
     const userEmail = context.params.userEmail
 
-    const parkingSession = await findParkingSessionByEmail(userEmail)
+    console.log(context.params)
+    const parkingSession = await getAllParkingSessionsByEmail(userEmail)
 
     if (parkingSession === null) {
       return NextResponse.json({ data: null }, { status: 200 })
     }
+
     return NextResponse.json({ data: parkingSession }, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 500 })

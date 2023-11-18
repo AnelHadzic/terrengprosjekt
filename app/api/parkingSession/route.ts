@@ -2,7 +2,6 @@ import connectToDb from "@/app/lib/db/mongoose"
 import { IParkingSession } from "@/app/lib/interface/IParkingSession"
 import {
   createParkingSession,
-  findParkingSession,
   getAllParkingSessions,
 } from "@/app/lib/model/parkingSession"
 
