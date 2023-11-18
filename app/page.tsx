@@ -67,9 +67,7 @@ const ActiveParking = () => {
 
   const endTimeParking = new Date(parkingSession.endTime)
 
-  const norwegianDate = add(endTimeParking, { hours: 1 })
-
-  const formattedDate = format(norwegianDate, "HH:mm")
+  const norwegianDate = format(endTimeParking, "HH:mm")
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -118,7 +116,7 @@ const ActiveParking = () => {
             />
           </svg>
 
-          <p className="text-lg">{formattedDate}</p>
+          <p className="text-lg">{norwegianDate}</p>
         </div>
         <div className="flex flex-row">
           <svg
