@@ -10,13 +10,12 @@ export type parkingProps = {
 
 const Page = () => {
   const [regNr, setRegNr] = useState<string>("")
-  const [parkingData, setParkingData] = useState<parkingProps | null>()
-  const [invalidParking, setInvalidParking] = useState<boolean>(false)
+  const [parkingData, setParkingData] = useState<
+    parkingProps | null | undefined
+  >(undefined)
 
   const handleCheck = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    setParkingData(null)
-    setInvalidParking(false)
     try {
       const response = await fetch(`/api/parkingSession/by-regnr/${regNr}`, {
         method: "GET",
@@ -25,10 +24,11 @@ const Page = () => {
         },
       })
       const result = await response.json()
-      if (response.status === 200) {
+      if (result.data === null) {
+        setParkingData(null)
+      }
+      if (result.data) {
         setParkingData(result.data)
-      } else if (result.data === "Not found") {
-        setInvalidParking(true)
       }
     } catch (error) {
       console.log(error)
@@ -79,7 +79,7 @@ const Page = () => {
               </button>
             </form>
           </div>
-          {parkingData && (
+          {parkingData != null && parkingData != undefined && (
             <GodkjentParkering
               parkingName={parkingData.parkingName}
               startTime={new Date(parkingData.startTime)}
@@ -87,7 +87,7 @@ const Page = () => {
               licensePlate={parkingData.licensePlate}
             />
           )}
-          {invalidParking === true && <IkkeGodkjentParkering regNr={regNr} />}
+          {parkingData === null && <IkkeGodkjentParkering regNr={regNr} />}
         </div>
       </div>
     </>
