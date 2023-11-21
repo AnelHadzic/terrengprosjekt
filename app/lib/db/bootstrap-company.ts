@@ -1,4 +1,4 @@
-import { ICompany } from "./../interface/ICompany";
+import { ICompany } from "./../interface/ICompany"
 
 export const systemCompanies = () => {
   const companies = [
@@ -6,27 +6,18 @@ export const systemCompanies = () => {
       _id: "652f74492b45acf167a7940a",
       companyName: "Høgskolen i Østfold",
       contactEmail: "mariusca@hiof.no",
-      privateAgreement: {
-        domains: ["hiof.no"],
-        parkingSpots: [
-          {
-            parkingName: "P4",
-            parkingLimit: 85,
-          },
-          {
-            parkingName: "P1",
-            parkingLimit: 60,
-          },
-        ],
-      },
       companyAgreement: {
         emails: ["mariusca@hiof.no", "anelh@hiof.no"],
         parkingSpots: [
-            {
-              parkingName: "P4",
-              parkingLimit: 20,
-            },
-          ],
+          {
+            parkingName: "P2",
+            parkingLimit: 20,
+          },
+          {
+            parkingName: "P3",
+            parkingLimit: 10,
+          },
+        ],
       },
       internalComment:
         "Studenter har private avtaler. Ansatte har bedriftsavtale.",
@@ -48,7 +39,7 @@ export const systemCompanies = () => {
         parkingSpots: [
           {
             parkingName: "P4",
-            parkingLimit: 30,
+            parkingLimit: 10,
           },
         ],
       },
@@ -78,8 +69,24 @@ export const systemCompanies = () => {
       },
       internalComment:
         "Bedriften har innleide/eksterne som må lage privatavtale.",
-    }
-  ] as ICompany[];
+    },
+    {
+      _id: "752f74492b45acf167a7940d",
+      companyName: "Sopra Steria Fredrikstad",
+      contactEmail: "jorgen.braekke@soprasteria.com",
+      companyAgreement: {
+        domains: ["soprasteria.com"],
+        parkingSpots: [
+          {
+            parkingName: "P1",
+            parkingLimit: 30,
+          },
+        ],
+      },
+      internalComment:
+        "Bedriften har innleide/eksterne som må lage privatavtale.",
+    },
+  ] as ICompany[]
 
-  return companies;
-};
+  return companies
+}

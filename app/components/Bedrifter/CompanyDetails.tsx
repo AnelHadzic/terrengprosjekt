@@ -11,17 +11,17 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
   const { company, handleEditClick, handleDeleteClick } = props
 
   function handleEdit() {
-    handleEditClick?.() 
+    handleEditClick?.()
   }
 
   function handleDelete() {
-    handleDeleteClick?.() 
+    handleDeleteClick?.()
   }
 
   return (
     <>
-      <div className="flex mb-6 items-center justify-between">
-        <h1 className="text-2xl font-bold leading-none text-gray-900 dark:text-white">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center flex-1">
           {company?.companyName}
         </h1>
         <button
@@ -31,6 +31,7 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
           Endre
         </button>
       </div>
+
       <h2 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
         Kontaktperson
       </h2>
@@ -132,8 +133,8 @@ export default function CompanyDetails(props: CompanyDetailsProps) {
           ) : null}
         </>
       ) : null}
-      <div className="flex items-center justify-between">
-        <h2 className="text-l font-bold leading-none text-gray-900 dark:text-white">
+      <div className="flex items-center text-center justify-center">
+        <h2 className="text-l font-bold leading-none mr-6 text-gray-900 dark:text-white">
           Antall brukere
         </h2>
         <a
