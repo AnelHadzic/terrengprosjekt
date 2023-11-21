@@ -30,9 +30,9 @@ export function newUserTableRow(newUser: UserWithAgreementStatus, setNewUser: { 
           value={newUser.status}
           onChange={(e) => setNewUser({ ...newUser, status: e.target.value })}
         >
-          <option value="ListByPrivateAgreement">Privat (whitelist)</option>
-          <option value="ListByCompanyAgreement">Bedrift (whitelist)</option>
-          <option value="NoAgreement">Ingen whitelist</option>
+          <option value="ListByPrivateAgreement">Privat</option>
+          <option value="ListByCompanyAgreement">Bedrift</option>
+          <option value="NoAgreement">Ingen avtale</option>
           <option value="DomainByPrivateAgreement" disabled>
             Privat (fra domene)
           </option>
