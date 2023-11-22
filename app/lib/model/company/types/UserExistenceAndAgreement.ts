@@ -1,10 +1,10 @@
-type UserExistenceAndAgreement = {
+import { IParkingSpot } from "@/app/contexts/interface/CompanyAgreement"
+
+export type UserExistenceAndAgreement = {
   emailExists?: boolean
   agreement: {
     agreementType: string
-    parkingSpots?: {
-      parkingName: string
-      parkingLimit: number
-    } | null
+    shouldPay: boolean
+    agreementData?: IParkingSpot[] | null
   }
 }

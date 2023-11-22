@@ -15,17 +15,29 @@ export default function Home() {
 }
 
 function MainContent() {
-  const { userData, parkingSession, status } = useUserDataContext()
+  const { agreementStatus, userData, parkingSession, status } =
+    useUserDataContext()
 
-  if (status === "loading" && !userData && parkingSession === undefined) {
+  if (
+    status === "loading" &&
+    !userData &&
+    parkingSession === undefined &&
+    agreementStatus === undefined
+  ) {
     return <Loading />
   }
+
+  // if (agreementStatus?.agreement.agreementType === "NoAgreement") {
+  //   return <NoAgreement />
+  // }
 
   if (parkingSession === null) {
     return <InActiveParking />
   }
 
-  return <ActiveParking />
+  if (parkingSession) {
+    return <ActiveParking />
+  }
 }
 
 const ActiveParking = () => {
@@ -178,6 +190,72 @@ const InActiveParking = () => {
           </span>
         </div>{" "}
         <ChooseParking />
+      </div>
+    </>
+  )
+}
+
+const PaymentRequired = () => {
+  return (
+    <>
+      <p>Vi mangler betaling. Trykk her for å betale</p>
+    </>
+  )
+}
+
+const NoAgreement = () => {
+  return (
+    <>
+      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-5 flex items-center justify-center rounded-t-lg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100"
+            height="100"
+            viewBox="0 0 24 24"
+          >
+            <g
+              fill="none"
+              stroke="red"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            >
+              <path
+                strokeDasharray="60"
+                strokeDashoffset="60"
+                d="M12 3L21 20H3L12 3Z"
+              >
+                <animate
+                  fill="freeze"
+                  attributeName="stroke-dashoffset"
+                  dur="0.5s"
+                  values="60;0"
+                />
+              </path>
+              <path strokeDasharray="6" strokeDashoffset="6" d="M12 10V14">
+                <animate
+                  fill="freeze"
+                  attributeName="stroke-dashoffset"
+                  begin="0.6s"
+                  dur="0.2s"
+                  values="6;0"
+                />
+              </path>
+            </g>
+            <circle cx="12" cy="17" r="1" fill="red" fillOpacity="0">
+              <animate
+                fill="freeze"
+                attributeName="fill-opacity"
+                begin="0.8s"
+                dur="0.4s"
+                values="0;1"
+              />
+            </circle>
+          </svg>
+
+          <p>Du har ingen aktiv avtale</p>
+        </div>
       </div>
     </>
   )

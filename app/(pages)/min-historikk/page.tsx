@@ -70,6 +70,7 @@ const MainContent = () => {
         <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Min parkeringshistorikk
         </h1>
+        <p>{userData?.email}</p>
         <p>Side: {page}</p>
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
