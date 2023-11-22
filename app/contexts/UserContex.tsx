@@ -11,6 +11,8 @@ import { IUser } from "../lib/interface/IUser"
 import { IParkingSession } from "../lib/interface/IParkingSession"
 import { useSession } from "next-auth/react"
 import { IUserCompany } from "./interface/CompanyAgreement"
+import { Result } from "../types"
+import { UserExistenceAndAgreement } from "../lib/model/company/types/UserExistenceAndAgreement"
 
 const UserContext = createContext<UserData | undefined>(undefined)
 
@@ -25,6 +27,10 @@ export const UserProvider = (props: { children: ReactNode }) => {
   const [userCompany, setUserCompany] = useState<IUserCompany | undefined>(
     undefined,
   )
+
+  const [agreementStatus, setAgreementStatus] = useState<
+    UserExistenceAndAgreement | undefined
+  >(undefined)
 
   const getUserData = async () => {
     if (!session) {
@@ -84,6 +90,25 @@ export const UserProvider = (props: { children: ReactNode }) => {
     }
   }
 
+  const fetchUserAgreement = async () => {
+    try {
+      const apiUrl = `http://localhost:3000/api/v2/companies?email=${userData?.email}`
+
+      const response = await fetch(apiUrl, {
+        method: "GET",
+      })
+
+      const result =
+        (await response.json()) as Result<UserExistenceAndAgreement>
+
+      if (result.success) {
+        setAgreementStatus(result.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     if (session) {
       getUserData()
@@ -93,6 +118,7 @@ export const UserProvider = (props: { children: ReactNode }) => {
   useEffect(() => {
     if (userData) {
       getParkingSession()
+      fetchUserAgreement()
       getUserCompany()
     }
   }, [userData])
@@ -100,6 +126,8 @@ export const UserProvider = (props: { children: ReactNode }) => {
   const contextValue: UserData = {
     userData,
     setUserData,
+    agreementStatus,
+    setAgreementStatus,
     parkingSession,
     setParkingSession,
     getUserData,

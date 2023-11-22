@@ -8,11 +8,12 @@ import {
   findCompany,
 } from "@/app/lib/model/company"
 import { ICompany } from "@/app/lib/interface/ICompany"
-import { Result } from "@/app/types"
 import { getAgreement } from "./getAgreement"
 import * as usersService from "../users/users.service"
 import { IUser } from "@/app/lib/interface/IUser"
 import { ErrorEnum } from "@/app/lib/enum/error-type"
+import { Result } from "@/app/types"
+import { UserExistenceAndAgreement } from "@/app/lib/model/company/types/UserExistenceAndAgreement"
 
 export const single = async (companyId: string): Promise<Result<ICompany>> => {
   try {
@@ -69,7 +70,7 @@ export const agreementStatusForUser = async (
 
   const userExistenceAndAgreement: UserExistenceAndAgreement = {
     emailExists: existingEmail,
-    agreement: agreement,
+    agreement: agreement
   }
 
   return { success: true, data: userExistenceAndAgreement }

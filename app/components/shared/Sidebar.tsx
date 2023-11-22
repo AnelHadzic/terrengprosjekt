@@ -1,6 +1,9 @@
-import React from "react";
+"use client"
+import { useUserDataContext } from "@/app/contexts/UserContex"
+import React from "react"
 
 const Sidebar = () => {
+  const { userData } = useUserDataContext()
   return (
     <>
       <button
@@ -34,7 +37,7 @@ const Sidebar = () => {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <span className="ml-3">bruker@hiof.no</span>
+              <span className="ml-3">{userData?.email}</span>
             </li>
             <li>
               <a
@@ -162,7 +165,7 @@ const Sidebar = () => {
         </div>
       </aside>
     </>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

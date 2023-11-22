@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { useUserDataContext } from "@/app/contexts/UserContex"
 import { IParkingSpot } from "@/app/contexts/interface/CompanyAgreement"
 import dynamic from "next/dynamic"
+import { IParkingLot } from "@/app/lib/interface/IParkingLot"
 
 const MapComp = dynamic(
   () => import("@/app/components/parkering/UserParkering"),
@@ -21,9 +22,10 @@ const ChooseParking = () => {
   const [chosenParking, setChosenParking] = useState<string>("")
   const [selectedTime, setSelectedTime] = useState<Date | null>(null)
 
-  const { userCompany, userData, getUserData } = useUserDataContext()
+  const { agreementStatus, userData, getUserData } = useUserDataContext()
 
-  const parkingSpots: IParkingSpot[] | undefined = userCompany?.agreementData
+  const parkingSpots: IParkingSpot[] | null | undefined =
+    agreementStatus?.agreement.agreementData
 
   const startParking = async () => {
     const currentTime = new Date()
@@ -52,6 +54,17 @@ const ChooseParking = () => {
           console.error(error)
         })
     }
+  }
+
+  if (parkingSpots === null) {
+    return (
+      <>
+        <p className="m-3">
+          Bedriften din har ingen parkeringsplasser, kontakt din nærmeste
+          kontaktperson
+        </p>
+      </>
+    )
   }
 
   return (
