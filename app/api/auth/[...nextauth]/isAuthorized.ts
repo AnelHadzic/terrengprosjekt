@@ -1,3 +1,4 @@
+import { UserExistenceAndAgreement } from "@/app/lib/model/company/types/UserExistenceAndAgreement"
 import { Result } from "@/app/types"
 
 export async function userIsAuthenticated(email: string | null | undefined) {

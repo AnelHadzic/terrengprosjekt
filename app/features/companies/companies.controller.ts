@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import * as companiesService from "./companies.service"
 import mongoose from "mongoose"
 import { ErrorEnum } from "@/app/lib/enum/error-type"
+import { UserExistenceAndAgreement } from "@/app/lib/model/company/types/UserExistenceAndAgreement"
 
 const getCompanyData = (data: unknown) => {
   return data &&
