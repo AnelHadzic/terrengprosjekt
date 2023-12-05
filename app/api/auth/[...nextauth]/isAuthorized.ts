@@ -2,8 +2,12 @@ import { UserExistenceAndAgreement } from "@/app/lib/model/company/types/UserExi
 import { Result } from "@/app/types"
 
 export async function userIsAuthenticated(email: string | null | undefined) {
-  const apiUrl = `/api/v2/companies?email=${email}`
   console.log("Kjører userIsAuthenticated function")
+
+  if (!email) {
+    return false
+  }
+  const apiUrl = `/api/v2/companies?email=${encodeURIComponent(email)}`
 
   try {
     const response = await fetch(apiUrl, {
