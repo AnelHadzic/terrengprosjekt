@@ -40,4 +40,4 @@ const companySchema = new Schema({
 })
 
 export const Company =
-  mongoose.models.Company || mongoose.model<ICompany>("Company", companySchema)
+  mongoose.models.Company || mongoose.model("Company", companySchema)
