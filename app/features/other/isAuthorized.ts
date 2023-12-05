@@ -7,7 +7,7 @@ export async function userIsAuthenticated(email: string | null | undefined) {
   if (!email) {
     return false
   }
-  const apiUrl = `/api/v2/companies?email=${email}`
+  const apiUrl = process.env.NEXTAUTH_URL + `/api/v2/companies?email=${email}`
   console.log("Constructed url:", apiUrl)
 
   try {
