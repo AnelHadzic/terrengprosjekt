@@ -24,16 +24,16 @@ const Page = () => {
                 <g
                   fill="none"
                   stroke="mediumseagreen"
-                  stroke-linecap="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeWidth="2"
                 >
                   <rect
                     width="18"
                     height="14"
                     x="3"
                     y="5"
-                    stroke-dasharray="64"
-                    stroke-dashoffset="64"
+                    strokeDasharray="64"
+                    strokeDashoffset="64"
                     rx="1"
                   >
                     <animate
@@ -44,8 +44,8 @@ const Page = () => {
                     />
                   </rect>
                   <path
-                    stroke-dasharray="24"
-                    stroke-dashoffset="24"
+                    strokeDasharray="24"
+                    strokeDashoffset="24"
                     d="M3 6.5L12 12L21 6.5"
                   >
                     <animate

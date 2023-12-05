@@ -1,5 +1,4 @@
 import connectToDb from "@/app/lib/db/mongoose"
-import { ParkingSession } from "@/app/lib/model/parkingSession"
 import { getAllParkingSessionsByEmail } from "@/app/lib/model/parkingSession/getAll"
 import { NextResponse } from "next/server"
 

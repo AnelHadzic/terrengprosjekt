@@ -52,10 +52,7 @@ const Page = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/parkingLot",
-        payload,
-      )
+      const response = await axios.post("/api/parkingLot", payload)
       router.push("/parkeringsplasser")
     } catch (error) {
       setError("Noe gikk galt")

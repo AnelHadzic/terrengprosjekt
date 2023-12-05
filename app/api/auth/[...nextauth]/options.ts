@@ -26,14 +26,18 @@ export const options: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       const userEmail = user.email
-
+      console.log("Kjører signIn function")
       // Autentiserer brukeren
       const isValidUser = await userIsAuthenticated(userEmail)
 
-
-      if (isValidUser === true) {
+      if (isValidUser) {
+        console.log("isValidUser = true... Returnerer true fra options")
         return true
-      }  else {
+      } else {
+        console.log(
+          "isValidUser = false... Returnerer false fra options og redirect til uautorisert",
+        )
+
         return "/uautorisert"
       }
     },
