@@ -8,6 +8,7 @@ export async function userIsAuthenticated(email: string | null | undefined) {
     return false
   }
   const apiUrl = `/api/v2/companies?email=${encodeURIComponent(email)}`
+  console.log("Constructed url:", apiUrl)
 
   try {
     const response = await fetch(apiUrl, {
