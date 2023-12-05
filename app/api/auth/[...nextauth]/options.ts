@@ -2,7 +2,7 @@ import type { NextAuthOptions } from "next-auth"
 import EmailProvider from "next-auth/providers/email"
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import clientPromise from "@/app/lib/db/clientPromise"
-import { userIsAuthenticated } from "./isAuthorized"
+import { userIsAuthenticated } from "../../../features/other/isAuthorized"
 
 export const options: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
