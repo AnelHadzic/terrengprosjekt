@@ -6,7 +6,7 @@ export async function GET() {
     try {
         await connectToDb();
 
-        bootstrapDb();
+        await bootstrapDb();
 
         return NextResponse.json(
             { data: "Database operation successful" },

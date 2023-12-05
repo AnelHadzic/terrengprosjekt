@@ -35,10 +35,10 @@ const createParkingLots = async () => {
   }
 }
 
-function bootstrapDb() {
-  createAdminUsers()
-  createCompanies()
-  createParkingLots()
+async function bootstrapDb() {
+  await createAdminUsers()
+  await createCompanies()
+  await createParkingLots()
 }
 
 export default bootstrapDb
