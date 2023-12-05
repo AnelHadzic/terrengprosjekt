@@ -7,16 +7,11 @@ export async function userIsAuthenticated(email: string | null | undefined) {
   if (!email) {
     return false
   }
-  const apiUrl = `/api/v2/companies?email=${encodeURIComponent(email)}`
+  const apiUrl = `/api/v2/companies?email=${email}`
   console.log("Constructed url:", apiUrl)
 
   try {
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    const response = await fetch(apiUrl, { method: "GET" })
     const result = (await response.json()) as Result<UserExistenceAndAgreement>
     if (result.success) {
       if (
