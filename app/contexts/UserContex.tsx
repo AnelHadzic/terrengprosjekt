@@ -92,7 +92,7 @@ export const UserProvider = (props: { children: ReactNode }) => {
 
   const fetchUserAgreement = async () => {
     try {
-      const apiUrl = `http://localhost:3000/api/v2/companies?email=${userData?.email}`
+      const apiUrl = `/api/v2/companies?email=${userData?.email}`
 
       const response = await fetch(apiUrl, {
         method: "GET",

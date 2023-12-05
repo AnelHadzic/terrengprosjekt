@@ -16,7 +16,7 @@ const ComapnyParking = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_URL = "http://localhost:3000/api/parkingLot"
+        const API_URL = "/api/parkingLot"
         const response = await axios.get(API_URL)
         setParkingList(response.data.data)
       } catch (err) {

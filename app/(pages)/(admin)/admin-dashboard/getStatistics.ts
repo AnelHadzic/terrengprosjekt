@@ -1,9 +1,9 @@
 import axios from "axios"
 
 export const getStatistics = async () => {
-  const userAPI = "http://localhost:3000/api/users"
-  const parkingLotAPI = "http://localhost:3000/api/parkingLot"
-  const companyAPI = "http://localhost:3000/api/company"
+  const userAPI = "/api/users"
+  const parkingLotAPI = "/api/parkingLot"
+  const companyAPI = "/api/company"
 
   try {
     const [userRes, parkingLotRes, companyRes] = await Promise.all([
