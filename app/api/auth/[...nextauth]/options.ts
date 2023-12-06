@@ -21,6 +21,7 @@ export const options: NextAuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
+      maxAge: 10 * 60,
     }),
   ],
   callbacks: {
