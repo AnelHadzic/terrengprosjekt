@@ -61,6 +61,44 @@ export const createUser = async (
   return NextResponse.json(createdUserResult, { status: 201 })
 }
 
+export const createManyUsers = async (
+  req: NextRequest,
+): Promise<NextResponse<Result<IUser[]>>> => {
+  const contentType = req.headers.get("content-type")
+  if (contentType !== "application/json") {
+    return NextResponse.json(
+      { success: false, error: "Invalid request" },
+      { status: 415 },
+    )
+  }
+  const body = await req.json()
+  let userList = body as IUser[]
+
+  const createdUsersResult = await usersService.createMany(userList)
+
+  if (!createdUsersResult.success) {
+    switch (createdUsersResult.type) {
+      case "User.Duplicate":
+        return NextResponse.json(
+          {
+            success: false,
+            error: createdUsersResult.error,
+          },
+          { status: 409 },
+        )
+      default:
+        return NextResponse.json(
+          {
+            success: false,
+            error: createdUsersResult.error,
+          },
+          { status: 500 },
+        )
+    }
+  }
+  return NextResponse.json(createdUsersResult, { status: 201 })
+}
+
 export const listUsers = async (filter?: {
   companyId: string | null
   search: string | null
@@ -184,4 +222,8 @@ export const deleteUserByEmail = async (
   }
 
   return NextResponse.json(deletedUserResult, { status: 200 })
+}
+
+export function createUsers(request: NextRequest) {
+  throw new Error("Function not implemented.")
 }

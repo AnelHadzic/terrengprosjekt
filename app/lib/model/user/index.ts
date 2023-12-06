@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose"
 import { Role, Roles } from "../../enum/role-type"
 export { createUser } from "./create"
+export { createManyUsers } from "./createMany"
 export { findAllUsers } from "./findAll"
 export { findUsersByCompanyId } from "./findByCompany"
 export { findUsersByCompanyIdAndMultiSearch } from "./findByCompanyAndMultiSearch"
