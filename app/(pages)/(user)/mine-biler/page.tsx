@@ -9,7 +9,7 @@ const Page = () => {
   return (
     <>
       <main className="flex flex-col items-center min-h-screen p-4 sm:p-8">
-        <div className="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
           {!editMode && <ChoosePrimaryCar />}
           {editMode && <MyCarSettings />}
           <button
@@ -17,7 +17,7 @@ const Page = () => {
             onClick={() => {
               setEditMode(!editMode)
             }}
-            className="text-white mb-6 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            className="text-white mb-6 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
           >
             <div className="flex flex-row align-center">
               {!editMode ? (
@@ -75,28 +75,28 @@ const Page = () => {
 const ChoosePrimaryCar = () => {
   return (
     <>
-      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
         Velg din primær bil
       </h5>
-      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+      <hr className="h-px my-8 bg-gray-200 border-0" />
 
       <div className="flex flex-col items-center">
         <MyCars />
       </div>
-      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+      <hr className="h-px my-8 bg-gray-200 border-0" />
     </>
   )
 }
 const MyCarSettings = () => {
   return (
     <>
-      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
         Administrer dine biler her
       </h5>
       <p>Husk å lagre endringene dine</p>
-      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+      <hr className="h-px my-8 bg-gray-200 border-0" />
       <EditCars />
-      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+      <hr className="h-px my-8 bg-gray-200 border-0" />
     </>
   )
 }

@@ -26,8 +26,8 @@ const Page = () => {
 
   return (
     <main className="flex flex-col items-center min-h-screen p-4 sm:p-8">
-      <div className="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
-        <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <div className="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
+        <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
           Betaling
         </h1>
         <h2>Din status: </h2>
@@ -42,7 +42,7 @@ const Page = () => {
           </>
         )}
 
-        <h2 className="mb-2 mt-8 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <h2 className="mb-2 mt-8 text-2xl font-bold tracking-tight text-gray-900">
           Betalingshistorikk
         </h2>
         <Table
