@@ -1,6 +1,14 @@
-import NextAuth from "next-auth/next";
-import { options } from "./options";
+import NextAuth from "next-auth/next"
+import { options } from "./options"
+import { NextApiRequest, NextApiResponse } from "next"
 
-const handler = NextAuth(options);
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method === "HEAD") {
+    return res.status(200).end()
+  }
 
-export { handler as GET, handler as POST };
+  return await NextAuth(req, res, options)
+}
