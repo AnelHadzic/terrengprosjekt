@@ -1,5 +1,6 @@
 import { IUser } from "@/app/lib/interface/IUser"
 import {
+  createManyUsers,
   createUser,
   deleteUser,
   editUser,
@@ -70,6 +71,25 @@ export const create = async (user: IUser): Promise<Result<IUser>> => {
   const createdUser = (await createUser(user)) as IUser
 
   return { success: true, data: createdUser }
+}
+
+export const createMany = async (users: IUser[]): Promise<Result<IUser[]>> => {
+  // const existingUser = await findUser(user.email)
+  // if (existingUser) {
+  //   return {
+  //     success: false,
+  //     type: "User.Duplicate",
+  //     error: `User with email ${user.email} already exists.`,
+  //   }
+  // }
+
+  const createdUsers = (await createManyUsers(users)) as IUser[]
+
+  if (createdUsers == null) {
+    return { success: false, error: "Failed to create users." }
+  }
+
+  return { success: true, data: createdUsers }
 }
 
 export const edit = async (
