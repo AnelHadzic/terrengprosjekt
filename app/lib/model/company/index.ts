@@ -14,6 +14,7 @@ export { findCompaniesByName } from "./findByCompanyName"
 export { findCompaniesByMultiSearch } from "./findByMultiSearch"
 export { findCompany } from "./findOne"
 export { editCompany } from "./edit"
+export { editCompanyAgreement } from "./editCompanyAgreement"
 export { deleteCompany } from "./delete"
 
 const agreementSchema = new Schema<IAgreement>({

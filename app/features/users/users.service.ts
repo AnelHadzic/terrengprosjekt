@@ -9,6 +9,7 @@ import {
   findUsersByCompanyIdAndMultiSearch,
   findUsersByMultiSearch,
 } from "@/app/lib/model/user"
+import { BulkUser } from "@/app/lib/model/user/types/BulkUser"
 import UserWithCompanyInfo from "@/app/lib/model/user/types/UserWithCompanyInfo"
 import UserWithPopulatedCompany from "@/app/lib/model/user/types/UserWithPopulatedCompany"
 import { Result } from "@/app/types"
@@ -73,7 +74,9 @@ export const create = async (user: IUser): Promise<Result<IUser>> => {
   return { success: true, data: createdUser }
 }
 
-export const createMany = async (users: IUser[]): Promise<Result<IUser[]>> => {
+export const createMany = async (
+  users: BulkUser[],
+): Promise<Result<BulkUser[]>> => {
   // const existingUser = await findUser(user.email)
   // if (existingUser) {
   //   return {
@@ -83,7 +86,9 @@ export const createMany = async (users: IUser[]): Promise<Result<IUser[]>> => {
   //   }
   // }
 
-  const createdUsers = (await createManyUsers(users)) as IUser[]
+  const createdUsers = (await createManyUsers(users)) as BulkUser[]
+
+  console.log("Fixing agreement type: " + createdUsers[0].agreementType)
 
   if (createdUsers == null) {
     return { success: false, error: "Failed to create users." }

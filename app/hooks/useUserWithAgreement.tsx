@@ -9,6 +9,7 @@ import UserWithCompanyInfo from "../lib/model/user/types/UserWithCompanyInfo"
 import debounce from "../utilities/debounce"
 import Papa from "papaparse"
 import { Result } from "../types"
+import { BulkUser } from "../lib/model/user/types/BulkUser"
 
 export function useUserWithAgreement() {
   const [currentUserCompany, setCurrentUserCompany] = useState<ICompany>()
@@ -29,10 +30,11 @@ export function useUserWithAgreement() {
 
         if (parsedData.data && parsedData.data.length > 0) {
           try {
-            const users: IUser[] = parsedData.data.map((row: any) => ({
+            const users: BulkUser[] = parsedData.data.map((row: any) => ({
               email: row.email,
               role: 2,
-              company: currentUserCompany?._id,
+              companyId: currentUserCompany?._id || "",
+              agreementType: row.agreement_type,
             }))
 
             const API_URL = `/api/v2/users/bulk`

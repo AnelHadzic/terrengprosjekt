@@ -2,6 +2,7 @@ import {
   createCompany,
   deleteCompany,
   editCompany,
+  editCompanyAgreement,
   findAllCompanies,
   findCompaniesByMultiSearch,
   findCompaniesByName,
@@ -14,6 +15,7 @@ import { IUser } from "@/app/lib/interface/IUser"
 import { ErrorEnum } from "@/app/lib/enum/error-type"
 import { Result } from "@/app/types"
 import { UserExistenceAndAgreement } from "@/app/lib/model/company/types/UserExistenceAndAgreement"
+import { BulkUser } from "@/app/lib/model/user/types/BulkUser"
 
 export const single = async (companyId: string): Promise<Result<ICompany>> => {
   try {
@@ -70,7 +72,7 @@ export const agreementStatusForUser = async (
 
   const userExistenceAndAgreement: UserExistenceAndAgreement = {
     emailExists: existingEmail,
-    agreement: agreement
+    agreement: agreement,
   }
 
   return { success: true, data: userExistenceAndAgreement }
@@ -122,7 +124,11 @@ export const create = async (company: ICompany): Promise<Result<ICompany>> => {
   let userCreationResults: Result<IUser>[] = []
   if (company.companyAgreement?.emails) {
     company.companyAgreement?.emails.map(async (email) => {
-      const newUser: IUser = { email: email, company: createdCompany._id, role: 2 }
+      const newUser: IUser = {
+        email: email,
+        company: createdCompany._id,
+        role: 2,
+      }
       const createdUserResult = await usersService.create(newUser)
       userCreationResults.push(createdUserResult)
     })
@@ -130,7 +136,11 @@ export const create = async (company: ICompany): Promise<Result<ICompany>> => {
 
   if (company.privateAgreement?.emails) {
     company.privateAgreement?.emails.map(async (email) => {
-      const newUser: IUser = { email: email, company: createdCompany._id, role: 2 }
+      const newUser: IUser = {
+        email: email,
+        company: createdCompany._id,
+        role: 2,
+      }
       const createdUserResult = await usersService.create(newUser)
       userCreationResults.push(createdUserResult)
     })
@@ -146,8 +156,8 @@ export const create = async (company: ICompany): Promise<Result<ICompany>> => {
       }
     })
 
-    // Delete createdCompany and all new users. 
-    
+    // Delete createdCompany and all new users.
+
     return { success: false, error: errorMessages.join(`. \n`) }
   } else {
     return { success: true, data: createdCompany }
@@ -171,6 +181,28 @@ export const edit = async (
       success: false,
       type: "Company.NotFound",
       error: `Company with id ${company._id} does not exist.`,
+    }
+  }
+}
+
+export const editAgreement = async (
+  bulkUser: BulkUser,
+): Promise<Result<ICompany>> => {
+  const existingCompany = await findCompany(bulkUser.companyId)
+  if (!existingCompany) {
+    return {
+      success: false,
+      type: "Company.NotFound",
+      error: `Company with id ${bulkUser.companyId} does not exist.`,
+    }
+  }
+  const updatedCompany = await editCompanyAgreement(bulkUser)
+  if (updatedCompany) {
+    return { success: true, data: updatedCompany }
+  } else {
+    return {
+      success: false,
+      error: "Failed to edit agreements.",
     }
   }
 }

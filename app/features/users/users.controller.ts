@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import * as usersService from "./users.service"
 import { IUser } from "@/app/lib/interface/IUser"
 import UserWithPopulatedCompany from "@/app/lib/model/user/types/UserWithPopulatedCompany"
+import { BulkUser } from "@/app/lib/model/user/types/BulkUser"
 
 const getUserData = (data: unknown) => {
   return data &&
@@ -63,7 +64,7 @@ export const createUser = async (
 
 export const createManyUsers = async (
   req: NextRequest,
-): Promise<NextResponse<Result<IUser[]>>> => {
+): Promise<NextResponse<Result<BulkUser[]>>> => {
   const contentType = req.headers.get("content-type")
   if (contentType !== "application/json") {
     return NextResponse.json(
@@ -72,7 +73,7 @@ export const createManyUsers = async (
     )
   }
   const body = await req.json()
-  let userList = body as IUser[]
+  const userList = body as BulkUser[]
 
   const createdUsersResult = await usersService.createMany(userList)
 
@@ -223,4 +224,3 @@ export const deleteUserByEmail = async (
 
   return NextResponse.json(deletedUserResult, { status: 200 })
 }
-
