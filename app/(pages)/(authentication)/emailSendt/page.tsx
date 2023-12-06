@@ -13,7 +13,7 @@ const Page = () => {
       <>
         <div className="mb-20"></div>
         <main className="flex flex-col items-center min-h-screen p-4 sm:p-8">
-          <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
             <div className="flex flex-col items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

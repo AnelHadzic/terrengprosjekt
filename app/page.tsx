@@ -82,7 +82,7 @@ const ActiveParking = () => {
   const norwegianDate = format(endTimeParking, "HH:mm")
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="bg-white border border-gray-200 rounded-lg shadow">
       <div className="bg-green-500 p-10 flex items-center justify-center rounded-t-lg">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ const ActiveParking = () => {
         </svg>
       </div>
       <div className="p-5">
-        <span className="bg-green-100 text-green-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+        <span className="bg-green-100 text-green-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded">
           AKTIV PARKERING
         </span>{" "}
         <div className="mb-6"></div>
@@ -172,7 +172,7 @@ const ActiveParking = () => {
 const InActiveParking = () => {
   return (
     <>
-      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
         <div className="bg-gray-500 p-5 flex items-center justify-center rounded-t-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +185,7 @@ const InActiveParking = () => {
           </svg>
         </div>
         <div className="p-5">
-          <span className="bg-gray-100 text-gray-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+          <span className="bg-gray-100 text-gray-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded">
             INAKTIV PARKERING
           </span>
         </div>{" "}
@@ -206,7 +206,7 @@ const PaymentRequired = () => {
 const NoAgreement = () => {
   return (
     <>
-      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
         <div className="p-5 flex items-center justify-center rounded-t-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
