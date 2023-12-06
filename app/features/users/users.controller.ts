@@ -224,6 +224,3 @@ export const deleteUserByEmail = async (
   return NextResponse.json(deletedUserResult, { status: 200 })
 }
 
-export function createUsers(request: NextRequest) {
-  throw new Error("Function not implemented.")
-}

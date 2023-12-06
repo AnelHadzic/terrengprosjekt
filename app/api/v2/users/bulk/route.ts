@@ -4,6 +4,6 @@ import * as usersController from "@/app/features/users/users.controller"
 
 export async function POST(request: NextRequest) {
   await connectToDb()
-  const userCreationResponse = await usersController.createUsers(request)
+  const userCreationResponse = await usersController.createManyUsers(request)
   return userCreationResponse
 }
